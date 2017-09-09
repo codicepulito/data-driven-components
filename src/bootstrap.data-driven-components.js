@@ -29,27 +29,7 @@
    * - item0.id: null if it has submenu or valid html5 id attribute
    * - item0.name: null as separator or string representing the html value of item visible to the user
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
-   * 
-   * Navbar code example:
-   * var navbarParameters = {
-   *   navbarId: 'navbar1',
-   *   onClick: navbarClick,
-   *   items: [
-   *     {
-   *       id: null,
-   *       name: "Item 1",
-   *       submenu: [
-   *         { id: 1, name: "Subitem 1" },
-   *         { id: null, name: null },
-   *         { id: 2, name: "Subitem 2" }
-   *       ]
-   *     },
-   *     { id: 3, name: "Item 3" },
-   *   ]
-   * };
-   * 
-   * $('#root').dccNavbar(navbarParameters);
-   * 
+   *
    * @returns {void}
    */
   $.fn.dccNavbar = function(parameters) {

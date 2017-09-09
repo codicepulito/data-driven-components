@@ -1,4 +1,5 @@
-# Bootstrap data driven components jquery plugin #
+Bootstrap data driven components jquery plugin
+==============================================
 [![Build Status](https://travis-ci.org/codicepulito/data-driven-components.svg?branch=master)](https://travis-ci.org/codicepulito/data-driven-components)
 [![codecov](https://codecov.io/gh/codicepulito/data-driven-components/branch/master/graph/badge.svg)](https://codecov.io/gh/codicepulito/data-driven-components)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
@@ -7,3 +8,9 @@
 [![API Doc](https://doclets.io/codicepulito/data-driven-components/master.svg)](https://doclets.io/codicepulito/data-driven-components/master)
 
 Work in progress...
+-------------------
+- Datatables: coming soon...
+- Form: coming soon...
+- Modal: coming soon...
+- ModalForm: coming soon...
+- Navbar: Append a bootstrap navbar menu with items and dropdown sub-items.
