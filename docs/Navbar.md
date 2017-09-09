@@ -31,5 +31,14 @@ var navbarParameters = {
   ]
 };
 
-$('#root').dccNavbar(navbarParameters);
+// callback function
+function navbarClick(id) {
+  if (Number.isInteger(parseInt(id))) {
+    alert('click on item ' + id);
+  }
+}
+
+$(document).ready(function() {
+  $('#root').dccNavbar(navbarParameters);
+});
 ```
