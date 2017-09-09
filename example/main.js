@@ -11,14 +11,14 @@ var navbarParameters = {
         { id: 2, name: "Subitem 2" }
       ]
     },
-    { id: 3, name: "Item 3" },
+    { id: 3, name: "Item 3" }
   ]
 };
 
 // callback function
 function navbarClick(id) {
-  if (Number.isInteger(parseInt(id))) {
-    alert('click on item ' + id);
+  if (Number.isInteger(parseInt(id, 10))) {
+    console.log('click on item ' + id);
   }
 }
 
