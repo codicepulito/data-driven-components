@@ -1,0 +1,40 @@
+{
+  "license": "GPL-3.0",
+  "repository": "https://github.com/codicepulito/data-driven-components",
+  "name": "data-driven-components",
+  "version": "0.1.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Gianluca Ciarcelluti <gianluca@ciarcelluti.it>",
+  "contributors": [],
+  "dependencies": {
+    "jasmine": "^2.8.0",
+    "jasmine-core": "*",
+    "jasmine-jquery": "^2.1.1",
+    "jquery": "^3.2.1",
+    "karma-coverage": "*",
+    "karma-jasmine": "^1.1.0",
+    "phantomjs-prebuilt": "*"
+  },
+  "devDependencies": {
+    "karma": "*",
+    "karma-jasmine": "*",
+    "karma-phantomjs-launcher": "*"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
+  },
+  "standard": {
+    "globals": [
+      "beforeEach",
+      "describe",
+      "expect",
+      "it"
+    ]
+  }
+}
