@@ -28,6 +28,8 @@
     var navbarId = parameters.navbarId
     var items = parameters.items
     var onClick = parameters.onClick
+    var menuItem = ''
+    var subMenuItem = ''
 
     // empty root element if is present to avoid side effects on refresh
     if ($('#root-' + navbarId).length) {
@@ -55,30 +57,30 @@
     $.each(items, function(key, value) {
       if (!value.submenu) {
         // add normal item
-        var menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">'
+        menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">'
           + value.name + '</a></li>\n'
         $('#' + rootId + ' .navbar-nav').append(menuItem)
       } else {
         // add submenu item
-        var menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId + value.name.replace(' ', '') + '">'
+        menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId + value.name.replace(' ', '') + '">'
           + value.name + ' <span class="caret"></span></a>\n'
         $('#' + rootId + ' .navbar-nav').appendR('<li class="dropdown">').appendR(menuItem)
         $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).after('<ul class="dropdown-menu">')
 
         $.each(value.submenu, function(submenuKey, submenuValue) {
           if (!submenuValue.id) {
-            var menuItem = '<li class="divider"></li>'
+            subMenuItem = '<li class="divider"></li>'
           } else {
-            var menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">'
+            subMenuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">'
               + submenuValue.name + '</a></li>\n'
           }
-          $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(menuItem)
+          $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
         })
       }
 
       // toggle collapsible navbar on click event
       $('.dropdown-item').on('click', function(){
-        if($('.navbar-collapse').css('display') != 'none'){
+        if($('.navbar-collapse').css('display') !== 'none'){
           $(".navbar-toggle").trigger( "click" )
         }
       });
