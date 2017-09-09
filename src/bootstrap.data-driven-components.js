@@ -104,4 +104,4 @@
     return $toAppend;
   };
     
-})( jQuery );
+}( jQuery ));
