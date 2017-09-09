@@ -3,6 +3,5 @@ dir: src
 packageJson: package.json
 
 articles:
-
- 	- Overview: README.md
-  - Navbar: docs/Navbar.md
+- Overview: README.md
+- Navbar: docs/Navbar.md
