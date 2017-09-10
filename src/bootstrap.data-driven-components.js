@@ -18,8 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-(function( $ ) {
-  
+(function ($) {
   /**
    * Append a bootstrap modal with title and message
    * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
@@ -27,13 +26,13 @@
    * @param {string} message The modal body contains the message
    * @returns {void}
    */
-  $.fn.dccModal = function(modalId, title, message) {
+  $.fn.dccModal = function (modalId, title, message) {
     var selector = $(this).attr('id')
-    
+
     // empty root element if is present to avoid side effects on refresh
     purgeNode(selector, modalId)
 
-    rootId = 'root-' + modalId
+    var rootId = 'root-' + modalId
 
     var modalDiv = '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog">'
     $('#' + rootId).append('<div class="modal-header">')
@@ -60,9 +59,7 @@
    *
    * @returns {void}
    */
-  $.fn.dccNavbar = function(parameters) {
-
-    var elem = $(this)
+  $.fn.dccNavbar = function (parameters) {
     var selector = $(this).attr('id')
     var navbarId = parameters.navbarId
     var items = parameters.items
@@ -72,9 +69,9 @@
 
     // empty root element if is present to avoid side effects on refresh
     purgeNode(selector, navbarId)
-    
-    rootId = 'root-' + navbarId
-  
+
+    var rootId = 'root-' + navbarId
+
     // add navbar headers
     var navbarDiv = '<nav class="navbar navbar-inverse navbar-default">'
     $('#' + rootId).append('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#' + navbarId + '">')
@@ -89,56 +86,55 @@
       .appendR('<div class="collapse navbar-collapse" id="' + navbarId + '">')
       .appendR('<ul class="nav navbar-nav">')
 
-    $.each(items, function(key, value) {
+    $.each(items, function (key, value) {
       if (!value.submenu) {
         // add normal item
-        menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">'
-          + value.name + '</a></li>\n'
+        menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">' +
+          value.name + '</a></li>\n'
         $('#' + rootId + ' .navbar-nav').append(menuItem)
       } else {
         // add submenu item
-        menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId + value.name.replace(' ', '') + '">'
-          + value.name + ' <span class="caret"></span></a>\n'
+        menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId +
+          value.name.replace(' ', '') + '">' + value.name + ' <span class="caret"></span></a>\n'
         $('#' + rootId + ' .navbar-nav').appendR('<li class="dropdown">').appendR(menuItem)
         $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).after('<ul class="dropdown-menu">')
 
-        $.each(value.submenu, function(submenuKey, submenuValue) {
+        $.each(value.submenu, function (submenuKey, submenuValue) {
           if (!submenuValue.id) {
             subMenuItem = '<li class="divider"></li>'
           } else {
-            subMenuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">'
-              + submenuValue.name + '</a></li>\n'
+            subMenuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">' +
+              submenuValue.name + '</a></li>\n'
           }
           $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
         })
       }
 
       // toggle collapsible navbar on click event
-      $('.dropdown-item').on('click', function(){
-        if($('.navbar-collapse').css('display') !== 'none'){
-          $(".navbar-toggle").trigger( "click" )
+      $('.dropdown-item').on('click', function () {
+        if ($('.navbar-collapse').css('display') !== 'none') {
+          $('.navbar-toggle').trigger('click')
         }
-      });
+      })
     })
 
     // callback execution on item/subitem click passing element id as parameter
-    $('#' + navbarId + ' .nav li a').click(function(){
+    $('#' + navbarId + ' .nav li a').click(function () {
       var id = $(this).attr('id')
       onClick(id.substring(navbarId.length))
-    });
-    
+    })
   }
-  
+
   // googling with "jquery append recursion"
   // found solution on Stack Overflow
   // jquery - How to add items recursively within one another
   // https://stackoverflow.com/questions/29105469/jquery-how-to-add-items-recursively-within-one-another
-  $.fn.appendR = function(toAppend) {
-    var $toAppend = $(toAppend);
-    this.append($toAppend);
-    return $toAppend;
-  };
-  
+  $.fn.appendR = function (toAppend) {
+    var $toAppend = $(toAppend)
+    this.append($toAppend)
+    return $toAppend
+  }
+
   /**
    * Empty root element if is present to avoid side effects on refresh making the idempotent function
    *
@@ -153,5 +149,4 @@
       $('#' + selector).append('<div class="row" id="root-' + element + '">')
     }
   }
-    
-}( jQuery ));
+}(window.jQuery))
