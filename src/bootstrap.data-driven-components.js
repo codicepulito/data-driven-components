@@ -30,11 +30,8 @@
   $.fn.dccModal = function(modalId, title, message) {
     var selector = $(this).attr('id')
     
-    if ($('#root-' + modalId).length) {
-      $('#root-' + modalId).empty()
-    } else {
-      $('#' + selector).append('<div class="row" id="root-' + modalId + '">')
-    }
+    // empty root element if is present to avoid side effects on refresh
+    purgeNode(selector, modalId)
 
     rootId = 'root-' + modalId
 
@@ -74,11 +71,7 @@
     var subMenuItem = ''
 
     // empty root element if is present to avoid side effects on refresh
-    if ($('#root-' + navbarId).length) {
-      $('#' + navbarId).empty()
-    } else {
-      $('#' + selector).append('<div class="row" id="root-' + navbarId + '">')
-    }
+    purgeNode(selector, navbarId)
     
     rootId = 'root-' + navbarId
   
@@ -145,5 +138,20 @@
     this.append($toAppend);
     return $toAppend;
   };
+  
+  /**
+   * Empty root element if is present to avoid side effects on refresh making the idempotent function
+   *
+   * @param {string} selector A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} element A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @returns {void}
+   */
+  function purgeNode (selector, element) {
+    if ($('#root-' + element).length) {
+      $('#' + element).empty()
+    } else {
+      $('#' + selector).append('<div class="row" id="root-' + element + '">')
+    }
+  }
     
 }( jQuery ));
