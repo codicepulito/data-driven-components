@@ -64,15 +64,12 @@
     // var schema = $.extend(true, response.schema, parametersUnresponse)
 
     if (!buttons) {
-      $('#root').dccModal('responseModal', 'dccDatatable error', datatableId + ': buttons parameter is mandatory.')
-      $('#responseModal').modal('show')
+      messageBox('dccDatatable error', datatableId + ': buttons parameter is mandatory.')
       return false
     }
 
     if (!priorityColumns) {
-      error = datatableId + ': priorityColumns parameter is mandatory.'
-      $('#root').dccModal('responseModal', 'dccDatatable error', error)
-      $('#responseModal').modal('show')
+      messageBox('dccDatatable error', datatableId + ': priorityColumns parameter is mandatory.')
       return false
     }
 
@@ -139,8 +136,7 @@
       if (typeof myParameters.onClick === 'function') {
         myParameters.onClick($(this))
       } else {
-        $('#root').dccModal('responseModal', 'dccDatatable error', datatableId + ': missing function for click event.')
-        $('#responseModal').modal('show')
+        messageBox('dccDatatable error', datatableId + ': missing function for click event.')
         return false
       }
     })
@@ -276,5 +272,16 @@
     } else {
       $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
     }
+  }
+  
+  /**
+   * Show a simple bootstrap modal message box.
+   * @param {string} title
+   * @param {string} message
+   * @returns {void}
+   */
+  function messageBox (title, message) {
+    $('#root').dccModal('responseModal', title, message)
+    $('#responseModal').modal('show')
   }
 }(window.jQuery))
