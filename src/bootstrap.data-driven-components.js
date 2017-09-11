@@ -48,8 +48,6 @@
     var buttons = myParameters.buttons
 
     var arrayColumns = null
-    var columns = []
-    var dataPriority = null
     var dataset = null
 
     var parametersUnresponse = myParameters
@@ -95,16 +93,7 @@
       arrayColumns = priorityColumns
     }
 
-    $.each(arrayColumns, function (key, value) {
-      columns.push({data: key})
-      dataPriority = ''
-      $.each(priorityColumns, function (priorityKey, priorityValue) {
-        if (key === priorityKey) {
-          dataPriority = ' data-priority="' + priorityValue + '"'
-        }
-      })
-      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
-    })
+    columns = datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
 
     $('#' + datatableId).DataTable({
       dom: dom,
@@ -259,6 +248,43 @@
     this.append($toAppend)
     return $toAppend
   }
+  
+  /**
+   * Build datatable columns header and return an array to pass as parameter
+   *
+   * @param {string} datatableId
+   * @param {Array} arrayColumns
+   * @param {Array} priorityColumns
+   * @returns {Array} array to pass to datatable as parameter
+   */
+  function datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
+    var columns = []
+    var dataPriority = null
+    
+    $.each(arrayColumns, function (key, value) {
+      columns.push({data: key})
+      dataPriority = ''
+      $.each(priorityColumns, function (priorityKey, priorityValue) {
+        if (key === priorityKey) {
+          dataPriority = ' data-priority="' + priorityValue + '"'
+        }
+      })
+      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
+    })
+    
+    return columns
+  }
+  
+  /**
+   * Show a simple bootstrap modal message box.
+   * @param {string} title
+   * @param {string} message
+   * @returns {void}
+   */
+  function messageBox (title, message) {
+    $('#root').dccModal('responseModal', title, message)
+    $('#responseModal').modal('show')
+  }
 
   /**
    * Empty root element if is present to avoid side effects on refresh making the idempotent function
@@ -274,16 +300,5 @@
     } else {
       $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
     }
-  }
-
-  /**
-   * Show a simple bootstrap modal message box.
-   * @param {string} title
-   * @param {string} message
-   * @returns {void}
-   */
-  function messageBox (title, message) {
-    $('#root').dccModal('responseModal', title, message)
-    $('#responseModal').modal('show')
   }
 }(window.jQuery))
