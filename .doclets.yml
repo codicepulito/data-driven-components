@@ -4,4 +4,6 @@ packageJson: package.json
 
 articles:
 - Overview: README.md
+- Datatable: docs/Datatable.md
+- Modal: docs/Modal.md
 - Navbar: docs/Navbar.md
