@@ -15,7 +15,7 @@ function navbarClick (id) {
         $.ajax({
           url: 'https://randomuser.me/api/?results=20',
           dataType: 'json',
-          success: function(data) {
+          success: function (data) {
 //            var datatableParameters = {
 //              datatableId: 'datatable1',
 //              response: {
@@ -55,7 +55,7 @@ function navbarClick (id) {
             }
             $('#root').dccDatatable(datatableParameters)
           }
-        });
+        })
         break
       case 2: // Modal
         $('#root').dccModal('modal1', 'Modal Title', 'This is a message.')
@@ -73,17 +73,17 @@ $(document).ready(function () {
     navbarId: 'navbar1',                // id attribute
     onClick: navbarClick,               // callback
     items: [
-      { id: 1, name: "Datatable" },
+      { id: 1, name: 'Datatable' },
       {
         id: null,                       // id attribute
-        name: "Dropdown items",         // html value visible to the user
+        name: 'Dropdown items',         // html value visible to the user
         submenu: [
-          { id: 3, name: "Subitem 1" },
+          { id: 3, name: 'Subitem 1' },
           { id: null, name: null },     // separator
-          { id: 4, name: "Subitem 2" }
+          { id: 4, name: 'Subitem 2' }
         ]
       },
-      { id: 2, name: "Modal" }
+      { id: 2, name: 'Modal' }
     ]
   }
   $('#root').dccNavbar(navbarParameters)

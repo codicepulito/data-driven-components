@@ -46,12 +46,11 @@
     var response = myParameters.response
     var priorityColumns = myParameters.priorityColumns
     var buttons = myParameters.buttons
-    
+
     var arrayColumns = null
     var columns = []
     var dataPriority = null
     var dataset = null
-    var error = null
 
     var parametersUnresponse = myParameters
     delete parametersUnresponse.response
@@ -83,12 +82,7 @@
     var rootId = 'root-' + datatableId
 
     if (myParameters.panel) {
-      $('#' + rootId).appendR('<div class="panel panel-default">')
-        .appendR('<div class="panel-heading">')
-        .appendR('<h3 class="panel-title">' + myParameters.panel + '</h3>')
-      $('#' + rootId).children().appendR('<div class="col-sm-12">')
-        .appendR('<div class="panel-body" id="root-panel-' + datatableId + '">')
-      rootId = 'root-panel-' + datatableId
+      rootId = appendPanel(rootId, datatableId, myParameters.panel)
     }
 
     var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
@@ -97,7 +91,7 @@
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
-    
+
     if (response.data) {
       dataset = response.data
       arrayColumns = dataset[0]
@@ -244,6 +238,23 @@
     })
   }
 
+  /**
+   * Create a bootstrap panel to wrap into
+   *
+   * @param {string} rootId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} childId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} panel Define the title of a bootstrap panel to wrap into
+   * @returns {String}
+   */
+  function appendPanel (rootId, childId, panel) {
+    $('#' + rootId).appendR('<div class="panel panel-default">')
+      .appendR('<div class="panel-heading">')
+      .appendR('<h3 class="panel-title">' + panel + '</h3>')
+    $('#' + rootId).children().appendR('<div class="col-sm-12">')
+      .appendR('<div class="panel-body" id="root-panel-' + childId + '">')
+    return 'root-panel-' + childId
+  }
+
   // googling with "jquery append recursion"
   // found solution on Stack Overflow
   // jquery - How to add items recursively within one another
@@ -269,7 +280,7 @@
       $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
     }
   }
-  
+
   /**
    * Show a simple bootstrap modal message box.
    * @param {string} title
