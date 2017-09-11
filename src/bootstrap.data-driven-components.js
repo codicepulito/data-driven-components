@@ -62,13 +62,8 @@
 
     // var schema = $.extend(true, response.schema, parametersUnresponse)
 
-    if (!buttons) {
-      messageBox('dccDatatable error', datatableId + ': buttons parameter is mandatory.')
-      return false
-    }
-
-    if (!priorityColumns) {
-      messageBox('dccDatatable error', datatableId + ': priorityColumns parameter is mandatory.')
+    if (!buttons || !priorityColumns) {
+      messageBox('dccDatatable error', datatableId + ': buttons and priorityColumns parameters are mandatory.')
       return false
     }
 
