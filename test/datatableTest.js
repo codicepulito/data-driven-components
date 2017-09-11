@@ -101,7 +101,7 @@ var datatableParametersWithoutData = {
 
 var datatableParametersWithoutPriorityColumns = {
   datatableId: 'datatable1',
-  response: null,
+  response: {data: null},
   buttons: [],
   onClick: datatable1Click
 }
@@ -179,7 +179,6 @@ describe('create datatable component', function () {
   it('check main element is present without response data', function () {
     $('#root').dccDatatable(datatableParametersWithoutData)
     expect($('[id=datatable1]').length).toBe(1)
-    expect($('#root-datatable1').find('.panel-title').length).toBe(0)
   })
 
   it('check modal on parameters without buttons', function () {

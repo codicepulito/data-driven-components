@@ -50,18 +50,18 @@
     var arrayColumns = null
     var dataset = null
 
-    var parametersUnresponse = myParameters
-    delete parametersUnresponse.response
-
-    if (!response) {
-      response = []
-      response['schema'] = []
-    }
+//    var parametersUnresponse = myParameters
+//    delete parametersUnresponse.response
+//
+//    if (!response) {
+//      response = []
+//      response['schema'] = []
+//    }
 
     // var schema = $.extend(true, response.schema, parametersUnresponse)
 
-    if (!buttons || !priorityColumns) {
-      messageBox('dccDatatable error', datatableId + ': buttons and priorityColumns parameters are mandatory.')
+    if (!buttons || !priorityColumns || !response) {
+      messageBox('dccDatatable error', datatableId + ': buttons priorityColumns and response parameters are mandatory.')
       return false
     }
 
@@ -85,7 +85,7 @@
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
 
-    if (response.data) {
+    if (response.hasOwnProperty("data")) {
       dataset = response.data
       arrayColumns = dataset[0]
     } else {
@@ -93,7 +93,7 @@
       arrayColumns = priorityColumns
     }
 
-    columns = datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
+    var columns = datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
 
     $('#' + datatableId).DataTable({
       dom: dom,
@@ -248,7 +248,7 @@
     this.append($toAppend)
     return $toAppend
   }
-  
+
   /**
    * Build datatable columns header and return an array to pass as parameter
    *
@@ -260,7 +260,7 @@
   function datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
     var columns = []
     var dataPriority = null
-    
+
     $.each(arrayColumns, function (key, value) {
       columns.push({data: key})
       dataPriority = ''
@@ -271,10 +271,10 @@
       })
       $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
     })
-    
+
     return columns
   }
-  
+
   /**
    * Show a simple bootstrap modal message box.
    * @param {string} title
