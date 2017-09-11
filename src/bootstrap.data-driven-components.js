@@ -42,7 +42,7 @@
   $.fn.dccDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
     var datatableId = myParameters.datatableId
-    var dom = myParameters.dom
+    var dom = myParameters.dom || 'Bfrtip'
     var response = myParameters.response
     var priorityColumns = myParameters.priorityColumns
     var buttons = myParameters.buttons
@@ -73,10 +73,6 @@
       return false
     }
 
-    if (!dom) {
-      dom = 'Bfrtip'
-    }
-
     if ($('#' + datatableId).length) {
       $('#' + datatableId).dataTable().fnClearTable()
     }
@@ -101,7 +97,7 @@
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
-
+    
     if (response.data) {
       dataset = response.data
       arrayColumns = dataset[0]
