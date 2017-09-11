@@ -41,15 +41,17 @@
    */
   $.fn.dccDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
-    var selector = $(this).attr('id')
     var datatableId = myParameters.datatableId
-    var panel = myParameters.panel
     var dom = myParameters.dom
     var response = myParameters.response
     var priorityColumns = myParameters.priorityColumns
     var buttons = myParameters.buttons
-    var onClick = myParameters.onClick
-    var error = ''
+    
+    var arrayColumns = null
+    var columns = []
+    var dataPriority = null
+    var dataset = null
+    var error = null
 
     var parametersUnresponse = myParameters
     delete parametersUnresponse.response
@@ -62,8 +64,7 @@
     // var schema = $.extend(true, response.schema, parametersUnresponse)
 
     if (!buttons) {
-      error = datatableId + ': buttons parameter is mandatory.'
-      $('#root').dccModal('responseModal', 'dccDatatable error', error)
+      $('#root').dccModal('responseModal', 'dccDatatable error', datatableId + ': buttons parameter is mandatory.')
       $('#responseModal').modal('show')
       return false
     }
@@ -84,14 +85,14 @@
     }
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(selector, datatableId, 'row dcc-datatable-row')
+    purgeNode($(this).attr('id'), datatableId, 'row dcc-datatable-row')
 
     var rootId = 'root-' + datatableId
 
-    if (panel) {
+    if (myParameters.panel) {
       $('#' + rootId).appendR('<div class="panel panel-default">')
         .appendR('<div class="panel-heading">')
-        .appendR('<h3 class="panel-title">' + panel + '</h3>')
+        .appendR('<h3 class="panel-title">' + myParameters.panel + '</h3>')
       $('#' + rootId).children().appendR('<div class="col-sm-12">')
         .appendR('<div class="panel-body" id="root-panel-' + datatableId + '">')
       rootId = 'root-panel-' + datatableId
@@ -102,10 +103,6 @@
     $('#' + rootId).append('<tr>')
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
-
-    var arrayColumns = null
-    var columns = []
-    var dataset = null
     $('#' + datatableId + ' thead tr').empty()
 
     if (response.data) {
@@ -118,7 +115,7 @@
 
     $.each(arrayColumns, function (key, value) {
       columns.push({data: key})
-      var dataPriority = ''
+      dataPriority = ''
       $.each(priorityColumns, function (priorityKey, priorityValue) {
         if (key === priorityKey) {
           dataPriority = ' data-priority="' + priorityValue + '"'
@@ -139,11 +136,10 @@
     })
 
     $('#' + datatableId).on('click', 'button', function () {
-      if (typeof onClick === 'function') {
-        onClick($(this))
+      if (typeof myParameters.onClick === 'function') {
+        myParameters.onClick($(this))
       } else {
-        var error = datatableId + ': missing function for click event.'
-        $('#root').dccModal('responseModal', 'dccDatatable error', error)
+        $('#root').dccModal('responseModal', 'dccDatatable error', datatableId + ': missing function for click event.')
         $('#responseModal').modal('show')
         return false
       }
