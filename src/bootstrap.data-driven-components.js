@@ -20,6 +20,140 @@
 
 (function ($) {
   /**
+   * Append a datatable - http://www.datatables.net/
+   * Copyright (c) 2008-2015 SpryMedia Limited
+   *
+   * @param {object} parameters Object with elements required to generate the html snippet:
+   * - datatableId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - buttons: The buttons array defines the buttons that will appear in the document to the end user
+   *   as documented at https://datatables.net/reference/option/buttons.buttons
+   * - dom: String that define the table control elements to appear on the page and in what order
+   *   as documented at https://datatables.net/reference/option/dom
+   * - onClick: function callback called on row's item clicked
+   * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
+   *   it should remove before others as documented at https://datatables.net/extensions/responsive/priority
+   * - response: dataset response object in jsend format with optional schema (columns info)
+   * - panel: string that define the title of a bootstrap panel to wrap into
+   *
+   * @returns {void}
+   *
+   * @todo Implement schema based columns configuration
+   */
+  $.fn.dccDatatable = function (parameters) {
+    var myParameters = $.extend(true, {}, parameters)
+    var selector = $(this).attr('id')
+    var datatableId = myParameters.datatableId
+    var panel = myParameters.panel
+    var dom = myParameters.dom
+    var response = myParameters.response
+    var priorityColumns = myParameters.priorityColumns
+    var buttons = myParameters.buttons
+    var onClick = myParameters.onClick
+    var error = ''
+
+    var parametersUnresponse = myParameters
+    delete parametersUnresponse.response
+
+    if (!response) {
+      response = []
+      response['schema'] = []
+    }
+
+    // var schema = $.extend(true, response.schema, parametersUnresponse)
+
+    if (!buttons) {
+      error = datatableId + ': buttons parameter is mandatory.'
+      $('#root').dccModal('responseModal', 'dccDatatable error', error)
+      $('#responseModal').modal('show')
+      return false
+    }
+
+    if (!priorityColumns) {
+      error = datatableId + ': priorityColumns parameter is mandatory.'
+      $('#root').dccModal('responseModal', 'dccDatatable error', error)
+      $('#responseModal').modal('show')
+      return false
+    }
+
+    if (!dom) {
+      dom = 'Bfrtip'
+    }
+
+    if ($('#' + datatableId).length) {
+      $('#' + datatableId).dataTable().fnClearTable()
+    }
+
+    if ($('#root-' + datatableId).length) {
+      $('#root-' + datatableId).empty()
+    } else {
+      $('#' + selector).append('<div class="row dcc-datatable-row" id="root-' + datatableId + '">')
+    }
+
+    var rootId = 'root-' + datatableId
+
+    if (panel) {
+      $('#' + rootId).appendR('<div class="panel panel-default">')
+        .appendR('<div class="panel-heading">')
+        .appendR('<h3 class="panel-title">' + panel + '</h3>')
+      $('#' + rootId).children().appendR('<div class="col-sm-12">')
+        .appendR('<div class="panel-body" id="root-panel-' + datatableId + '">')
+      rootId = 'root-panel-' + datatableId
+    }
+
+    var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
+
+    $('#' + rootId).append('<tr>')
+    $('#' + rootId + ' tr').wrap('<Thead>')
+    $('#' + rootId + ' thead').wrap(table)
+
+    var arrayColumns = null
+    var columns = []
+    var dataset = null
+    $('#' + datatableId + ' thead tr').empty()
+
+    if (response.data) {
+      dataset = response.data
+      arrayColumns = dataset[0]
+    } else {
+      dataset = []
+      arrayColumns = priorityColumns
+    }
+
+    $.each(arrayColumns, function (key, value) {
+      columns.push({data: key})
+      var dataPriority = ''
+      $.each(priorityColumns, function (priorityKey, priorityValue) {
+        if (key === priorityKey) {
+          dataPriority = ' data-priority="' + priorityValue + '"'
+        }
+      })
+      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
+    })
+
+    $('#' + datatableId).DataTable({
+      dom: dom,
+      buttons: buttons,
+      responsive: true,
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Italian.json'
+      },
+      data: dataset,
+      columns: columns
+    })
+
+    $('#' + datatableId).on('click', 'button', function () {
+      if (typeof onClick === 'function') {
+        onClick($(this))
+      } else {
+        var error = datatableId + ': missing function for click event.'
+        $('#root').dccModal('responseModal', 'dccDatatable error', error)
+        $('#responseModal').modal('show')
+        return false
+      }
+    })
+  }
+
+  /**
    * Append a bootstrap modal with title and message
    * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
    * @param {string} title The modal title
@@ -52,10 +186,10 @@
    * @param {object} parameters Object with elements required to generate the html snippet:
    * - navbarId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
    * - items: array of objects [item0, item1, ..., itemN]
-   * - onClick: function callback called on item/subitem click - callback(item0.id)
    * - item0.id: null if it has submenu or valid html5 id attribute
    * - item0.name: null as separator or string representing the html value of item visible to the user
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
+   * - onClick: function callback called on item/subitem click - callback(item0.id)
    *
    * @returns {void}
    */
@@ -144,7 +278,7 @@
    */
   function purgeNode (selector, element) {
     if ($('#root-' + element).length) {
-      $('#' + element).empty()
+      $('#root-' + element).empty()
     } else {
       $('#' + selector).append('<div class="row" id="root-' + element + '">')
     }

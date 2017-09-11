@@ -16,6 +16,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/jquery/dist/jquery.js',
+      'node_modules/bootstrap/dist/js/bootstrap.js',
+      'node_modules/datatables.net/js/*.js',
+      'node_modules/datatables.net-responsive/js/*.js',
+      'node_modules/datatables.net-buttons/js/!(buttons.flash).js',
       'src/**/!(*Test).js',
       'test/**/*Test.js'
     ],

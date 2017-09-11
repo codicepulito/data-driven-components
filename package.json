@@ -13,6 +13,10 @@
   "author": "Gianluca Ciarcelluti <gianluca@ciarcelluti.it>",
   "contributors": [],
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "datatables.net": "^1.10.16",
+    "datatables.net-buttons": "^1.4.1",
+    "datatables.net-responsive": "^2.1.1",
     "jasmine": "^2.8.0",
     "jasmine-core": "*",
     "jasmine-jquery": "^2.1.1",
@@ -34,7 +38,8 @@
       "beforeEach",
       "describe",
       "expect",
-      "it"
+      "it",
+      "$"
     ]
   }
 }
