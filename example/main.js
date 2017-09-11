@@ -68,7 +68,7 @@ function navbarClick (id) {
   }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   var navbarParameters = {
     navbarId: 'navbar1',                // id attribute
     onClick: navbarClick,               // callback
@@ -76,16 +76,15 @@ $(document).ready(function() {
       { id: 1, name: "Datatable" },
       {
         id: null,                       // id attribute
-        name: "Dropdown items",                 // html value visible to the user
+        name: "Dropdown items",         // html value visible to the user
         submenu: [
           { id: 3, name: "Subitem 1" },
           { id: null, name: null },     // separator
           { id: 4, name: "Subitem 2" }
         ]
       },
-      { id: 2, name: "Modal" },
-
+      { id: 2, name: "Modal" }
     ]
   }
-  $('#root').dccNavbar(navbarParameters);
+  $('#root').dccNavbar(navbarParameters)
 })

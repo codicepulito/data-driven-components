@@ -83,11 +83,8 @@
       $('#' + datatableId).dataTable().fnClearTable()
     }
 
-    if ($('#root-' + datatableId).length) {
-      $('#root-' + datatableId).empty()
-    } else {
-      $('#' + selector).append('<div class="row dcc-datatable-row" id="root-' + datatableId + '">')
-    }
+    // empty root element if is present to avoid side effects on refresh
+    purgeNode(selector, datatableId, 'row dcc-datatable-row')
 
     var rootId = 'root-' + datatableId
 
@@ -164,7 +161,7 @@
     var selector = $(this).attr('id')
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(selector, modalId)
+    purgeNode(selector, modalId, 'row')
 
     var rootId = 'root-' + modalId
 
@@ -202,7 +199,7 @@
     var subMenuItem = ''
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(selector, navbarId)
+    purgeNode(selector, navbarId, 'row')
 
     var rootId = 'root-' + navbarId
 
@@ -274,13 +271,14 @@
    *
    * @param {string} selector A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
    * @param {string} element A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} classes A valid html5 class attribute (https://www.w3.org/TR/html5/dom.html#classes)
    * @returns {void}
    */
-  function purgeNode (selector, element) {
+  function purgeNode (selector, element, classes) {
     if ($('#root-' + element).length) {
       $('#root-' + element).empty()
     } else {
-      $('#' + selector).append('<div class="row" id="root-' + element + '">')
+      $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
     }
   }
 }(window.jQuery))
