@@ -252,9 +252,9 @@
   /**
    * Build datatable columns header and return an array to pass as parameter
    *
-   * @param {string} datatableId
-   * @param {Array} arrayColumns
-   * @param {Array} priorityColumns
+   * @param {string} datatableId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {Array} arrayColumns An object array that defines the column names
+   * @param {Array} priorityColumns array of elements to set visibility priority to the columns
    * @returns {Array} array to pass to datatable as parameter
    */
   function datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
@@ -277,8 +277,8 @@
 
   /**
    * Show a simple bootstrap modal message box.
-   * @param {string} title
-   * @param {string} message
+   * @param {string} title The modal title
+   * @param {string} message The modal body
    * @returns {void}
    */
   function messageBox (title, message) {
