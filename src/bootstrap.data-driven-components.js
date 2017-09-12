@@ -179,14 +179,14 @@
         }
 
         $.each(fields, function(fieldKey, fieldValue) {
-          if (fieldValue.name == key && fieldValue.class) {
+          if (fieldValue.name === key && fieldValue.class) {
             classCol = fieldValue.class
 
           }
-          if (fieldValue.name == key && fieldValue.readonly && readonly != ' readonly') {
+          if (fieldValue.name === key && fieldValue.readonly && readonly !== ' readonly') {
             readonly = ' readonly'
           }
-          if (fieldValue.name == key && fieldValue.addon) {
+          if (fieldValue.name === key && fieldValue.addon) {
             inputGroupAddon = '<span class="input-group-addon"><a href="#" id="' + formId + '-' + key + '-' + fieldValue.addon.icon + '"><i class="fa fa-' + fieldValue.addon.icon + '" aria-hidden="true"></i></a></span>\n'
             inputGroupAddonParams.push({ id: formId + '-' + key + '-' + fieldValue.addon.icon, onClick: fieldValue.addon.onClick, parameters: response.data })
           }
