@@ -23,6 +23,7 @@ function navbarClick (id) {
 
 describe('create navbar component', function () {
   it('check main element is present', function () {
+    $('div').remove()
     $(document.body).append('<div id="root"></div>')
     $('#root').dccNavbar(navbarParameters)
     expect($('[id=navbar1]').length).toBe(1)

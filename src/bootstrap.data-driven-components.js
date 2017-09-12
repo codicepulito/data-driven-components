@@ -19,6 +19,22 @@
  */
 
 (function ($) {
+  $.fn.dccClearAll = function (except) {
+    $(".dataTables_wrapper").each(function(index, element) {
+      var datatableId = $(this).attr('id').replace('_wrapper', '')
+      $('#' + datatableId).dataTable().fnClearTable();
+      $('#' + datatableId).dataTable().fnDestroy();
+    })
+    $('#' + $(this).attr('id')).children().each(function(index, element) {
+      var elementId = $(this).attr('id').replace('root-', '')
+      $.each(except, function(key, value) {
+        if (elementId !== value) {
+          $('#root-' + elementId).remove()
+        }
+      })
+    })
+  }
+
   /**
    * Append a datatable - http://www.datatables.net/
    * Copyright (c) 2008-2015 SpryMedia Limited
@@ -60,17 +76,17 @@
 
     // var schema = $.extend(true, response.schema, parametersUnresponse)
 
-    if (!buttons || !priorityColumns || !response) {
-      messageBox('dccDatatable error', datatableId + ': buttons priorityColumns and response parameters are mandatory.')
-      return false
-    }
-
     if ($('#' + datatableId).length) {
       $('#' + datatableId).dataTable().fnClearTable()
     }
-
+    
     // empty root element if is present to avoid side effects on refresh
     purgeNode($(this).attr('id'), datatableId, 'row dcc-datatable-row')
+    
+    if (!buttons || !priorityColumns || !response) {
+      messageBox('dccDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
+      return false
+    }
 
     var rootId = 'root-' + datatableId
 
@@ -114,6 +130,108 @@
         return false
       }
     })
+  }
+  
+  $.fn.dccForm = function (parameters) {
+    var rootId = $(this).attr('id')
+    var myParameters = $.extend(true, {}, parameters)
+    var formId = myParameters.formId
+    var response = myParameters.response
+    var fields = myParameters.fields
+    var buttons = myParameters.buttons
+     
+    var parametersUnresponse = myParameters
+    delete parametersUnresponse.response
+    
+    if (!response) {
+      response = []
+      response['schema'] = []
+    }
+    
+    var schema = $.extend(true, response.schema, parametersUnresponse)
+
+    if (!buttons || !fields) {
+      messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
+      return false
+    }
+
+    // empty root element if is present to avoid side effects on refresh
+    purgeNode(rootId, formId, 'row')
+
+    rootId = 'root-' + formId
+
+    $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
+
+    var classCol = 'col'
+    var readonly = ''
+    var inputGroupAddon = ''
+    var inputGroupAddonParams = []
+    
+    if (response.hasOwnProperty("data")) {
+      $.each(response.data, function(key, value) {
+        classCol = 'col'
+        inputGroupAddon = ''
+
+        if (parameters.readonly) {
+          readonly = ' readonly'
+        } else {
+          readonly = ''
+        }
+
+        $.each(fields, function(fieldKey, fieldValue) {
+          if (fieldValue.name == key && fieldValue.class) {
+            classCol = fieldValue.class
+
+          }
+          if (fieldValue.name == key && fieldValue.readonly && readonly != ' readonly') {
+            readonly = ' readonly'
+          }
+          if (fieldValue.name == key && fieldValue.addon) {
+            inputGroupAddon = '<span class="input-group-addon"><a href="#" id="' + formId + '-' + key + '-' + fieldValue.addon.icon + '"><i class="fa fa-' + fieldValue.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+            inputGroupAddonParams.push({ id: formId + '-' + key + '-' + fieldValue.addon.icon, onClick: fieldValue.addon.onClick, parameters: response.data })
+          }
+        })
+
+        var inputGroup = '<span class="input-group-addon">' + key + '</span>\n'
+        inputGroup += '<input id="' + formId + '-' + key + '" type="text" class="form-control" value="' + value + '" placeholder="abcdABCD1234"' + readonly + '>'
+        inputGroup += inputGroupAddon
+
+        $('#' + formId)
+          .appendR('<div class="' + classCol + '">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      })
+    } else {
+      $.each(fields, function(key, value) {
+        var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" placeholder="abcdABCD1234">'
+        $('#' + formId)
+          .appendR('<div class="col">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      })
+    }
+
+    $.each(inputGroupAddonParams, function(key, value) {
+      $('#' + value.id).click(function() {
+        var parameters = getFormValues(formId)
+        value.onClick(parameters)
+      })
+    })
+  
+//  $.each(buttons, function(key, value) {
+//    var id = ''
+//    if (value.id) {
+//      id = ' id="' + value.id + '"'
+//    }
+//    $('#' + rootId + ' .modal-footer').append(
+//      '<button type="button"' + id + ' class="' + value.class + '" data-dismiss="modal">' + value.name + '</button>'
+//    )
+//    $('#' + value.id).click(function() {
+//      var parameters = getFormValues(formId)
+//      value.onClick(parameters)
+//    });
+//  })
   }
 
   /**
@@ -273,6 +391,33 @@
     })
 
     return columns
+  }
+  
+  function getFormValues (selector) {
+    var parameters = {}
+    $('#' + selector).find('input').each(function(index, element) {
+      var id = $(this).attr('id')
+      if (id) {
+//        // bootstraptoggle patch
+//        if ($(this).attr('class') == 'bootstraptoggle') {
+//          var toggleOn = $(this).parent().attr('class').indexOf("off")
+//          if (toggleOn > 0) {
+//            value = false
+//          } else {
+//            value = true
+//          }
+//        } else {
+//          var value = $(this).val()
+//        }
+        var value = $(this).val()
+        var fieldKey = id.substring(selector.length + 1)
+        if (fieldKey.indexOf("undefined") >= 0) {
+          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
+        }
+        parameters[fieldKey] = value
+      }
+    })
+    return parameters
   }
 
   /**

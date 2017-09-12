@@ -1,5 +1,6 @@
 describe('create modal component', function () {
   it('check main element is present', function () {
+    $('div').remove()
     $(document.body).append('<div id="root"></div>')
     $('#root').dccModal('modal1', 'title', 'message')
     expect($('[id=modal1]').length).toBe(1)

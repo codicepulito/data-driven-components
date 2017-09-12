@@ -93,7 +93,7 @@ var datatableParametersWithoutButtons = {
 
 var datatableParametersWithoutData = {
   datatableId: 'datatable1',
-  response: null,
+  response: {},
   buttons: [],
   priorityColumns: {name: 1, username: 2, email: 3},
   onClick: datatable1Click
@@ -111,6 +111,7 @@ function datatable1Click (parameters) {
 
 describe('datatable component asynchronous loading', function () {
   beforeEach(function (done) {
+    $('div').remove()
     $(document.body).append('<div id="root"></div>')
     $('#root').dccDatatable(datatableParameters)
     setTimeout(function () {
@@ -178,7 +179,7 @@ describe('create datatable component', function () {
 
   it('check main element is present without response data', function () {
     $('#root').dccDatatable(datatableParametersWithoutData)
-    expect($('[id=datatable1]').length).toBe(1)
+    expect($('[id=responseModal]').length).toBe(1)
   })
 
   it('check modal on parameters without buttons', function () {
