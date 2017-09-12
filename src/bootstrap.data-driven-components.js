@@ -281,6 +281,95 @@
     $('#' + rootId + ' .modal-body').append('<p id="' + modalId + '-body">' + message + '</p>')
     $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
   }
+  
+  $.fn.dccModalForm = function (parameters) {
+    var myParameters = $.extend(true, {}, parameters)
+    var rootId = $(this).attr('id')
+    var buttons = myParameters.buttons
+    var fields = myParameters.fields
+    var modalId = myParameters.modalId
+    var response = myParameters.response
+    var title = myParameters.title
+
+    var parametersUnresponse = myParameters
+    delete parametersUnresponse.response
+    
+    if(response && response.hasOwnProperty('schema')){
+      var schema = $.extend(true, response.schema, parametersUnresponse)
+    } else {
+      var schema = parametersUnresponse
+    }
+
+    if (!schema.buttons || !schema.fields) {
+      messageBox('dccModalForm error', modalId + ': buttons and fields parameters are mandatory.')
+      return false
+    }
+
+    // empty root element if is present to avoid side effects on refresh
+    purgeNode(rootId, modalId, 'row')
+
+    rootId = 'root-' + modalId
+
+    var modalDiv = '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog">'
+    $('#' + rootId).append('<div class="modal-header">')
+    $('#' + rootId + ' div').wrap('<div class="modal-content">')
+    $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
+    $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
+    $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
+    $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
+    $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+    $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + title + '</h4>')
+
+    var readonly = ''
+
+    $.each(schema.fields, function(key, value) {
+      var type = ''
+      if (value.readonly) {
+        readonly = ' readonly'
+      } else {
+        readonly = ''
+      }
+
+      if (value.type) {
+        type = value.type
+      } else {
+        if (value.native_type) {
+          type = value.native_type
+        }
+      }
+
+      if (response && response.hasOwnProperty('data')) {
+        var valueTag = response.data[0][value.name]
+        if (valueTag == null) {
+          valueTag = ''
+        }
+      } else {
+        var valueTag = ''
+      }
+
+      addInputField(rootId, modalId, value, valueTag, readonly, type)
+    })
+
+    $.each(schema.buttons, function(key, value) {
+      var id = ''
+      if (value.id) {
+        id = ' id="' + value.id + '"'
+      }
+      $('#' + rootId + ' .modal-footer').append(
+        '<button type="button"' + id + ' class="' + value.class + '" data-dismiss="modal">' + value.name + '</button>'
+      )
+
+      $('#' + value.id).click(function() {
+        var parameters = getFormValues(modalId)
+        value.onClick(parameters)
+      });
+
+    })
+
+    $('#' + modalId).modal('show')
+  //  $('.combobox').combobox('refresh')
+  //  $('.bootstraptoggle').bootstrapToggle()
+  }
 
   /**
    * Append a bootstrap navbar menu with items and dropdown sub-items
@@ -360,6 +449,62 @@
       onClick(id.substring(navbarId.length))
     })
   }
+  
+  function addInputField (rootId, modalId, value, valueTag, readonly, type) {
+    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+    switch (type) {
+      case 'bool':
+        // checkbox
+        inputGroup += '<input id="' + modalId + '-' + value.name + '" type="checkbox">\n'
+        break
+//      case 'lookup':
+//        // combobox
+//        inputGroup += '<select id="addAgenziaModalSelectCompagnia" name="normal" class="combobox input-large form-control">\n'
+//        var data = ''
+//        if (value.url) {
+//          $.ajax({
+//            url: value.url,
+//            async: false,
+//            dataType: 'json',
+//            success: function (response) {
+//              data = response.data
+//            }
+//          })
+//        } else {
+//          data = value.data
+//        }
+//        $.each(data, function(key, value) {
+//          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
+//        })
+//        inputGroup += '</select>'
+//        break
+//      case 'toggle':
+//        // bootstraptoggle
+//        var dataOff = 'False'
+//        var dataOn = 'True'
+//        var dataWidth = 80
+//
+//        if (value.toggle) {
+//          dataOff = value.toggle.off
+//          dataOn = value.toggle.on
+//          dataWidth = value.toggle.width
+//        }
+//
+//        inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name 
+//        inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
+//        inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
+//        break
+      default:
+        // standard input
+        inputGroup += '<input id="' + modalId + '-' + value.name + '" type="text" class="form-control" value="' + valueTag + '"' + readonly + '>'
+        break
+    }
+    $('#' + rootId + ' .modal-body')
+      .appendR('<div class="row ddc-form-row">')
+      .appendR('<div class="col-xs-12">')
+      .appendR('<div class="input-group">')
+      .appendR(inputGroup)
+  }
 
   /**
    * Create a bootstrap panel to wrap into
@@ -420,6 +565,13 @@
     return columns
   }
 
+  /**
+   * Loop through all instances of input and return a key-value array
+   *
+   * @param {string} selector
+   *
+   * @returns {Array} parameters Key-Value array of input in selector
+   */
   function getFormValues (selector) {
     var parameters = {}
     $('#' + selector).find('input').each(function (index, element) {
