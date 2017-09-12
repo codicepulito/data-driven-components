@@ -29,11 +29,11 @@ var modalFormParametersWithoutButtons = {
   title: 'Modal Form',
   response: {
     data: [
-        {
-          field1: 'value1',
-          field2: 'value2'
-        }
-      ]
+      {
+        field1: 'value1',
+        field2: 'value2'
+      }
+    ]
   },
   fields: [
     {name: "field1", type: "string"},
@@ -78,7 +78,7 @@ describe('create modalform component', function () {
     expect($('#modalform1').find('#modalform1-field1').length).toBe(1)
     expect($('#modalform1').find('#modalform1-field2').length).toBe(1)
   })
-  
+
   it('create modalform component without buttons', function () {
     $('#root').dccModalForm(modalFormParametersWithoutButtons)
     expect($('[id=responseModal]').length).toBe(1)

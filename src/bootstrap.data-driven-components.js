@@ -281,7 +281,7 @@
     $('#' + rootId + ' .modal-body').append('<p id="' + modalId + '-body">' + message + '</p>')
     $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
   }
-  
+
   $.fn.dccModalForm = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
     var rootId = $(this).attr('id')
@@ -289,15 +289,17 @@
     var fields = myParameters.fields
     var modalId = myParameters.modalId
     var response = myParameters.response
+    var schema = null
     var title = myParameters.title
+    var valueTag = null
 
     var parametersUnresponse = myParameters
     delete parametersUnresponse.response
-    
-    if(response && response.hasOwnProperty('schema')){
-      var schema = $.extend(true, response.schema, parametersUnresponse)
+
+    if (response && response.hasOwnProperty('schema')) {
+      schema = $.extend(true, response.schema, parametersUnresponse)
     } else {
-      var schema = parametersUnresponse
+      schema = parametersUnresponse
     }
 
     if (!schema.buttons || !schema.fields) {
@@ -322,7 +324,7 @@
 
     var readonly = ''
 
-    $.each(schema.fields, function(key, value) {
+    $.each(schema.fields, function (key, value) {
       var type = ''
       if (value.readonly) {
         readonly = ' readonly'
@@ -339,18 +341,18 @@
       }
 
       if (response && response.hasOwnProperty('data')) {
-        var valueTag = response.data[0][value.name]
+        valueTag = response.data[0][value.name]
         if (valueTag == null) {
           valueTag = ''
         }
       } else {
-        var valueTag = ''
+        valueTag = ''
       }
 
       addInputField(rootId, modalId, value, valueTag, readonly, type)
     })
 
-    $.each(schema.buttons, function(key, value) {
+    $.each(schema.buttons, function (key, value) {
       var id = ''
       if (value.id) {
         id = ' id="' + value.id + '"'
@@ -359,11 +361,10 @@
         '<button type="button"' + id + ' class="' + value.class + '" data-dismiss="modal">' + value.name + '</button>'
       )
 
-      $('#' + value.id).click(function() {
+      $('#' + value.id).click(function () {
         var parameters = getFormValues(modalId)
         value.onClick(parameters)
-      });
-
+      })
     })
 
     $('#' + modalId).modal('show')
@@ -449,7 +450,7 @@
       onClick(id.substring(navbarId.length))
     })
   }
-  
+
   function addInputField (rootId, modalId, value, valueTag, readonly, type) {
     var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
@@ -490,7 +491,7 @@
 //          dataWidth = value.toggle.width
 //        }
 //
-//        inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name 
+//        inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
 //        inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
 //        inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
 //        break
