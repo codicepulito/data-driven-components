@@ -20,14 +20,11 @@
     "jasmine-core": "*",
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.2.1",
+    "karma": "*",
     "karma-coverage": "*",
     "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*"
-  },
-  "devDependencies": {
-    "karma": "*",
-    "karma-jasmine": "*",
-    "karma-phantomjs-launcher": "*"
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS"
