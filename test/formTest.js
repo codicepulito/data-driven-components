@@ -70,7 +70,6 @@ describe('form component asynchronous button click', function () {
 })
 
 describe('create form component', function () {
-  
   it('create form component first time', function () {
     $('#root').dccForm(formParameters)
     expect($('#form1').find('#form1-field1').length).toBe(1)
@@ -78,7 +77,7 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(true)
   })
-  
+
   it('create form component second time', function () {
     $('#root').dccForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
@@ -96,7 +95,7 @@ describe('create form component', function () {
     $('#root').dccForm(formParametersWithoutButtons)
     expect($('[id=responseModal]').length).toBe(1)
   })
-  
+
   it('create form component without response', function () {
     $('#root').dccForm(formParametersWithoutResponse)
     expect($('#form1').find('#form1-field1').length).toBe(1)
@@ -104,5 +103,4 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(false)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(false)
   })
-
 })

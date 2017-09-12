@@ -7,7 +7,7 @@ function datatable1Click (row) {
 
 // form callback function
 function form1Click () {
-  
+
 }
 
 // navbar callback function
@@ -15,10 +15,10 @@ function navbarClick (id) {
   // if id is not integer ignore actions
   if (Number.isInteger(parseInt(id, 10))) {
     var menuItem = parseInt(id, 10)
-    
+
     // empty dom except navbar1
     $('#root').dccClearAll(['navbar1'])
-    
+
     switch (menuItem) {
       case 1: // Datatable
         $.ajax({
@@ -40,7 +40,7 @@ function navbarClick (id) {
 //              response: {
 //                data: [
 //                  {
-//                    "id": 1,
+//                    "id': 1,
 //                    "name": "Leanne Graham",
 //                    "username": "Bret",
 //                    "email": "Sincere@april.biz",
@@ -72,11 +72,11 @@ function navbarClick (id) {
           formId: 'form1',
           response: {
             data:
-              {"field1": "value1", "field2": "value2"}
+              {'field1': 'value1', 'field2': 'value2'}
           },
           fields: [
-            {name: "field1", class: 'col-4'},
-            {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+            {name: 'field1', class: 'col-4'},
+            {name: 'field2', class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
           ],
           buttons: []
         }

@@ -34,8 +34,8 @@ var formParameters = {
       {"field1": "value1", "field2": "value2"}
   },
   fields: [
-    {name: "field1", class: 'col-4'},
-    {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+    {name: "field1", class: "col-4"},
+    {name: "field2", class: "col-4", addon: { icon: "reply", onClick: form1Click }}
   ],
   readonly: true,
   buttons: []
@@ -72,7 +72,7 @@ describe('clearing the dom', function () {
       done()
     }, 500)
   })
-  
+
   it('clearing all divs in body', function () {
     expect($('div').length).toBe(13)
     $('#root').dccClearAll()
@@ -91,7 +91,7 @@ describe('clearing the dom except some elements', function () {
       done()
     }, 500)
   })
-  
+
   it('clearing all divs in body', function () {
     expect($('div').length).toBe(18)
     $('#root').dccClearAll(['navbar1'])
