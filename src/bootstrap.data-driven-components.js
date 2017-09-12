@@ -75,10 +75,6 @@
 //    }
 
     // var schema = $.extend(true, response.schema, parametersUnresponse)
-
-    if ($('#' + datatableId).length) {
-      $('#' + datatableId).dataTable().fnClearTable()
-    }
     
     // empty root element if is present to avoid side effects on refresh
     purgeNode($(this).attr('id'), datatableId, 'row dcc-datatable-row')
@@ -440,6 +436,9 @@
    * @returns {void}
    */
   function purgeNode (selector, element, classes) {
+    if (classes.indexOf('datatable') > 0) {
+      $('#' + element).dataTable().fnClearTable()
+    }
     if ($('#root-' + element).length) {
       $('#root-' + element).empty()
     } else {
