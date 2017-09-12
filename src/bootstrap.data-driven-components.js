@@ -86,9 +86,7 @@
 
     var rootId = 'root-' + datatableId
 
-    if (myParameters.panel) {
-      rootId = appendPanel(rootId, datatableId, myParameters.panel)
-    }
+    rootId = appendPanel(rootId, datatableId, myParameters.panel)
 
     var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
 
@@ -345,12 +343,17 @@
    * @returns {String}
    */
   function appendPanel (rootId, childId, panel) {
-    $('#' + rootId).appendR('<div class="panel panel-default">')
-      .appendR('<div class="panel-heading">')
-      .appendR('<h3 class="panel-title">' + panel + '</h3>')
-    $('#' + rootId).children().appendR('<div class="col-sm-12">')
-      .appendR('<div class="panel-body" id="root-panel-' + childId + '">')
-    return 'root-panel-' + childId
+    if (panel) {
+      $('#' + rootId).appendR('<div class="panel panel-default">')
+        .appendR('<div class="panel-heading">')
+        .appendR('<h3 class="panel-title">' + panel + '</h3>')
+      $('#' + rootId).children().appendR('<div class="col-sm-12">')
+        .appendR('<div class="panel-body" id="root-panel-' + childId + '">')
+      return 'root-panel-' + childId
+    } else {
+      return rootId
+    }
+    
   }
 
   // googling with "jquery append recursion"
