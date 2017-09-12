@@ -111,7 +111,7 @@ $(document).ready(function () {
           { id: null, name: null },     // separator
           { id: 6, name: 'Subitem 2' }
         ]
-      },
+      }
     ]
   }
   $('#root').dccNavbar(navbarParameters)

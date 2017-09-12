@@ -19,7 +19,6 @@ module.exports = function(config) {
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/datatables.net/js/*.js',
       'node_modules/datatables.net-responsive/js/*.js',
-      'node_modules/datatables.net-buttons/js/!(buttons.flash).js',
       'src/**/!(*Test).js',
       'test/**/*Test.js'
     ],
