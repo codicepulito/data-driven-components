@@ -331,10 +331,14 @@
         '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
       )
 
-      $('#' + value.id).click(function () {
-        var parameters = getFormValues(formId)
-        value.onClick(parameters)
-      })
+      addClickCallback(formId, value)
+    })
+  }
+  
+  function addClickCallback (formId, values) {
+    $('#' + values.id).click(function () {
+      var parameters = getFormValues(formId)
+      values.onClick(parameters)
     })
   }
 
@@ -437,10 +441,7 @@
     })
 
     $.each(inputGroupAddonParams, function (key, value) {
-      $('#' + value.id).click(function () {
-        var parameters = getFormValues(formId)
-        value.onClick(parameters)
-      })
+      addClickCallback(formId, value)
     })
   }
 
