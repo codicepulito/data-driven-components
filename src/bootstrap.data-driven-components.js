@@ -134,125 +134,6 @@
   }
 
   /**
-   * Append a bootstrap form with inputs and input-group-addon
-   *
-   * @param {object} parameters Object with elements required to generate the html snippet:
-   * - formId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * - buttons: coming soon...
-   * - fields: array of objects [field0, field1, ..., fieldN]
-   * - field0.name: string representing the html input label
-   *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
-   * - field0.class: optional string representing one or more html class attribute
-   *   (https://www.w3.org/TR/html5/dom.html#classes)
-   * - field0.addon: optional array of elements {icon, onClick}
-   * - field0.addon.icon: string representing the span class (require Font Awesome http://fontawesome.io/)
-   * - field0.addon.onClick: function callback called on addon span clicked
-   * - response: dataset response object in jsend format with optional schema (columns info)
-   *
-   * @returns {void}
-   */
-  $.fn.dccForm = function (parameters) {
-    var rootId = $(this).attr('id')
-    var myParameters = $.extend(true, {}, parameters)
-    var buttons = myParameters.buttons
-    var fields = myParameters.fields
-    var formId = myParameters.formId
-    var response = myParameters.response
-
-    var parametersUnresponse = myParameters
-    delete parametersUnresponse.response
-
-    if (!response) {
-      response = []
-      response['schema'] = []
-    }
-
-    // var schema = $.extend(true, response.schema, parametersUnresponse)
-
-    if (!buttons || !fields) {
-      messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
-      return false
-    }
-
-    // empty root element if is present to avoid side effects on refresh
-    purgeNode(rootId, formId, 'row')
-
-    rootId = 'root-' + formId
-
-    $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
-
-    var classCol = 'col'
-    var readonly = ''
-    var inputGroupAddon = ''
-    var inputGroupAddonParams = []
-
-    if (response.hasOwnProperty('data')) {
-      $.each(response.data, function (key, value) {
-        classCol = 'col'
-        inputGroupAddon = ''
-
-        if (parameters.readonly) {
-          readonly = ' readonly'
-        } else {
-          readonly = ''
-        }
-
-        $.each(fields, function (fieldKey, fieldValue) {
-          if (fieldValue.name === key && fieldValue.class) {
-            classCol = fieldValue.class
-          }
-          if (fieldValue.name === key && fieldValue.readonly && readonly !== ' readonly') {
-            readonly = ' readonly'
-          }
-          if (fieldValue.name === key && fieldValue.addon) {
-            inputGroupAddon = '<span class="input-group-addon"><a href="#" id="' + formId + '-' + key + '-' + fieldValue.addon.icon + '"><i class="fa fa-' + fieldValue.addon.icon + '" aria-hidden="true"></i></a></span>\n'
-            inputGroupAddonParams.push({ id: formId + '-' + key + '-' + fieldValue.addon.icon, onClick: fieldValue.addon.onClick, parameters: response.data })
-          }
-        })
-
-        var inputGroup = '<span class="input-group-addon">' + key + '</span>\n'
-        inputGroup += '<input id="' + formId + '-' + key + '" type="text" class="form-control" value="' + value + '" placeholder="abcdABCD1234"' + readonly + '>'
-        inputGroup += inputGroupAddon
-
-        $('#' + formId)
-          .appendR('<div class="' + classCol + '">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      })
-    } else {
-      $.each(fields, function (key, value) {
-        var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" placeholder="abcdABCD1234">'
-        $('#' + formId)
-          .appendR('<div class="col">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      })
-    }
-
-    $.each(inputGroupAddonParams, function (key, value) {
-      $('#' + value.id).click(function () {
-        var parameters = getFormValues(formId)
-        value.onClick(parameters)
-      })
-    })
-
-//  $.each(buttons, function(key, value) {
-//    var id = ''
-//    if (value.id) {
-//      id = ' id="' + value.id + '"'
-//    }
-//    $('#' + rootId + ' .modal-footer').append(
-//      '<button type="button"' + id + ' class="' + value.class + '" data-dismiss="modal">' + value.name + '</button>'
-//    )
-//    $('#' + value.id).click(function() {
-//      var parameters = getFormValues(formId)
-//      value.onClick(parameters)
-//    });
-//  })
-  }
-
-  /**
    * Append a bootstrap modal with title and message
    *
    * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
@@ -282,18 +163,40 @@
     $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
   }
 
-  $.fn.dccModalForm = function (parameters) {
-    var myParameters = $.extend(true, {}, parameters)
+  /**
+   * Append a bootstrap form with inputs and input-group-addon
+   *
+   * @param {object} parameters Object with elements required to generate the html snippet:
+   * - formId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - buttons: array of objects [button0, button1, ..., buttonN]  - buttons: array of objects [button0, button1, ..., buttonN]
+   * - button0.name: string representing the html button label
+   * - button0.class: valid html class attribute (https://www.w3.org/TR/html5/dom.html#classes)
+   * - button0.id: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - button0.onClick: function callback called on button clicked
+   * - fields: array of objects [field0, field1, ..., fieldN]
+   * - field0.addon: optional array of elements {icon, onClick}
+   * - field0.addon.icon: string without "fa" representing the span class (require Font Awesome http://fontawesome.io/)
+   * - field0.addon.onClick: function callback called on addon span clicked
+   * - field0.class: optional string representing one or more html class attribute
+   *   (https://www.w3.org/TR/html5/dom.html#classes)
+   * - field0.name: string representing the html input label
+   * - field0.readonly: boolean - if true make field readonly
+   * - field0.type: string - override schema.fields.native_type
+   *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
+   * - modal: optional string render the form in modal with the specified title
+   * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
+   *
+   * @returns {void}
+   */
+  $.fn.dccForm = function (parameters) {
     var rootId = $(this).attr('id')
-    var buttons = myParameters.buttons
-    var fields = myParameters.fields
-    var modalId = myParameters.modalId
+    var myParameters = $.extend(true, {}, parameters)
+    var formId = myParameters.formId
+    var modal = myParameters.modal
     var response = myParameters.response
     var schema = null
-    var title = myParameters.title
-    var valueTag = null
-
     var parametersUnresponse = myParameters
+
     delete parametersUnresponse.response
 
     if (response && response.hasOwnProperty('schema')) {
@@ -303,60 +206,36 @@
     }
 
     if (!schema.buttons || !schema.fields) {
-      messageBox('dccModalForm error', modalId + ': buttons and fields parameters are mandatory.')
+      messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(rootId, modalId, 'row')
+    purgeNode(rootId, formId, 'row')
 
-    rootId = 'root-' + modalId
+    rootId = 'root-' + formId
 
-    var modalDiv = '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog">'
-    $('#' + rootId).append('<div class="modal-header">')
-    $('#' + rootId + ' div').wrap('<div class="modal-content">')
-    $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
-    $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-    $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
-    $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
-    $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
-    $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + title + '</h4>')
+    if (modal) {
+      var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
+      $('#' + rootId).append('<div class="modal-header">')
+      $('#' + rootId + ' div').wrap('<div class="modal-content">')
+      $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
+      $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
+      $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
+      $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
+      $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+      $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
+    } else {
+      $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
+    }
 
-    var readonly = ''
+    addInputFields(formId, response, schema, modal)
+    addButtons(rootId, formId, schema.buttons, modal)
 
-    $.each(schema.fields, function (key, value) {
-      var type = ''
-      readonly = (value.readonly) ? ' readonly' : ''
+    if (modal) {
+      $('#' + formId).modal('show')
+    }
 
-      if (value.type) {
-        type = value.type
-      } else {
-        if (value.native_type) {
-          type = value.native_type
-        }
-      }
-
-      valueTag = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-
-      addInputField(rootId, modalId, value, valueTag, readonly, type)
-    })
-
-    $.each(schema.buttons, function (key, value) {
-      var id = ''
-      if (value.id) {
-        id = ' id="' + value.id + '"'
-      }
-      $('#' + rootId + ' .modal-footer').append(
-        '<button type="button"' + id + ' class="' + value.class + '" data-dismiss="modal">' + value.name + '</button>'
-      )
-
-      $('#' + value.id).click(function () {
-        var parameters = getFormValues(modalId)
-        value.onClick(parameters)
-      })
-    })
-
-    $('#' + modalId).modal('show')
   //  $('.combobox').combobox('refresh')
   //  $('.bootstraptoggle').bootstrapToggle()
   }
@@ -440,11 +319,30 @@
     })
   }
 
+  function addButtons (rootId, formId, buttons, modal) {
+    $.each(buttons, function (key, value) {
+      var id = ''
+      if (value.id) {
+        id = ' id="' + value.id + '"'
+      }
+      var modalFooter = modal ? ' .modal-footer' : ''
+      var dataDismiss = modal ? ' data-dismiss="modal"' : ''
+      $('#' + rootId + modalFooter).append(
+        '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
+      )
+
+      $('#' + value.id).click(function () {
+        var parameters = getFormValues(formId)
+        value.onClick(parameters)
+      })
+    })
+  }
+
   /**
    * Create an html snippet represent a form input field
    *
    * @param {string} rootId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} formId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
    * @param {Array} value An array containing name and text to be used
    * @param {string} valueTag The value of field
    * @param {string} readonly The attribute of input
@@ -452,60 +350,98 @@
    *
    * @returns {void}
    */
-  function addInputField (rootId, modalId, value, valueTag, readonly, type) {
-    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-    switch (type) {
-      case 'bool':
-        // checkbox
-        inputGroup += '<input id="' + modalId + '-' + value.name + '" type="checkbox">\n'
-        break
-//      case 'lookup':
-//        // combobox
-//        inputGroup += '<select id="addAgenziaModalSelectCompagnia" name="normal" class="combobox input-large form-control">\n'
-//        var data = ''
-//        if (value.url) {
-//          $.ajax({
-//            url: value.url,
-//            async: false,
-//            dataType: 'json',
-//            success: function (response) {
-//              data = response.data
-//            }
+  function addInputFields (formId, response, schema, modal) {
+    var inputGroupAddonParams = []
+    var readonly = ''
+
+    $.each(schema.fields, function (key, value) {
+      var type = ''
+      readonly = (value.readonly) ? ' readonly' : ''
+
+      if (value.type) {
+        type = value.type
+      } else {
+        if (value.native_type) {
+          type = value.native_type
+        }
+      }
+
+      var valueTag = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
+
+      var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+      switch (type) {
+        case 'bool':
+          // checkbox
+          inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox">\n'
+          break
+//        case 'lookup':
+//          // combobox
+//          inputGroup += '<select id="addAgenziaModalSelectCompagnia" name="normal" class="combobox input-large form-control">\n'
+//          var data = ''
+//          if (value.url) {
+//            $.ajax({
+//              url: value.url,
+//              async: false,
+//              dataType: 'json',
+//              success: function (response) {
+//                data = response.data
+//              }
+//            })
+//          } else {
+//            data = value.data
+//          }
+//          $.each(data, function(key, value) {
+//            inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
 //          })
-//        } else {
-//          data = value.data
-//        }
-//        $.each(data, function(key, value) {
-//          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
-//        })
-//        inputGroup += '</select>'
-//        break
-//      case 'toggle':
-//        // bootstraptoggle
-//        var dataOff = 'False'
-//        var dataOn = 'True'
-//        var dataWidth = 80
+//          inputGroup += '</select>'
+//          break
+//        case 'toggle':
+//          // bootstraptoggle
+//          var dataOff = 'False'
+//          var dataOn = 'True'
+//          var dataWidth = 80
 //
-//        if (value.toggle) {
-//          dataOff = value.toggle.off
-//          dataOn = value.toggle.on
-//          dataWidth = value.toggle.width
-//        }
+//          if (value.toggle) {
+//            dataOff = value.toggle.off
+//            dataOn = value.toggle.on
+//            dataWidth = value.toggle.width
+//          }
 //
-//        inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
-//        inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
-//        inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
-//        break
-      default:
-        // standard input
-        inputGroup += '<input id="' + modalId + '-' + value.name + '" type="text" class="form-control" value="' + valueTag + '"' + readonly + '>'
-        break
-    }
-    $('#' + rootId + ' .modal-body')
-      .appendR('<div class="row ddc-form-row">')
-      .appendR('<div class="col-xs-12">')
-      .appendR('<div class="input-group">')
-      .appendR(inputGroup)
+//          inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
+//          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
+//          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
+//          break
+        default:
+          // standard input
+          inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + valueTag + '"' + readonly + '>'
+          break
+      }
+
+      if (value.addon) {
+        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
+          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+        inputGroupAddonParams.push({
+          id: formId + '-' + value.name + '-' + value.addon.icon,
+          onClick: value.addon.onClick,
+          parameters: response.data
+        })
+      }
+
+      var rowClass = value.class || 'col-xs-12'
+      var modalBody = modal ? ' .modal-body' : ''
+      $('#' + formId + modalBody)
+        .appendR('<div class="row ddc-form-row">')
+        .appendR('<div class="' + rowClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    })
+
+    $.each(inputGroupAddonParams, function (key, value) {
+      $('#' + value.id).click(function () {
+        var parameters = getFormValues(formId)
+        value.onClick(parameters)
+      })
+    })
   }
 
   /**

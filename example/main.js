@@ -1,3 +1,8 @@
+// form callback function
+function addFormSend (id) {
+  // console.log(id)
+}
+
 // datatable callback function
 function datatable1Click (row) {
   var id = $(row).attr('id')
@@ -6,13 +11,13 @@ function datatable1Click (row) {
 }
 
 // form callback function
-function form1Click () {}
-
-// modalform callback function
-function addModalFormSend () {}
+function form1Click (parameters) {
+  console.log(parameters)
+}
 
 // navbar callback function
 function navbarClick (id) {
+  var formParameters = null
   // if id is not integer ignore actions
   if (Number.isInteger(parseInt(id, 10))) {
     var menuItem = parseInt(id, 10)
@@ -69,28 +74,9 @@ function navbarClick (id) {
         })
         break
       case 2: // Form
-        var formParameters = {
+        formParameters = {
           formId: 'form1',
-          response: {
-            data:
-              {'field1': 'value1', 'field2': 'value2'}
-          },
-          fields: [
-            {name: 'field1', class: 'col-4'},
-            {name: 'field2', class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
-          ],
-          buttons: []
-        }
-        $('#root').dccForm(formParameters)
-        break
-      case 3: // Modal
-        $('#root').dccModal('modal1', 'Modal Title', 'This is a message.')
-        $('#modal1').modal('show')
-        break
-      case 4: // ModalForm
-        var modalFormParameters = {
-          modalId: 'modalform1',
-          title: 'Modal Form',
+          title: 'Form',
           response: {
             data: [
               {
@@ -100,8 +86,8 @@ function navbarClick (id) {
             ],
             schema: {
               fields: [
-                {name: "field1", native_type: "string"},
-                {name: "field2", native_type: "string"}
+                {name: "field1", native_type: "varchar"},
+                {name: "field2", native_type: "bool"}
               ]
             }
           },
@@ -110,11 +96,44 @@ function navbarClick (id) {
           ],
           buttons: [
             { name: "Cancel", class: "btn btn-default" },
-            { name: "Add", class: "btn btn-primary", id: 'addModalFormSend', onClick: addModalFormSend }
+            { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
           ]
         }
-        $('#root').dccModalForm(modalFormParameters)
-        $('#modalform1').modal('show')
+        $('#root').dccForm(formParameters)
+        break
+      case 3: // Modal
+        $('#root').dccModal('modal1', 'Modal Title', 'This is a message.')
+        $('#modal1').modal('show')
+        break
+      case 4: // ModalForm
+        formParameters = {
+          formId: 'form1',
+          title: 'Form',
+          modal: 'Modal Form',
+          response: {
+            data: [
+              {
+                field1: 'value1',
+                field2: 'value2'
+              }
+            ],
+            schema: {
+              fields: [
+                {name: "field1", native_type: "varchar"},
+                {name: "field2", native_type: "bool"}
+              ]
+            }
+          },
+          fields: [
+            {name: "field1", class: 'col-4'},
+            {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+          ],
+          buttons: [
+            { name: "Cancel", class: "btn btn-default" },
+            { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+          ]
+        }
+        $('#root').dccForm(formParameters)
         break
       default: // else show modal with clicked id
         $('#root').dccModal('modal1', 'Dropdown items', 'click on item ' + menuItem)
