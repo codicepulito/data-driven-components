@@ -215,6 +215,19 @@
 
     rootId = 'root-' + formId
 
+    addFormHeader(rootId, formId, modal)
+    addInputFields(formId, response, schema, modal)
+    addButtons(rootId, formId, schema.buttons, modal)
+
+    if (modal) {
+      $('#' + formId).modal('show')
+    }
+
+  //  $('.combobox').combobox('refresh')
+  //  $('.bootstraptoggle').bootstrapToggle()
+  }
+
+  function addFormHeader (rootId, formId, modal) {
     if (modal) {
       var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
       $('#' + rootId).append('<div class="modal-header">')
@@ -228,16 +241,6 @@
     } else {
       $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
     }
-
-    addInputFields(formId, response, schema, modal)
-    addButtons(rootId, formId, schema.buttons, modal)
-
-    if (modal) {
-      $('#' + formId).modal('show')
-    }
-
-  //  $('.combobox').combobox('refresh')
-  //  $('.bootstraptoggle').bootstrapToggle()
   }
 
   /**
@@ -334,7 +337,7 @@
       addClickCallback(formId, value)
     })
   }
-  
+
   function addClickCallback (formId, values) {
     $('#' + values.id).click(function () {
       var parameters = getFormValues(formId)
