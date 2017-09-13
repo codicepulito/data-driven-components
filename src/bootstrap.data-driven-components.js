@@ -359,11 +359,10 @@
    */
   function addInputFields (formId, response, schema, modal) {
     var inputGroupAddonParams = []
-    var readonly = ''
 
     $.each(schema.fields, function (key, value) {
       var type = ''
-      readonly = (value.readonly) ? ' readonly' : ''
+      value['ro'] = (value.readonly) ? ' readonly' : ''
 
       if (value.type) {
         type = value.type
@@ -373,14 +372,42 @@
         }
       }
 
-      var valueTag = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
+      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
 
       var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-      switch (type) {
-        case 'bool':
-          // checkbox
-          inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox">\n'
-          break
+      inputGroup += addInputFieldType(type, formId, value)
+
+      if (value.addon) {
+        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
+          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+        inputGroupAddonParams.push({
+          id: formId + '-' + value.name + '-' + value.addon.icon,
+          onClick: value.addon.onClick,
+          parameters: response.data
+        })
+      }
+
+      var rowClass = value.class || 'col-xs-12'
+      var modalBody = modal ? ' .modal-body' : ''
+      $('#' + formId + modalBody)
+        .appendR('<div class="row ddc-form-row">')
+        .appendR('<div class="' + rowClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    })
+
+    $.each(inputGroupAddonParams, function (key, value) {
+      addClickCallback(formId, value)
+    })
+  }
+
+  function addInputFieldType (type, formId, value) {
+    var inputGroup = ''
+    switch (type) {
+      case 'bool':
+        // checkbox
+        inputGroup = '<input id="' + formId + '-' + value.name + '" type="checkbox">\n'
+        break
 //        case 'lookup':
 //          // combobox
 //          inputGroup += '<select id="addAgenziaModalSelectCompagnia" name="normal" class="combobox input-large form-control">\n'
@@ -418,34 +445,12 @@
 //          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
 //          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
 //          break
-        default:
-          // standard input
-          inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + valueTag + '"' + readonly + '>'
-          break
-      }
-
-      if (value.addon) {
-        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
-        inputGroupAddonParams.push({
-          id: formId + '-' + value.name + '-' + value.addon.icon,
-          onClick: value.addon.onClick,
-          parameters: response.data
-        })
-      }
-
-      var rowClass = value.class || 'col-xs-12'
-      var modalBody = modal ? ' .modal-body' : ''
-      $('#' + formId + modalBody)
-        .appendR('<div class="row ddc-form-row">')
-        .appendR('<div class="' + rowClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    })
-
-    $.each(inputGroupAddonParams, function (key, value) {
-      addClickCallback(formId, value)
-    })
+      default:
+        // standard input
+        inputGroup = '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        break
+    }
+    return inputGroup
   }
 
   /**
