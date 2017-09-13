@@ -180,9 +180,9 @@
    * - field0.class: optional string representing one or more html class attribute
    *   (https://www.w3.org/TR/html5/dom.html#classes)
    * - field0.name: string representing the html input label
+   *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - field0.readonly: boolean - if true make field readonly
    * - field0.type: string - override schema.fields.native_type
-   *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - modal: optional string render the form in modal with the specified title
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
    *

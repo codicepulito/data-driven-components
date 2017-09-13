@@ -90,7 +90,6 @@ function navbarClick (id) {
       case 2: // Form
         formParameters = {
           formId: 'form1',
-          title: 'Form',
           response: formResponse,
           fields: [
             {name: "field1", type: "string", readonly: "true"}
@@ -108,7 +107,6 @@ function navbarClick (id) {
       case 4: // ModalForm
         formParameters = {
           formId: 'form1',
-          title: 'Form',
           modal: 'Modal Form',
           response: formResponse,
           fields: [
