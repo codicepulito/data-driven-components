@@ -18,6 +18,20 @@ function form1Click (parameters) {
 // navbar callback function
 function navbarClick (id) {
   var formParameters = null
+  var formResponse = {
+    data: [
+      {
+        field1: 'value1',
+        field2: 'value2'
+      }
+    ],
+    schema: {
+      fields: [
+        {name: "field1", native_type: "varchar"},
+        {name: "field2", native_type: "bool"}
+      ]
+    }
+  }
   // if id is not integer ignore actions
   if (Number.isInteger(parseInt(id, 10))) {
     var menuItem = parseInt(id, 10)
@@ -77,25 +91,11 @@ function navbarClick (id) {
         formParameters = {
           formId: 'form1',
           title: 'Form',
-          response: {
-            data: [
-              {
-                field1: 'value1',
-                field2: 'value2'
-              }
-            ],
-            schema: {
-              fields: [
-                {name: "field1", native_type: "varchar"},
-                {name: "field2", native_type: "bool"}
-              ]
-            }
-          },
+          response: formResponse,
           fields: [
             {name: "field1", type: "string", readonly: "true"}
           ],
           buttons: [
-            { name: "Cancel", class: "btn btn-default" },
             { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
           ]
         }
@@ -110,20 +110,7 @@ function navbarClick (id) {
           formId: 'form1',
           title: 'Form',
           modal: 'Modal Form',
-          response: {
-            data: [
-              {
-                field1: 'value1',
-                field2: 'value2'
-              }
-            ],
-            schema: {
-              fields: [
-                {name: "field1", native_type: "varchar"},
-                {name: "field2", native_type: "bool"}
-              ]
-            }
-          },
+          response: formResponse,
           fields: [
             {name: "field1", class: 'col-4'},
             {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
