@@ -345,36 +345,17 @@
     })
   }
 
-  /**
-   * Create an html snippet represent a form input field
-   *
-   * @param {string} rootId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} formId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {Array} value An array containing name and text to be used
-   * @param {string} valueTag The value of field
-   * @param {string} readonly The attribute of input
-   * @param {string} type The type of input field [bool, varchar, ...]
-   *
-   * @returns {void}
-   */
   function addInputFields (formId, response, schema, modal) {
     var inputGroupAddonParams = []
+    var inputGroup = ''
 
     $.each(schema.fields, function (key, value) {
       var type = ''
+
       value['ro'] = (value.readonly) ? ' readonly' : ''
-
-      if (value.type) {
-        type = value.type
-      } else {
-        if (value.native_type) {
-          type = value.native_type
-        }
-      }
-
+      type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-
-      var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+      inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
       inputGroup += addInputFieldType(type, formId, value)
 
       if (value.addon) {
@@ -389,6 +370,7 @@
 
       var rowClass = value.class || 'col-xs-12'
       var modalBody = modal ? ' .modal-body' : ''
+
       $('#' + formId + modalBody)
         .appendR('<div class="row ddc-form-row">')
         .appendR('<div class="' + rowClass + '">')
