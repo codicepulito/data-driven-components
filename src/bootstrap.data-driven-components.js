@@ -326,11 +326,7 @@
 
     $.each(schema.fields, function (key, value) {
       var type = ''
-      if (value.readonly) {
-        readonly = ' readonly'
-      } else {
-        readonly = ''
-      }
+      readonly = (value.readonly) ? ' readonly' : ''
 
       if (value.type) {
         type = value.type
@@ -340,14 +336,7 @@
         }
       }
 
-      if (response && response.hasOwnProperty('data')) {
-        valueTag = response.data[0][value.name]
-        if (valueTag == null) {
-          valueTag = ''
-        }
-      } else {
-        valueTag = ''
-      }
+      valueTag = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
 
       addInputField(rootId, modalId, value, valueTag, readonly, type)
     })
@@ -451,6 +440,18 @@
     })
   }
 
+  /**
+   * Create an html snippet represent a form input field
+   *
+   * @param {string} rootId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {Array} value An array containing name and text to be used
+   * @param {string} valueTag The value of field
+   * @param {string} readonly The attribute of input
+   * @param {string} type The type of input field [bool, varchar, ...]
+   *
+   * @returns {void}
+   */
   function addInputField (rootId, modalId, value, valueTag, readonly, type) {
     var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
