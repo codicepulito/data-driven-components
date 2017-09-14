@@ -33,15 +33,13 @@
         _messageBox('Ajax error', error)
       })
       .success(function (response) {
-        myParameters.response = response
-
         if (options.jsend && response.status !== 'success') {
           _messageBox('Ajax response', response.message)
         } else if (options.jsend && response.status === 'success') {
+          myParameters.response = response
         } else {
           myParameters.response['data'] = response[options.responseData]
         }
-
         callback(myParameters)
       })
       
@@ -231,8 +229,6 @@
     if (_ajax(function (p) { $(this).dccForm(p) }, myParameters)) {
       return false
     }
-    
-    
 
     if (response && response.hasOwnProperty('schema')) {
       schema = $.extend(true, response.schema, parametersUnresponse)
