@@ -19,6 +19,27 @@
  */
 
 (function ($) {
+  function _ajax (options, callback, parameters) {
+    $.ajax({
+      url: options.url,
+      method: 'GET'
+    })
+    .error(function (request, status, error) {
+      _messageBox('Ajax error', error)
+    })
+    .success(function (response) {
+      parameters.response = response
+
+      if (options.jsend && response.status !== 'success') {
+        _messageBox('Ajax response', response.message)
+      } else {
+        parameters.response['data'] = response[options.responseData]
+      }
+
+      callback(parameters)
+    })
+  }
+
   /**
    * Empty all root nodes except those passed in parameter arrays
    *
@@ -64,36 +85,35 @@
    */
   $.fn.dccDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
+    var buttons = myParameters.buttons
     var datatableId = myParameters.datatableId
     var dom = myParameters.dom || 'Bfrtip'
-    var response = myParameters.response
     var priorityColumns = myParameters.priorityColumns
-    var buttons = myParameters.buttons
+    var response = myParameters.response
+    var rootId = myParameters.rootId || $(this).attr('id')
 
     var arrayColumns = null
     var dataset = null
 
-//    var parametersUnresponse = myParameters
-//    delete parametersUnresponse.response
-//
-//    if (!response) {
-//      response = []
-//      response['schema'] = []
-//    }
-
-    // var schema = $.extend(true, response.schema, parametersUnresponse)
-
-    // empty root element if is present to avoid side effects on refresh
-    purgeNode($(this).attr('id'), datatableId, 'row dcc-datatable-row')
-
-    if (!buttons || !priorityColumns || !response) {
-      messageBox('dccDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
+    // if ajax exist in parameters callback this again on ajax success
+    if (myParameters.ajax) {
+      var ajaxOptions = myParameters.ajax
+      myParameters['rootId'] = $(this).attr('id')
+      delete myParameters.ajax
+      _ajax(ajaxOptions, function (p) { $(this).dccDatatable(p) }, myParameters)
       return false
     }
 
-    var rootId = 'root-' + datatableId
+    // empty root element if is present to avoid side effects on refresh
+    _purgeNode(rootId, datatableId, 'row dcc-datatable-row')
 
-    rootId = appendPanel(rootId, datatableId, myParameters.panel)
+    if (!buttons || !priorityColumns || !response) {
+      _messageBox('dccDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
+      return false
+    }
+
+    rootId = 'root-' + datatableId
+    rootId = _appendPanel(rootId, datatableId, myParameters.panel)
 
     var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
 
@@ -110,7 +130,7 @@
       arrayColumns = priorityColumns
     }
 
-    var columns = datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
+    var columns = _datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
 
     $('#' + datatableId).DataTable({
       dom: dom,
@@ -127,7 +147,7 @@
       if (typeof myParameters.onClick === 'function') {
         myParameters.onClick($(this))
       } else {
-        messageBox('dccDatatable error', datatableId + ': missing function for click event.')
+        _messageBox('dccDatatable error', datatableId + ': missing function for click event.')
         return false
       }
     })
@@ -146,7 +166,7 @@
     var selector = $(this).attr('id')
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(selector, modalId, 'row')
+    _purgeNode(selector, modalId, 'row')
 
     var rootId = 'root-' + modalId
 
@@ -206,18 +226,18 @@
     }
 
     if (!schema.buttons || !schema.fields) {
-      messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
+      _messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(rootId, formId, 'row')
+    _purgeNode(rootId, formId, 'row')
 
     rootId = 'root-' + formId
 
-    addFormHeader(rootId, formId, modal)
-    addInputFields(formId, response, schema, modal)
-    addButtons(rootId, formId, schema.buttons, modal)
+    _addFormHeader(rootId, formId, modal)
+    _addInputFields(formId, response, schema, modal)
+    _addButtons(rootId, formId, schema.buttons, modal)
 
     if (modal) {
       $('#' + formId).modal('show')
@@ -227,7 +247,7 @@
   //  $('.bootstraptoggle').bootstrapToggle()
   }
 
-  function addFormHeader (rootId, formId, modal) {
+  function _addFormHeader (rootId, formId, modal) {
     if (modal) {
       var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
       $('#' + rootId).append('<div class="modal-header">')
@@ -265,7 +285,7 @@
     var subMenuItem = ''
 
     // empty root element if is present to avoid side effects on refresh
-    purgeNode(selector, navbarId, 'row')
+    _purgeNode(selector, navbarId, 'row')
 
     var rootId = 'root-' + navbarId
 
@@ -322,7 +342,7 @@
     })
   }
 
-  function addButtons (rootId, formId, buttons, modal) {
+  function _addButtons (rootId, formId, buttons, modal) {
     $.each(buttons, function (key, value) {
       var id = ''
       if (value.id) {
@@ -334,18 +354,18 @@
         '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
       )
 
-      addClickCallback(formId, value)
+      _addClickCallback(formId, value)
     })
   }
 
-  function addClickCallback (formId, values) {
+  function _addClickCallback (formId, values) {
     $('#' + values.id).click(function () {
-      var parameters = getFormValues(formId)
+      var parameters = _getFormValues(formId)
       values.onClick(parameters)
     })
   }
 
-  function addInputFields (formId, response, schema, modal) {
+  function _addInputFields (formId, response, schema, modal) {
     var inputGroupAddonParams = []
     var inputGroup = ''
 
@@ -356,7 +376,7 @@
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
       inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-      inputGroup += addInputFieldType(type, formId, value)
+      inputGroup += _addInputFieldType(type, formId, value)
 
       if (value.addon) {
         inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
@@ -379,11 +399,11 @@
     })
 
     $.each(inputGroupAddonParams, function (key, value) {
-      addClickCallback(formId, value)
+      _addClickCallback(formId, value)
     })
   }
 
-  function addInputFieldType (type, formId, value) {
+  function _addInputFieldType (type, formId, value) {
     var inputGroup = ''
     switch (type) {
       case 'bool':
@@ -444,7 +464,7 @@
    *
    * @returns {String}
    */
-  function appendPanel (rootId, childId, panel) {
+  function _appendPanel (rootId, childId, panel) {
     if (panel) {
       $('#' + rootId).appendR('<div class="panel panel-default">')
         .appendR('<div class="panel-heading">')
@@ -476,7 +496,7 @@
    *
    * @returns {Array} array to pass to datatable as parameter
    */
-  function datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
+  function _datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
     var columns = []
     var dataPriority = null
 
@@ -501,7 +521,7 @@
    *
    * @returns {Array} parameters Key-Value array of input in selector
    */
-  function getFormValues (selector) {
+  function _getFormValues (selector) {
     var parameters = {}
     $('#' + selector).find('input').each(function (index, element) {
       var id = $(this).attr('id')
@@ -536,7 +556,7 @@
    *
    * @returns {void}
    */
-  function messageBox (title, message) {
+  function _messageBox (title, message) {
     $('#root').dccModal('responseModal', title, message)
     $('#responseModal').modal('show')
   }
@@ -550,7 +570,7 @@
    *
    * @returns {void}
    */
-  function purgeNode (selector, element, classes) {
+  function _purgeNode (selector, element, classes) {
     if (classes.indexOf('datatable') > 0) {
       $('#' + element).dataTable().fnClearTable()
     }

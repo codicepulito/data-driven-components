@@ -27,6 +27,19 @@ var datatableParameters = {
   onClick: datatable1Click
 }
 
+// var datatableParametersAjax = {
+//   datatableId: 'datatable1',
+//   ajax: {
+//     url: 'https://randomuser.me/api/?results=20',
+//     responseData: 'results',
+//     jsend: false
+//   },
+//   response: null,
+//   buttons: [],
+//   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+//   onClick: datatable1Click
+// }
+
 var datatableParametersWithoutCallback = {
   datatableId: 'datatable1',
   response: {
@@ -108,6 +121,22 @@ var datatableParametersWithoutPriorityColumns = {
 
 function datatable1Click (parameters) {
 }
+
+//  describe('datatable component ajax loading', function () {
+//    beforeEach(function (done) {
+//      $('div').remove()
+//      $(document.body).append('<div id="root"></div>')
+//      $('#root').dccDatatable(datatableParametersAjax)
+//      setTimeout(function () {
+//        done()
+//      }, 2000)
+//    })
+//
+//    it('check datatable is populated', function () {
+//      // console.log($(document.body))
+//      expect($('#datatable1').find('tr').length).toBe(1)
+//    })
+//  })
 
 describe('datatable component asynchronous loading', function () {
   beforeEach(function (done) {
