@@ -365,14 +365,16 @@
         '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
       )
 
-      _addClickCallback(formId, value)
+      _addClickCallbacks(formId, [value])
     })
   }
-
-  function _addClickCallback (formId, values) {
-    $('#' + values.id).click(function () {
-      var parameters = _getFormValues(formId)
-      values.onClick(parameters)
+  
+  function _addClickCallbacks (formId, inputGroupAddonParams) {
+    $.each(inputGroupAddonParams, function (key, value) {
+      $('#' + value.id).click(function () {
+        var parameters = _getFormValues(formId)
+        value.onClick(parameters)
+      })
     })
   }
 
@@ -386,8 +388,8 @@
       value['ro'] = _isReadonly(schema, value)
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-      inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-      inputGroup += _addInputFieldType(type, formId, value)
+      
+      inputGroup = _addInputFieldType(type, formId, value)
 
       if (value.addon) {
         inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
@@ -403,33 +405,32 @@
       var modalBody = modal ? ' .modal-body' : ''
       _addInputFieldRow(formId + modalBody, schema, colClass, inputGroup)
     })
-
-    $.each(inputGroupAddonParams, function (key, value) {
-      _addClickCallback(formId, value)
-    })
+    
+    _addClickCallbacks(formId, inputGroupAddonParams)
+    
   }
   
   function _addInputFieldRow (selector, schema, colClass, inputGroup) {
-    if (schema.rows) {
-      $('#' + selector)
-        .appendR('<div class="row ddc-input-row">')
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    } else {
-      $('#' + selector)
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
+      if (schema.rows) {
+        $('#' + selector)
+          .appendR('<div class="row ddc-input-row">')
+          .appendR('<div class="' + colClass + '">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      } else {
+        $('#' + selector)
+          .appendR('<div class="' + colClass + '">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      }
     }
-  }
 
   function _addInputFieldType (type, formId, value) {
-    var inputGroup = ''
+    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
       case 'bool':
         // checkbox
-        inputGroup = '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
         break
 //        case 'lookup':
 //          // combobox
@@ -470,7 +471,7 @@
 //          break
       default:
         // standard input
-        inputGroup = '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
         break
     }
     return inputGroup
