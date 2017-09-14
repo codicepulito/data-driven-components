@@ -25,7 +25,7 @@
       myParameters['response'] = myParameters.response || {}
       var options = myParameters.ajax
       delete myParameters.ajax
-      
+
       $.ajax({
         url: options.url,
         method: 'GET'
@@ -34,19 +34,16 @@
         _messageBox('Ajax error', error)
       })
       .success(function (response) {
-        
         if (options.jsend && response.status !== 'success') {
           _messageBox('Ajax response', response.message)
         } else if (options.jsend && response.status === 'success') {
           myParameters.response = response
         } else {
-          
           myParameters.response['data'] = response[options.responseData]
-          
         }
         callback(myParameters)
       })
-      
+
       return true
     } else {
       return false
@@ -103,7 +100,7 @@
     var dom = myParameters.dom || 'Bfrtip'
     var priorityColumns = myParameters.priorityColumns
     var response = myParameters.response
-    myParameters['rootId'] =  myParameters.rootId || $(this).attr('id')
+    myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
 
     var arrayColumns = null
     var dataset = null
@@ -121,7 +118,7 @@
       return false
     }
 
-    rootId = 'root-' + datatableId
+    var rootId = 'root-' + datatableId
     rootId = _appendPanel(rootId, datatableId, myParameters.panel)
 
     var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
@@ -222,23 +219,24 @@
     var formId = myParameters.formId
     var modal = myParameters.modal
     var response = myParameters.response
-    var schema = null
     var parametersUnresponse = myParameters
-    myParameters['rootId'] =  myParameters.rootId || $(this).attr('id')
-    rootId = myParameters.rootId
+    myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
+    var rootId = myParameters.rootId
 
     delete parametersUnresponse.response
-    
+
     // if ajax exist in parameters callback this again on ajax success
     if (_ajax(function (p) { $(this).dccForm(p) }, myParameters)) {
       return false
     }
 
-    if (response && response.hasOwnProperty('schema')) {
-      schema = $.extend(true, response.schema, parametersUnresponse)
-    } else {
-      schema = parametersUnresponse
-    }
+//    if (response && response.hasOwnProperty('schema')) {
+//      schema = $.extend(true, response.schema, parametersUnresponse)
+//    } else {
+//      schema = parametersUnresponse
+//    }
+
+    var schema = _getSchema(parameters)
 
     if (!schema.buttons || !schema.fields) {
       _messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
@@ -372,7 +370,7 @@
       _addClickCallbacks(formId, [value])
     })
   }
-  
+
   function _addClickCallbacks (formId, inputGroupAddonParams) {
     $.each(inputGroupAddonParams, function (key, value) {
       $('#' + value.id).click(function () {
@@ -392,7 +390,7 @@
       value['ro'] = _isReadonly(schema, value)
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-      
+
       inputGroup = _addInputFieldType(type, formId, value)
 
       if (value.addon) {
@@ -406,14 +404,13 @@
       }
 
       var colClass = value.class || 'col-xs-12'
-      
+
       _addInputFieldRow(formId, schema, colClass, inputGroup)
     })
-    
+
     _addClickCallbacks(formId, inputGroupAddonParams)
-    
   }
-  
+
   function _addInputFieldRow (selector, schema, colClass, inputGroup) {
     var modalBody = schema.modal ? ' .modal-body' : ''
     if (schema.rows) {
@@ -574,7 +571,24 @@
     })
     return parameters
   }
-  
+
+  function _getSchema (parameters) {
+    var myParameters = $.extend(true, {}, parameters)
+    var parametersUnresponse = myParameters
+    var response = myParameters.response
+    var schema = null
+
+    delete parametersUnresponse.response
+
+    if (response && response.hasOwnProperty('schema')) {
+      schema = $.extend(true, response.schema, parametersUnresponse)
+    } else {
+      schema = parametersUnresponse
+    }
+
+    return schema
+  }
+
   function _isReadonly (schema, value) {
     var readonly = ''
     if (schema.readonly) {

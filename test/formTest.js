@@ -142,18 +142,18 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2').length).toBe(1)
   })
-  
+
   it('create form component and check readonly attribute', function () {
     $('#root').dccForm(formParametersModal)
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(true)
   })
-  
+
   it('create form component and check rows exists', function () {
     $('#root').dccForm(formParametersModal)
     expect($('.ddc-input-row').length).toBe(2)
   })
-  
+
   it('create form component and check rows not exists', function () {
     $('#root').dccForm(formParameters)
     expect($('.ddc-input-row').length).toBe(0)
