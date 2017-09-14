@@ -29,6 +29,7 @@
       $.ajax({
         url: options.url,
         method: 'GET',
+        dataType: 'json',
         success: function (response) {
           if (options.jsend && response.status !== 'success') {
             _messageBox('Ajax response', response.message)
@@ -372,7 +373,7 @@
       })
     })
   }
-  
+
   function _addDatatableClickCallbacks (parameters) {
     var datatableId = parameters.datatableId
     $('#' + datatableId).on('click', 'button', function () {
@@ -568,9 +569,11 @@
 //        }
         var value = $(this).val()
         var fieldKey = id.substring(selector.length + 1)
-        if (fieldKey.indexOf('undefined') >= 0) {
-          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
-        }
+
+//        // bootstraptoggle patch
+//        if (fieldKey.indexOf('undefined') >= 0) {
+//          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
+//        }
         parameters[fieldKey] = value
       }
     })

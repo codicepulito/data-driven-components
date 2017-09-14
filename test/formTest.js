@@ -81,6 +81,25 @@ var formParametersWithoutResponse = {
   ]
 }
 
+var formParametersAjaxError = {
+  formId: 'form1',
+  modal: 'Modal 1',
+  ajax: {
+    url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendError.json',
+    responseData: 'results',
+    jsend: true
+  },
+  response: null,
+  fields: [
+    {name: "field1", type: "string"},
+    {name: "field2", type: "string"}
+  ],
+  buttons: [
+    { name: "Cancel", class: "btn btn-default" },
+    { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+  ]
+}
+
 var addFormSendValues = null
 var addonForm1Field1Value = null
 
@@ -102,6 +121,21 @@ describe('form component asynchronous button click', function () {
     setTimeout(function () {
       done()
     }, 500)
+  })
+
+  describe('form component ajax error loading', function () {
+    beforeEach(function (done) {
+      $('div').remove()
+      $(document.body).append('<div id="root"></div>')
+      $('#root').ddcForm(formParametersAjaxError)
+      setTimeout(function () {
+        done()
+      }, 2000)
+    })
+
+    it('check ajax error', function () {
+      expect($('[id=responseModal]').length).toBe(1)
+    })
   })
 
   it('create modal form component and click on add button', function () {
