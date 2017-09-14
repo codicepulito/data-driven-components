@@ -28,20 +28,20 @@
 
       $.ajax({
         url: options.url,
-        method: 'GET'
-      })
-      .error(function (request, status, error) {
-        _messageBox('Ajax error', error)
-      })
-      .success(function (response) {
-        if (options.jsend && response.status !== 'success') {
-          _messageBox('Ajax response', response.message)
-        } else if (options.jsend && response.status === 'success') {
-          myParameters.response = response
-        } else {
-          myParameters.response['data'] = response[options.responseData]
+        method: 'GET',
+        success: function (response) {
+          if (options.jsend && response.status !== 'success') {
+            _messageBox('Ajax response', response.message)
+          } else if (options.jsend && response.status === 'success') {
+            myParameters.response = response
+          } else {
+            myParameters.response['data'] = response[options.responseData]
+          }
+          callback(myParameters)
+        },
+        error: function (request, status, error) {
+          _messageBox('Ajax error', error)
         }
-        callback(myParameters)
       })
 
       return true

@@ -27,18 +27,57 @@ var datatableParameters = {
   onClick: datatable1Click
 }
 
-// var datatableParametersAjax = {
-//   datatableId: 'datatable1',
-//   ajax: {
-//     url: 'https://randomuser.me/api/?results=20',
-//     responseData: 'results',
-//     jsend: false
-//   },
-//   response: null,
-//   buttons: [],
-//   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
-//   onClick: datatable1Click
-// }
+ var datatableParametersAjax = {
+   datatableId: 'datatable1',
+   ajax: {
+     url: 'https://randomuser.me/api/?results=20',
+     responseData: 'results',
+     jsend: false
+   },
+   response: null,
+   buttons: [],
+   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+   onClick: datatable1Click
+ }
+ 
+ var datatableParametersAjaxError = {
+   datatableId: 'datatable1',
+   ajax: {
+     url: 'https://example.com',
+     responseData: 'results',
+     jsend: false
+   },
+   response: null,
+   buttons: [],
+   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+   onClick: datatable1Click
+ }
+ 
+ var datatableParametersAjaxJsendError = {
+   datatableId: 'datatable1',
+   ajax: {
+     url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendError.json',
+     responseData: 'results',
+     jsend: true
+   },
+   response: null,
+   buttons: [],
+   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+   onClick: datatable1Click
+ }
+ 
+ var datatableParametersAjaxJsendSuccess = {
+   datatableId: 'datatable1',
+   ajax: {
+     url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendSuccess.json',
+     responseData: 'results',
+     jsend: true
+   },
+   response: null,
+   buttons: [],
+   priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+   onClick: datatable1Click
+ }
 
 var datatableParametersWithoutCallback = {
   datatableId: 'datatable1',
@@ -122,21 +161,65 @@ var datatableParametersWithoutPriorityColumns = {
 function datatable1Click (parameters) {
 }
 
-//  describe('datatable component ajax loading', function () {
-//    beforeEach(function (done) {
-//      $('div').remove()
-//      $(document.body).append('<div id="root"></div>')
-//      $('#root').ddcDatatable(datatableParametersAjax)
-//      setTimeout(function () {
-//        done()
-//      }, 2000)
-//    })
-//
-//    it('check datatable is populated', function () {
-//      // console.log($(document.body))
-//      expect($('#datatable1').find('tr').length).toBe(1)
-//    })
-//  })
+describe('datatable component ajax loading', function () {
+  beforeEach(function (done) {
+    $('div').remove()
+    $(document.body).append('<div id="root"></div>')
+    $('#root').ddcDatatable(datatableParametersAjax)
+    setTimeout(function () {
+      done()
+    }, 2000)
+  })
+
+  it('check datatable is populated', function () {
+    expect($('#datatable1').find('tr').length).toBe(11)
+  })
+})
+
+describe('datatable component ajax error loading', function () {
+  beforeEach(function (done) {
+    $('div').remove()
+    $(document.body).append('<div id="root"></div>')
+    $('#root').ddcDatatable(datatableParametersAjaxError)
+    setTimeout(function () {
+      done()
+    }, 2000)
+  })
+
+  it('check ajax error', function () {
+    expect($('[id=responseModal]').length).toBe(1)
+  })
+})
+
+describe('datatable component ajax jsend error loading', function () {
+  beforeEach(function (done) {
+    $('div').remove()
+    $(document.body).append('<div id="root"></div>')
+    $('#root').ddcDatatable(datatableParametersAjaxJsendError)
+    setTimeout(function () {
+      done()
+    }, 2000)
+  })
+
+  it('check ajax jsend error', function () {
+    expect($('[id=responseModal]').length).toBe(1)
+  })
+})
+
+describe('datatable component ajax jsend success loading', function () {
+  beforeEach(function (done) {
+    $('div').remove()
+    $(document.body).append('<div id="root"></div>')
+    $('#root').ddcDatatable(datatableParametersAjaxJsendSuccess)
+    setTimeout(function () {
+      done()
+    }, 2000)
+  })
+
+  it('check ajax jsend success', function () {
+    expect($('[id=responseModal]').length).toBe(0)
+  })
+})
 
 describe('datatable component asynchronous loading', function () {
   beforeEach(function (done) {
