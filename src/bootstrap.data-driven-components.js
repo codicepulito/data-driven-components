@@ -136,7 +136,7 @@
       arrayColumns = priorityColumns
     }
 
-    var columns = _datatableColumnsHeader(datatableId, arrayColumns, priorityColumns)
+    var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
 
     $('#' + datatableId).DataTable({
       dom: dom,
@@ -149,14 +149,7 @@
       columns: columns
     })
 
-    $('#' + datatableId).on('click', 'button', function () {
-      if (typeof myParameters.onClick === 'function') {
-        myParameters.onClick($(this))
-      } else {
-        _messageBox('dccDatatable error', datatableId + ': missing function for click event.')
-        return false
-      }
-    })
+    _addDatatableClickCallbacks(myParameters)
   }
 
   /**
@@ -379,6 +372,18 @@
       })
     })
   }
+  
+  function _addDatatableClickCallbacks (parameters) {
+    var datatableId = parameters.datatableId
+    $('#' + datatableId).on('click', 'button', function () {
+      if (typeof parameters.onClick === 'function') {
+        parameters.onClick($(this))
+      } else {
+        _messageBox('dccDatatable error', datatableId + ': missing function for click event.')
+        return false
+      }
+    })
+  }
 
   function _addInputFields (formId, response, schema) {
     var inputGroupAddonParams = []
@@ -520,7 +525,7 @@
    *
    * @returns {Array} array to pass to datatable as parameter
    */
-  function _datatableColumnsHeader (datatableId, arrayColumns, priorityColumns) {
+  function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
     var columns = []
     var dataPriority = null
 
