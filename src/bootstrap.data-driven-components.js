@@ -383,7 +383,7 @@
     $.each(schema.fields, function (key, value) {
       var type = ''
 
-      value['ro'] = schema.readonly ? ' readonly' : ((value.readonly) ? ' readonly' : '')
+      value['ro'] = _isReadonly(schema, value)
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
       inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
@@ -425,7 +425,7 @@
     switch (type) {
       case 'bool':
         // checkbox
-        inputGroup = '<input id="' + formId + '-' + value.name + '" type="checkbox">\n'
+        inputGroup = '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
         break
 //        case 'lookup':
 //          // combobox
@@ -563,6 +563,18 @@
       }
     })
     return parameters
+  }
+  
+  function _isReadonly (schema, value) {
+    var readonly = ''
+    if (schema.readonly) {
+      readonly = ' readonly'
+    } else {
+      if (value.readonly) {
+        readonly = ' readonly'
+      }
+    }
+    return readonly
   }
 
   /**

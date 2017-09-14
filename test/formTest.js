@@ -15,7 +15,7 @@ var formParameters = {
     }
   },
   fields: [
-    {name: "field1", class: "col-4", type: "string", readonly: "true"}
+    {name: "field1", class: "col-4", type: "string", readonly: true}
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -26,6 +26,7 @@ var formParameters = {
 var formParametersModal = {
   formId: 'form1',
   modal: 'Modal 1',
+  readonly: true,
   response: {
     data: [
       {
@@ -41,7 +42,7 @@ var formParametersModal = {
     }
   },
   fields: [
-    {name: "field1", type: "string", readonly: "true"}
+    {name: "field1", type: "string"}
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -128,11 +129,12 @@ describe('form component asynchronous addon click', function () {
 
 describe('create form component', function () {
   it('create form component first time', function () {
-    $('div').remove()
     $(document.body).append('<div id="root"></div>')
     $('#root').dccForm(formParametersModal)
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2').length).toBe(1)
+    expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
+    expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(true)
   })
 
   it('create form component second time', function () {
@@ -154,9 +156,11 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field2').length).toBe(1)
   })
 
-  it('create form and check field1 class', function () {
+  it('create form and check field1 attributes', function () {
     $('#root').dccForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field1').parent().parent().attr('class')).toBe('col-4')
+    expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
+    expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(false)
   })
 })
