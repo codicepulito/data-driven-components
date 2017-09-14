@@ -126,7 +126,7 @@ function datatable1Click (parameters) {
 //    beforeEach(function (done) {
 //      $('div').remove()
 //      $(document.body).append('<div id="root"></div>')
-//      $('#root').dccDatatable(datatableParametersAjax)
+//      $('#root').ddcDatatable(datatableParametersAjax)
 //      setTimeout(function () {
 //        done()
 //      }, 2000)
@@ -142,7 +142,7 @@ describe('datatable component asynchronous loading', function () {
   beforeEach(function (done) {
     $('div').remove()
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccDatatable(datatableParameters)
+    $('#root').ddcDatatable(datatableParameters)
     setTimeout(function () {
       done()
     }, 500)
@@ -169,7 +169,7 @@ describe('datatable component asynchronous button click', function () {
 
 describe('datatable component asynchronous loading missing callback', function () {
   beforeEach(function (done) {
-    $('#root').dccDatatable(datatableParametersWithoutCallback)
+    $('#root').ddcDatatable(datatableParametersWithoutCallback)
     setTimeout(function () {
       done()
     }, 500)
@@ -196,28 +196,28 @@ describe('datatable component asynchronous button click missing callback', funct
 
 describe('create datatable component', function () {
   it('check main element is present after non empty dom', function () {
-    $('#root').dccDatatable(datatableParameters)
+    $('#root').ddcDatatable(datatableParameters)
     expect($('[id=datatable1]').length).toBe(1)
     expect($('#root-datatable1').find('.panel-title').length).toBe(0)
   })
 
   it('check panel element is present after setting its property', function () {
-    $('#root').dccDatatable(datatableParametersWithPanel)
+    $('#root').ddcDatatable(datatableParametersWithPanel)
     expect($('#root-datatable1').find('.panel-title').length).toBe(1)
   })
 
   it('check main element is present without response data', function () {
-    $('#root').dccDatatable(datatableParametersWithoutData)
+    $('#root').ddcDatatable(datatableParametersWithoutData)
     expect($('[id=responseModal]').length).toBe(1)
   })
 
   it('check modal on parameters without buttons', function () {
-    $('#root').dccDatatable(datatableParametersWithoutButtons)
+    $('#root').ddcDatatable(datatableParametersWithoutButtons)
     expect($('[id=responseModal]').length).toBe(1)
   })
 
   it('check modal on parameters without priority columns', function () {
-    $('#root').dccDatatable(datatableParametersWithoutPriorityColumns)
+    $('#root').ddcDatatable(datatableParametersWithoutPriorityColumns)
     expect($('[id=responseModal]').length).toBe(1)
   })
 })

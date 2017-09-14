@@ -2,7 +2,7 @@ Navbar
 ======
 Append a bootstrap navbar menu with items and dropdown sub-items
 ----------------------------------------------------------------
-### Method: dccNavbar(parameters)
+### Method: ddcNavbar(parameters)
 ### Parameters: {object}
 Object's element required to generate the html snippet:
 - navbarId: valid html5 [id attribute](https://www.w3.org/TR/html5/dom.html#the-id-attribute)
@@ -41,6 +41,6 @@ function navbarClick(id) {
 }
 
 $(document).ready(function() {
-    $('#root').dccNavbar(navbarParameters);
+    $('#root').ddcNavbar(navbarParameters);
 });
 ```

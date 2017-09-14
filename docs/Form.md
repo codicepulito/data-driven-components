@@ -2,7 +2,7 @@ Form
 ====
 Append a bootstrap form with inputs and input-group-addon
 ---------------------------------------------------------
-### Method: dccForm(parameters)
+### Method: ddcForm(parameters)
 ### Parameters: {object}
 Object's element required to generate the html snippet:
 - formId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
@@ -55,7 +55,7 @@ var formParameters = {
         { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
     ]
 }
-$('#root').dccForm(formParameters)
+$('#root').ddcForm(formParameters)
 
 // callback function for button
 function addFormSend(parameters) {

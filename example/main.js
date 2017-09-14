@@ -6,7 +6,7 @@ function addFormSend (id) {
 // datatable callback function
 function datatable1Click (row) {
   var id = $(row).attr('id')
-  $('#root').dccModal('modalResponse', 'Datatable click', 'You have clicked on row with id ' + id)
+  $('#root').ddcModal('modalResponse', 'Datatable click', 'You have clicked on row with id ' + id)
   $('#modalResponse').modal('show')
 }
 
@@ -33,11 +33,11 @@ function navbarClick (id) {
     var menuItem = parseInt(id, 10)
 
     // empty dom except navbar1
-    $('#root').dccClearAll(['navbar1'])
+    $('#root').ddcClearAll(['navbar1'])
 
     switch (menuItem) {
       case 1: // Datatable
-        $('#root').dccDatatable({
+        $('#root').ddcDatatable({
           datatableId: 'datatable1',
           ajax: {
             url: 'https://randomuser.me/api/?results=20',
@@ -50,7 +50,7 @@ function navbarClick (id) {
         })
         break
       case 2: // Form
-        $('#root').dccForm({
+        $('#root').ddcForm({
           formId: 'form1',
           response: formResponse,
           fields: [
@@ -62,11 +62,11 @@ function navbarClick (id) {
         })
         break
       case 3: // Modal
-        $('#root').dccModal('modal1', 'Modal Title', 'This is a message.')
+        $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.')
         $('#modal1').modal('show')
         break
       case 4: // ModalForm
-        $('#root').dccForm({
+        $('#root').ddcForm({
           formId: 'form1',
           modal: 'Modal Form',
           response: formResponse,
@@ -81,7 +81,7 @@ function navbarClick (id) {
         })
         break
       default: // else show modal with clicked id
-        $('#root').dccModal('modal1', 'Dropdown items', 'click on item ' + menuItem)
+        $('#root').ddcModal('modal1', 'Dropdown items', 'click on item ' + menuItem)
         $('#modal1').modal('show')
         break
     }
@@ -89,7 +89,7 @@ function navbarClick (id) {
 }
 
 $(document).ready(function () {
-  $('#root').dccNavbar({
+  $('#root').ddcNavbar({
     navbarId: 'navbar1',                // id attribute
     onClick: navbarClick,               // callback
     items: [

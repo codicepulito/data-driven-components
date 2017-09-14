@@ -96,7 +96,7 @@ describe('form component asynchronous button click', function () {
   beforeEach(function (done) {
     $('div').remove()
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccForm(formParametersModal)
+    $('#root').ddcForm(formParametersModal)
     var button = $('#form1').find('#addFormSend')
     button.trigger('click')
     setTimeout(function () {
@@ -114,7 +114,7 @@ describe('form component asynchronous addon click', function () {
   beforeEach(function (done) {
     $('div').remove()
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccForm(formParameters)
+    $('#root').ddcForm(formParameters)
     var button = $('#form1').find('#form1-field1-refresh')
     button.trigger('click')
     setTimeout(function () {
@@ -131,48 +131,48 @@ describe('form component asynchronous addon click', function () {
 describe('create form component', function () {
   it('create form component first time', function () {
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccForm(formParametersModal)
+    $('#root').ddcForm(formParametersModal)
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2').length).toBe(1)
   })
 
   it('create form component second time', function () {
-    $('#root').dccForm(formParameters)
+    $('#root').ddcForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2').length).toBe(1)
   })
 
   it('create form component and check readonly attribute', function () {
-    $('#root').dccForm(formParametersModal)
+    $('#root').ddcForm(formParametersModal)
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(true)
   })
 
   it('create form component and check rows exists', function () {
-    $('#root').dccForm(formParametersModal)
+    $('#root').ddcForm(formParametersModal)
     expect($('.ddc-input-row').length).toBe(2)
   })
 
   it('create form component and check rows not exists', function () {
-    $('#root').dccForm(formParameters)
+    $('#root').ddcForm(formParameters)
     expect($('.ddc-input-row').length).toBe(0)
   })
 
   it('create form component without buttons', function () {
-    $('#root').dccForm(formParametersWithoutButtons)
+    $('#root').ddcForm(formParametersWithoutButtons)
     expect($('[id=responseModal]').length).toBe(1)
   })
 
   it('create form component without response', function () {
-    $('#root').dccForm(formParametersWithoutResponse)
+    $('#root').ddcForm(formParametersWithoutResponse)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2').length).toBe(1)
   })
 
   it('create form and check field1 attributes', function () {
-    $('#root').dccForm(formParameters)
+    $('#root').ddcForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field1').parent().parent().attr('class')).toBe('col-4')
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)

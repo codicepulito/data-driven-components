@@ -66,8 +66,8 @@ describe('clearing the dom', function () {
   beforeEach(function (done) {
     $('div').remove()
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccDatatable(datatableParameters)
-    $('#root').dccModal('modal1', 'title', 'message')
+    $('#root').ddcDatatable(datatableParameters)
+    $('#root').ddcModal('modal1', 'title', 'message')
     setTimeout(function () {
       done()
     }, 500)
@@ -75,7 +75,7 @@ describe('clearing the dom', function () {
 
   it('clearing all divs in body', function () {
     expect($('div').length).toBe(13)
-    $('#root').dccClearAll()
+    $('#root').ddcClearAll()
     expect($('div').length).toBe(9)
   })
 })
@@ -84,9 +84,9 @@ describe('clearing the dom except some elements', function () {
   beforeEach(function (done) {
     $('div').remove()
     $(document.body).append('<div id="root"></div>')
-    $('#root').dccNavbar(navbarParameters)
-    $('#root').dccDatatable(datatableParameters)
-    $('#root').dccForm(formParameters)
+    $('#root').ddcNavbar(navbarParameters)
+    $('#root').ddcDatatable(datatableParameters)
+    $('#root').ddcForm(formParameters)
     setTimeout(function () {
       done()
     }, 500)
@@ -94,7 +94,7 @@ describe('clearing the dom except some elements', function () {
 
   it('clearing all divs in body', function () {
     expect($('div').length).toBe(16)
-    $('#root').dccClearAll(['navbar1'])
+    $('#root').ddcClearAll(['navbar1'])
     expect($('div').length).toBe(5)
   })
 })

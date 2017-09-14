@@ -4,7 +4,7 @@ Append a datatable - http://www.datatables.net/
 -----------------------------------------------
 Copyright (c) 2008-2015 SpryMedia Limited
 -----------------------------------------
-### Method: dccDatatable(parameters)
+### Method: ddcDatatable(parameters)
 ### Parameters: {object}
 Object's element required to generate the html snippet:
 - datatableId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
@@ -50,7 +50,7 @@ var datatableParameters = {
     priorityColumns: {name: 1, username: 2, email: 3},
     onClick: datatable1Click
 }
-$('#root').dccDatatable(datatableParameters)
+$('#root').ddcDatatable(datatableParameters)
 
 // callback function
 function datatable1Click(this) {
@@ -73,7 +73,7 @@ $.ajax({
             onClick: datatable1Click
         }
 
-        $('#root').dccDatatable(datatableParameters)
+        $('#root').ddcDatatable(datatableParameters)
     }
 })
 

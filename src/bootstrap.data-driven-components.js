@@ -57,7 +57,7 @@
    *
    * @returns {void}
    */
-  $.fn.dccClearAll = function (except) {
+  $.fn.ddcClearAll = function (except) {
     $('.dataTables_wrapper').each(function (index, element) {
       var datatableId = $(this).attr('id').replace('_wrapper', '')
       $('#' + datatableId).dataTable().fnClearTable()
@@ -93,7 +93,7 @@
    *
    * @todo Implement schema based columns configuration
    */
-  $.fn.dccDatatable = function (parameters) {
+  $.fn.ddcDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
     var buttons = myParameters.buttons
     var datatableId = myParameters.datatableId
@@ -106,15 +106,15 @@
     var dataset = null
 
     // if ajax exist in parameters callback this again on ajax success
-    if (_ajax(function (p) { $(this).dccDatatable(p) }, myParameters)) {
+    if (_ajax(function (p) { $(this).ddcDatatable(p) }, myParameters)) {
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    _purgeNode(myParameters.rootId, datatableId, 'row dcc-datatable-row')
+    _purgeNode(myParameters.rootId, datatableId, 'row ddc-datatable-row')
 
     if (!buttons || !priorityColumns || !response) {
-      _messageBox('dccDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
+      _messageBox('ddcDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
       return false
     }
 
@@ -161,7 +161,7 @@
    *
    * @returns {void}
    */
-  $.fn.dccModal = function (modalId, title, message) {
+  $.fn.ddcModal = function (modalId, title, message) {
     var selector = $(this).attr('id')
 
     // empty root element if is present to avoid side effects on refresh
@@ -207,7 +207,7 @@
    *
    * @returns {void}
    */
-  $.fn.dccForm = function (parameters) {
+  $.fn.ddcForm = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
     var formId = myParameters.formId
     var modal = myParameters.modal
@@ -219,7 +219,7 @@
     delete parametersUnresponse.response
 
     // if ajax exist in parameters callback this again on ajax success
-    if (_ajax(function (p) { $(this).dccForm(p) }, myParameters)) {
+    if (_ajax(function (p) { $(this).ddcForm(p) }, myParameters)) {
       return false
     }
 
@@ -232,7 +232,7 @@
     var schema = _getSchema(parameters)
 
     if (!schema.buttons || !schema.fields) {
-      _messageBox('dccForm error', formId + ': buttons and fields parameters are mandatory.')
+      _messageBox('ddcForm error', formId + ': buttons and fields parameters are mandatory.')
       return false
     }
 
@@ -282,7 +282,7 @@
    *
    * @returns {void}
    */
-  $.fn.dccNavbar = function (parameters) {
+  $.fn.ddcNavbar = function (parameters) {
     var selector = $(this).attr('id')
     var navbarId = parameters.navbarId
     var items = parameters.items
@@ -379,7 +379,7 @@
       if (typeof parameters.onClick === 'function') {
         parameters.onClick($(this))
       } else {
-        _messageBox('dccDatatable error', datatableId + ': missing function for click event.')
+        _messageBox('ddcDatatable error', datatableId + ': missing function for click event.')
         return false
       }
     })
@@ -615,7 +615,7 @@
    * @returns {void}
    */
   function _messageBox (title, message) {
-    $('#root').dccModal('responseModal', title, message)
+    $('#root').ddcModal('responseModal', title, message)
     $('#responseModal').modal('show')
   }
 
