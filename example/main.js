@@ -41,8 +41,7 @@ function navbarClick (id) {
           datatableId: 'datatable1',
           ajax: {
             url: 'https://randomuser.me/api/?results=20',
-            responseData: 'results',
-            jsend: false
+            responseData: 'results'
           },
           response: null,
           buttons: [],

@@ -22,6 +22,7 @@
   function _ajax (callback, parameters) {
     if (parameters.ajax) {
       var myParameters = $.extend(true, {}, parameters)
+      myParameters['response'] = myParameters.response || {}
       var options = myParameters.ajax
       delete myParameters.ajax
       
@@ -33,12 +34,15 @@
         _messageBox('Ajax error', error)
       })
       .success(function (response) {
+        
         if (options.jsend && response.status !== 'success') {
           _messageBox('Ajax response', response.message)
         } else if (options.jsend && response.status === 'success') {
           myParameters.response = response
         } else {
+          
           myParameters.response['data'] = response[options.responseData]
+          
         }
         callback(myParameters)
       })
@@ -247,7 +251,7 @@
     rootId = 'root-' + formId
 
     _addFormHeader(rootId, formId, modal)
-    _addInputFields(formId, response, schema, modal)
+    _addInputFields(formId, response, schema)
     _addButtons(rootId, formId, schema.buttons, modal)
 
     if (modal) {
@@ -378,7 +382,7 @@
     })
   }
 
-  function _addInputFields (formId, response, schema, modal) {
+  function _addInputFields (formId, response, schema) {
     var inputGroupAddonParams = []
     var inputGroup = ''
 
@@ -402,8 +406,8 @@
       }
 
       var colClass = value.class || 'col-xs-12'
-      var modalBody = modal ? ' .modal-body' : ''
-      _addInputFieldRow(formId + modalBody, schema, colClass, inputGroup)
+      
+      _addInputFieldRow(formId, schema, colClass, inputGroup)
     })
     
     _addClickCallbacks(formId, inputGroupAddonParams)
@@ -411,19 +415,20 @@
   }
   
   function _addInputFieldRow (selector, schema, colClass, inputGroup) {
-      if (schema.rows) {
-        $('#' + selector)
-          .appendR('<div class="row ddc-input-row">')
-          .appendR('<div class="' + colClass + '">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      } else {
-        $('#' + selector)
-          .appendR('<div class="' + colClass + '">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      }
+    var modalBody = schema.modal ? ' .modal-body' : ''
+    if (schema.rows) {
+      $('#' + selector + modalBody)
+        .appendR('<div class="row ddc-input-row">')
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    } else {
+      $('#' + selector + modalBody)
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
     }
+  }
 
   function _addInputFieldType (type, formId, value) {
     var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
