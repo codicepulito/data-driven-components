@@ -401,23 +401,27 @@
 
       var colClass = value.class || 'col-xs-12'
       var modalBody = modal ? ' .modal-body' : ''
-      if (schema.rows) {
-        $('#' + formId + modalBody)
-          .appendR('<div class="row ddc-input-row">')
-          .appendR('<div class="' + colClass + '">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      } else {
-        $('#' + formId + modalBody)
-          .appendR('<div class="' + colClass + '">')
-          .appendR('<div class="input-group">')
-          .appendR(inputGroup)
-      }
+      _addInputFieldRow(formId + modalBody, schema, colClass, inputGroup)
     })
 
     $.each(inputGroupAddonParams, function (key, value) {
       _addClickCallback(formId, value)
     })
+  }
+  
+  function _addInputFieldRow (selector, schema, colClass, inputGroup) {
+    if (schema.rows) {
+      $('#' + selector)
+        .appendR('<div class="row ddc-input-row">')
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    } else {
+      $('#' + selector)
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    }
   }
 
   function _addInputFieldType (type, formId, value) {
