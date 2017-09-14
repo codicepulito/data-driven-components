@@ -128,9 +128,14 @@
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
-    
-    dataset = response.data || []
-    arrayColumns = dataset[0] || priorityColumns
+
+    if (response.hasOwnProperty('data')) {
+      dataset = response.data
+      arrayColumns = dataset[0]
+    } else {
+      dataset = []
+      arrayColumns = priorityColumns
+    }
 
     var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
 
