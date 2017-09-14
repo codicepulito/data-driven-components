@@ -19,25 +19,36 @@
  */
 
 (function ($) {
-  function _ajax (options, callback, parameters) {
-    $.ajax({
-      url: options.url,
-      method: 'GET'
-    })
-    .error(function (request, status, error) {
-      _messageBox('Ajax error', error)
-    })
-    .success(function (response) {
-      parameters.response = response
+  function _ajax (callback, parameters) {
+    if (parameters.ajax) {
+      var myParameters = $.extend(true, {}, parameters)
+      var options = myParameters.ajax
+      delete myParameters.ajax
+      
+      $.ajax({
+        url: options.url,
+        method: 'GET'
+      })
+      .error(function (request, status, error) {
+        _messageBox('Ajax error', error)
+      })
+      .success(function (response) {
+        myParameters.response = response
 
-      if (options.jsend && response.status !== 'success') {
-        _messageBox('Ajax response', response.message)
-      } else {
-        parameters.response['data'] = response[options.responseData]
-      }
+        if (options.jsend && response.status !== 'success') {
+          _messageBox('Ajax response', response.message)
+        } else if (options.jsend && response.status === 'success') {
+        } else {
+          myParameters.response['data'] = response[options.responseData]
+        }
 
-      callback(parameters)
-    })
+        callback(myParameters)
+      })
+      
+      return true
+    } else {
+      return false
+    }
   }
 
   /**
@@ -90,22 +101,18 @@
     var dom = myParameters.dom || 'Bfrtip'
     var priorityColumns = myParameters.priorityColumns
     var response = myParameters.response
-    var rootId = myParameters.rootId || $(this).attr('id')
+    myParameters['rootId'] =  myParameters.rootId || $(this).attr('id')
 
     var arrayColumns = null
     var dataset = null
 
     // if ajax exist in parameters callback this again on ajax success
-    if (myParameters.ajax) {
-      var ajaxOptions = myParameters.ajax
-      myParameters['rootId'] = $(this).attr('id')
-      delete myParameters.ajax
-      _ajax(ajaxOptions, function (p) { $(this).dccDatatable(p) }, myParameters)
+    if (_ajax(function (p) { $(this).dccDatatable(p) }, myParameters)) {
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    _purgeNode(rootId, datatableId, 'row dcc-datatable-row')
+    _purgeNode(myParameters.rootId, datatableId, 'row dcc-datatable-row')
 
     if (!buttons || !priorityColumns || !response) {
       _messageBox('dccDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
@@ -209,15 +216,23 @@
    * @returns {void}
    */
   $.fn.dccForm = function (parameters) {
-    var rootId = $(this).attr('id')
     var myParameters = $.extend(true, {}, parameters)
     var formId = myParameters.formId
     var modal = myParameters.modal
     var response = myParameters.response
     var schema = null
     var parametersUnresponse = myParameters
+    myParameters['rootId'] =  myParameters.rootId || $(this).attr('id')
+    rootId = myParameters.rootId
 
     delete parametersUnresponse.response
+    
+    // if ajax exist in parameters callback this again on ajax success
+    if (_ajax(function (p) { $(this).dccForm(p) }, myParameters)) {
+      return false
+    }
+    
+    
 
     if (response && response.hasOwnProperty('schema')) {
       schema = $.extend(true, response.schema, parametersUnresponse)
@@ -372,7 +387,7 @@
     $.each(schema.fields, function (key, value) {
       var type = ''
 
-      value['ro'] = (value.readonly) ? ' readonly' : ''
+      value['ro'] = schema.readonly ? ' readonly' : ((value.readonly) ? ' readonly' : '')
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
       inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
@@ -388,14 +403,20 @@
         })
       }
 
-      var rowClass = value.class || 'col-xs-12'
+      var colClass = value.class || 'col-xs-12'
       var modalBody = modal ? ' .modal-body' : ''
-
-      $('#' + formId + modalBody)
-        .appendR('<div class="row ddc-form-row">')
-        .appendR('<div class="' + rowClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
+      if (schema.rows) {
+        $('#' + formId + modalBody)
+          .appendR('<div class="row ddc-input-row">')
+          .appendR('<div class="' + colClass + '">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      } else {
+        $('#' + formId + modalBody)
+          .appendR('<div class="' + colClass + '">')
+          .appendR('<div class="input-group">')
+          .appendR(inputGroup)
+      }
     })
 
     $.each(inputGroupAddonParams, function (key, value) {
