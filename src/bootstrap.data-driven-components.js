@@ -487,26 +487,97 @@
    * Append a bootstrap form with inputs and input-group-addon
    *
    * @param {object} parameters Object with elements required to generate the html snippet:
-   * - formId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - formId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
+   * - ajax: asyncronous function call options
+   * - ajax.jsend: set the {@link https://labs.omniti.com/labs/jsend|jsend} compatibility
+   * - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
+   * - ajax.url: a valid url address
    * - buttons: array of objects [button0, button1, ..., buttonN]  - buttons: array of objects [button0, button1, ..., buttonN]
    * - button0.name: string representing the html button label
-   * - button0.class: valid html class attribute (https://www.w3.org/TR/html5/dom.html#classes)
-   * - button0.id: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - button0.class: valid html class attribute; see {@link https://www.w3.org/TR/html5/dom.html#classes}
+   * - button0.id: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - button0.onClick: function callback called on button clicked
    * - fields: array of objects [field0, field1, ..., fieldN]
-   * - field0.addon: optional array of elements {icon, onClick}
-   * - field0.addon.icon: string without "fa" representing the span class (require Font Awesome http://fontawesome.io/)
+   * - field0.addon: optional array of elements
+   * - field0.addon.icon: string without "fa" representing the span class (require {@link http://fontawesome.io/|Font Awesome})
    * - field0.addon.onClick: function callback called on addon span clicked
    * - field0.class: optional string representing one or more html class attribute
-   *   (https://www.w3.org/TR/html5/dom.html#classes)
+   *   see {@link https://www.w3.org/TR/html5/dom.html#classes}
    * - field0.name: string representing the html input label
    *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - field0.readonly: boolean - if true make field readonly
-   * - field0.type: string - override schema.fields.native_type
+   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
+   *   (lookup require {@link https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox})
    * - modal: optional string render the form in modal with the specified title
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
-   *
    * @returns {void}
+   * 
+   * 
+   * ## Example 1: Form with manual data
+   *
+   *     $('#root').ddcForm({
+   *       formId: 'form1',
+   *       title: 'Form',
+   *       modal: 'Modal Form',
+   *       response: {
+   *           data: [
+   *               {
+   *                 field1: 'value1',
+   *                 field2: 'value2'
+   *               }
+   *           ],
+   *           schema: {
+   *               fields: [
+   *                 {name: "field1", native_type: "varchar"},
+   *                 {name: "field2", native_type: "bool"}
+   *               ]
+   *           }
+   *       },
+   *       fields: [
+   *           {name: "field1", class: 'col-4'},
+   *           {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+   *       ],
+   *       buttons: [
+   *           { name: "Cancel", class: "btn btn-default" },
+   *           { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+   *       ]
+   *     })
+   *
+   *     // callback function for button
+   *     function addFormSend(parameters) {
+   *         console.log(parameters)
+   *     }
+   *     
+   *     // callback function for addon
+   *     function form1Click(this) {
+   *         var id = $(this).attr('id')
+   *         console.log(id)
+   *     }
+   *
+   * ## Example 2: Form with ajax remote data
+   * 
+   *     $('#root').ddcForm({
+   *       formId: 'form1',
+   *       modal: 'Modal 1',
+   *       response: null,
+   *       fields: [
+   *         {name: "field1", type: "string"},
+   *         {
+   *           name: "field2",
+   *           type: "lookup",
+   *           url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
+   *         }
+   *       ],
+   *       buttons: [
+   *         { name: "Cancel", class: "btn btn-default" },
+   *         { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+   *       ]
+   *     })
+   *     
+   *     // callback function for button
+   *     function addFormSend(parameters) {
+   *         console.log(parameters)
+   *     }
    */
   $.fn.ddcForm = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)

@@ -10,6 +10,6 @@ Bootstrap data driven components jquery plugin
 Work in progress...
 -------------------
 - [Datatables](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcDatatable): Append a datatable - http://www.datatables.net/
-- [Form](docs/Form.md): Append a bootstrap form with inputs and input-group-addon
+- [Form](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcForm): Append a bootstrap form with inputs and input-group-addon
 - [Modal](docs/Modal.md): Append a bootstrap modal with title and message.
 - [Navbar](docs/Navbar.md): Append a bootstrap navbar menu with items and dropdown sub-items.
