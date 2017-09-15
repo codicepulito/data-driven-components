@@ -506,13 +506,13 @@
    * - field0.name: string representing the html input label
    *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - field0.readonly: boolean - if true make field readonly
-   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type\s\s
+   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
    *   (lookup require {@link https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox})
    * - modal: optional string render the form in modal with the specified title
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
    * @returns {void}
-   * 
-   * 
+   *
+   *
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -547,7 +547,7 @@
    *     function addFormSend(parameters) {
    *         console.log(parameters)
    *     }
-   *     
+   *
    *     // callback function for addon
    *     function form1Click(this) {
    *         var id = $(this).attr('id')
@@ -555,7 +555,7 @@
    *     }
    *
    * ## Example 2: Form with ajax remote data
-   * 
+   *
    *     $('#root').ddcForm({
    *       formId: 'form1',
    *       modal: 'Modal 1',
@@ -573,7 +573,7 @@
    *         { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
    *       ]
    *     })
-   *     
+   *
    *     // callback function for button
    *     function addFormSend(parameters) {
    *         console.log(parameters)
@@ -628,11 +628,16 @@
   /**
    * Append a bootstrap modal with title and message
    *
-   * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} modalId A valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * @param {string} title The modal title
    * @param {string} message The modal body contains the message
-   *
    * @returns {void}
+   *
+   * ## Example
+   *
+   *     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.');
+   *     $('#modal1').modal('show');
+   *
    */
   $.fn.ddcModal = function (modalId, title, message) {
     var selector = $(this).attr('id')
