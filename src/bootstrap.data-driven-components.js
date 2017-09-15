@@ -95,7 +95,8 @@
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
    * @returns {void}
    * 
-   * ## Example
+   * 
+   * ## Example 1: Datatable with manual data
    * 
    *     $('#root').ddcDatatable({
    *        datatableId: 'datatable1',
@@ -131,7 +132,26 @@
    *      var id = $(this).attr('id')
    *     }
    *     
-   * @todo Implement schema based columns configuration
+   * ## Example 2: Datatable with ajax remote data
+   * 
+   *     $('#root').ddcDatatable({
+   *        datatableId: 'datatable1',
+   *        ajax: {
+   *          url: 'https://randomuser.me/api/?results=20',
+   *          responseData: 'results',
+   *          jsend: false
+   *        },
+   *        response: null,
+   *        buttons: [],
+   *        priorityColumns: {name: 1, username: 2, email: 3},
+   *        onClick: datatable1Click
+   *     })
+   *     
+   *     // callback function
+   *     function datatable1Click(this) {
+   *      var id = $(this).attr('id')
+   *     }
+   *
    */
   $.fn.ddcDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
