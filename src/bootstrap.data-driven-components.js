@@ -56,7 +56,6 @@
    *
    * ## Example
    * 
-   *    // clear all child nodes of selected element
    *    $('#root').ddcClearAll(['navbar1'])
    *    
    * @param {Array} except Array of elements to not empty
