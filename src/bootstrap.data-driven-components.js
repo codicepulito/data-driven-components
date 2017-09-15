@@ -84,15 +84,15 @@
    * -----------------------------------------
    * @param {object} parameters Object with elements required to generate the html snippet:
    * - datatableId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
-   * - buttons: The buttons array defines the buttons that will appear in the document to the end user
-   *   as documented at https://datatables.net/reference/option/buttons.buttons
+   * - buttons: array that defines the buttons that will appear in the document to the end user
+   *   as documented at {@link https://datatables.net/reference/option/buttons.buttons}
    * - dom: String that define the table control elements to appear on the page and in what order
-   *   as documented at https://datatables.net/reference/option/dom
+   *   as documented at {@link https://datatables.net/reference/option/dom}
    * - onClick: function callback called on row's item clicked
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
-   *   it should remove before others as documented at https://datatables.net/extensions/responsive/priority
-   * - response: dataset response object in jsend format with optional schema (columns info)
+   *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
+   * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
    * @returns {void}
    * 
    * ## Example
