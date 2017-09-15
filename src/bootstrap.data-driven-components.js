@@ -19,6 +19,158 @@
  */
 
 (function ($) {
+  function _addButtons (rootId, formId, buttons, modal) {
+    $.each(buttons, function (key, value) {
+      var id = ''
+      if (value.id) {
+        id = ' id="' + value.id + '"'
+      }
+      var modalFooter = modal ? ' .modal-footer' : ''
+      var dataDismiss = modal ? ' data-dismiss="modal"' : ''
+      $('#' + rootId + modalFooter).append(
+        '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
+      )
+
+      _addClickCallbacks(formId, [value])
+    })
+  }
+
+  function _addClickCallbacks (formId, inputGroupAddonParams) {
+    $.each(inputGroupAddonParams, function (key, value) {
+      $('#' + value.id).click(function () {
+        var parameters = _getFormValues(formId)
+        value.onClick(parameters)
+      })
+    })
+  }
+
+  function _addDatatableClickCallbacks (parameters) {
+    var datatableId = parameters.datatableId
+    $('#' + datatableId).on('click', 'button', function () {
+      if (typeof parameters.onClick === 'function') {
+        parameters.onClick($(this))
+      } else {
+        _messageBox('ddcDatatable error', datatableId + ': missing function for click event.')
+        return false
+      }
+    })
+  }
+
+  function _addFormHeader (rootId, formId, modal) {
+    if (modal) {
+      var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
+      $('#' + rootId).append('<div class="modal-header">')
+      $('#' + rootId + ' div').wrap('<div class="modal-content">')
+      $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
+      $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
+      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
+      $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
+      $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+      $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
+    } else {
+      $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
+    }
+  }
+
+  function _addInputFieldRow (selector, schema, colClass, inputGroup) {
+    var modalBody = schema.modal ? ' .modal-body .ddc-row-main' : ''
+    if (schema.rows) {
+      $('#' + selector + modalBody)
+        .appendR('<div class="row ddc-input-row">')
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    } else {
+      $('#' + selector + modalBody)
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    }
+  }
+
+  function _addInputFieldType (type, formId, value) {
+    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+    switch (type) {
+      case 'bool':
+        // checkbox
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
+        break
+      case 'lookup':
+        // combobox
+        inputGroup += '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
+        var data = ''
+        if (value.url) {
+          $.ajax({
+            url: value.url,
+            async: false,
+            dataType: 'json',
+            success: function (response) {
+              data = response.data
+            }
+          })
+        } else {
+          data = value.data
+        }
+        $.each(data, function (key, value) {
+          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
+        })
+        inputGroup += '</select>'
+        break
+//        case 'toggle':
+//          // bootstraptoggle
+//          var dataOff = 'False'
+//          var dataOn = 'True'
+//          var dataWidth = 80
+//
+//          if (value.toggle) {
+//            dataOff = value.toggle.off
+//            dataOn = value.toggle.on
+//            dataWidth = value.toggle.width
+//          }
+//
+//          inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
+//          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
+//          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
+//          break
+      default:
+        // standard input
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        break
+    }
+    return inputGroup
+  }
+
+  function _addInputFields (formId, response, schema) {
+    var inputGroupAddonParams = []
+    var inputGroup = ''
+
+    $.each(schema.fields, function (key, value) {
+      var type = ''
+
+      value['ro'] = _isReadonly(schema, value)
+      type = value.type || value.native_type || ''
+      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
+
+      inputGroup = _addInputFieldType(type, formId, value)
+
+      if (value.addon) {
+        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
+          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+        inputGroupAddonParams.push({
+          id: formId + '-' + value.name + '-' + value.addon.icon,
+          onClick: value.addon.onClick,
+          parameters: response.data
+        })
+      }
+
+      var colClass = value.class || 'col-xs-12'
+
+      _addInputFieldRow(formId, schema, colClass, inputGroup)
+    })
+
+    _addClickCallbacks(formId, inputGroupAddonParams)
+  }
+
   function _ajax (callback, parameters) {
     if (parameters.ajax) {
       var myParameters = $.extend(true, {}, parameters)
@@ -51,13 +203,128 @@
     }
   }
 
+  function _appendPanel (rootId, childId, panel) {
+    if (panel) {
+      $('#' + rootId).appendR('<div class="panel panel-default">')
+        .appendR('<div class="panel-heading">')
+        .appendR('<h3 class="panel-title">' + panel + '</h3>')
+      $('#' + rootId).children().appendR('<div class="col-sm-12">')
+        .appendR('<div class="panel-body" id="root-panel-' + childId + '">')
+      return 'root-panel-' + childId
+    } else {
+      return rootId
+    }
+  }
+
+  function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
+    var columns = []
+    var dataPriority = null
+
+    $.each(arrayColumns, function (key, value) {
+      columns.push({data: key})
+      dataPriority = ''
+      $.each(priorityColumns, function (priorityKey, priorityValue) {
+        if (key === priorityKey) {
+          dataPriority = ' data-priority="' + priorityValue + '"'
+        }
+      })
+      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
+    })
+
+    return columns
+  }
+
+  function _getFormValues (selector) {
+    var parameters = {}
+    $('#' + selector).find('input').each(function (index, element) {
+      var id = $(this).attr('id')
+      if (id) {
+//        // bootstraptoggle patch
+//        if ($(this).attr('class') == 'bootstraptoggle') {
+//          var toggleOn = $(this).parent().attr('class').indexOf("off")
+//          if (toggleOn > 0) {
+//            value = false
+//          } else {
+//            value = true
+//          }
+//        } else {
+//          var value = $(this).val()
+//        }
+        var value = $(this).val()
+        var fieldKey = id.substring(selector.length + 1)
+
+        // combobox patch
+        if (fieldKey.indexOf('undefined') >= 0) {
+          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
+        }
+        parameters[fieldKey] = value
+      }
+    })
+    return parameters
+  }
+
+  function _getSchema (parameters) {
+    var myParameters = $.extend(true, {}, parameters)
+    var parametersUnresponse = myParameters
+    var response = myParameters.response
+    var schema = null
+
+    delete parametersUnresponse.response
+
+    if (response && response.hasOwnProperty('schema')) {
+      schema = $.extend(true, response.schema, parametersUnresponse)
+    } else {
+      schema = parametersUnresponse
+    }
+
+    return schema
+  }
+
+  function _isReadonly (schema, value) {
+    var readonly = ''
+    if (schema.readonly) {
+      readonly = ' readonly'
+    } else {
+      if (value.readonly) {
+        readonly = ' readonly'
+      }
+    }
+    return readonly
+  }
+
+  function _messageBox (title, message) {
+    $('#root').ddcModal('responseModal', title, message)
+    $('#responseModal').modal('show')
+  }
+
+  function _purgeNode (selector, element, classes) {
+    if (classes.indexOf('datatable') > 0) {
+      $('#' + element).dataTable().fnClearTable()
+    }
+    if ($('#root-' + element).length) {
+      $('#root-' + element).empty()
+    } else {
+      $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
+    }
+  }
+
+  // googling with "jquery append recursion"
+  // found solution on Stack Overflow
+  // jquery - How to add items recursively within one another
+  // https://stackoverflow.com/questions/29105469/jquery-how-to-add-items-recursively-within-one-another
+  $.fn.appendR = function (toAppend) {
+    var $toAppend = $(toAppend)
+    this.append($toAppend)
+    return $toAppend
+  }
+
   /**
    * Empty all root nodes except those passed in parameter arrays
    *
    * ## Example
-   * 
+   *
    *     $('#root').ddcClearAll(['navbar1'])
-   * 
+   *
    * @param {Array} except Array of elements to not empty
    * @returns {void}
    */
@@ -98,10 +365,10 @@
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
    * @returns {void}
-   * 
-   * 
+   *
+   *
    * ## Example 1: Datatable with manual data
-   * 
+   *
    *     $('#root').ddcDatatable({
    *        datatableId: 'datatable1',
    *        response: {
@@ -130,14 +397,14 @@
    *        priorityColumns: {name: 1, username: 2, email: 3},
    *        onClick: datatable1Click
    *     })
-   *     
+   *
    *     // callback function
    *     function datatable1Click(this) {
    *      var id = $(this).attr('id')
    *     }
-   *     
+   *
    * ## Example 2: Datatable with ajax remote data
-   * 
+   *
    *     $('#root').ddcDatatable({
    *        datatableId: 'datatable1',
    *        ajax: {
@@ -150,7 +417,7 @@
    *        priorityColumns: {name: 1, username: 2, email: 3},
    *        onClick: datatable1Click
    *     })
-   *     
+   *
    *     // callback function
    *     function datatable1Click(this) {
    *      var id = $(this).attr('id')
@@ -214,36 +481,6 @@
     })
 
     _addDatatableClickCallbacks(myParameters)
-  }
-
-  /**
-   * Append a bootstrap modal with title and message
-   *
-   * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} title The modal title
-   * @param {string} message The modal body contains the message
-   *
-   * @returns {void}
-   */
-  $.fn.ddcModal = function (modalId, title, message) {
-    var selector = $(this).attr('id')
-
-    // empty root element if is present to avoid side effects on refresh
-    _purgeNode(selector, modalId, 'row')
-
-    var rootId = 'root-' + modalId
-
-    var modalDiv = '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog">'
-    $('#' + rootId).append('<div class="modal-header">')
-    $('#' + rootId + ' div').wrap('<div class="modal-content">')
-    $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
-    $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-    $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
-    $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
-    $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
-    $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + title + '</h4>')
-    $('#' + rootId + ' .modal-body').append('<p id="' + modalId + '-body">' + message + '</p>')
-    $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
   }
 
   /**
@@ -317,20 +554,34 @@
   //  $('.bootstraptoggle').bootstrapToggle()
   }
 
-  function _addFormHeader (rootId, formId, modal) {
-    if (modal) {
-      var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
-      $('#' + rootId).append('<div class="modal-header">')
-      $('#' + rootId + ' div').wrap('<div class="modal-content">')
-      $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
-      $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
-      $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
-      $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
-      $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
-    } else {
-      $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
-    }
+  /**
+   * Append a bootstrap modal with title and message
+   *
+   * @param {string} modalId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * @param {string} title The modal title
+   * @param {string} message The modal body contains the message
+   *
+   * @returns {void}
+   */
+  $.fn.ddcModal = function (modalId, title, message) {
+    var selector = $(this).attr('id')
+
+    // empty root element if is present to avoid side effects on refresh
+    _purgeNode(selector, modalId, 'row')
+
+    var rootId = 'root-' + modalId
+
+    var modalDiv = '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog">'
+    $('#' + rootId).append('<div class="modal-header">')
+    $('#' + rootId + ' div').wrap('<div class="modal-content">')
+    $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
+    $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
+    $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
+    $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
+    $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+    $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + title + '</h4>')
+    $('#' + rootId + ' .modal-body').append('<p id="' + modalId + '-body">' + message + '</p>')
+    $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
   }
 
   /**
@@ -410,298 +661,5 @@
       var id = $(this).attr('id')
       onClick(id.substring(navbarId.length))
     })
-  }
-
-  function _addButtons (rootId, formId, buttons, modal) {
-    $.each(buttons, function (key, value) {
-      var id = ''
-      if (value.id) {
-        id = ' id="' + value.id + '"'
-      }
-      var modalFooter = modal ? ' .modal-footer' : ''
-      var dataDismiss = modal ? ' data-dismiss="modal"' : ''
-      $('#' + rootId + modalFooter).append(
-        '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
-      )
-
-      _addClickCallbacks(formId, [value])
-    })
-  }
-
-  function _addClickCallbacks (formId, inputGroupAddonParams) {
-    $.each(inputGroupAddonParams, function (key, value) {
-      $('#' + value.id).click(function () {
-        var parameters = _getFormValues(formId)
-        value.onClick(parameters)
-      })
-    })
-  }
-
-  function _addDatatableClickCallbacks (parameters) {
-    var datatableId = parameters.datatableId
-    $('#' + datatableId).on('click', 'button', function () {
-      if (typeof parameters.onClick === 'function') {
-        parameters.onClick($(this))
-      } else {
-        _messageBox('ddcDatatable error', datatableId + ': missing function for click event.')
-        return false
-      }
-    })
-  }
-
-  function _addInputFields (formId, response, schema) {
-    var inputGroupAddonParams = []
-    var inputGroup = ''
-
-    $.each(schema.fields, function (key, value) {
-      var type = ''
-
-      value['ro'] = _isReadonly(schema, value)
-      type = value.type || value.native_type || ''
-      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-
-      inputGroup = _addInputFieldType(type, formId, value)
-
-      if (value.addon) {
-        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
-        inputGroupAddonParams.push({
-          id: formId + '-' + value.name + '-' + value.addon.icon,
-          onClick: value.addon.onClick,
-          parameters: response.data
-        })
-      }
-
-      var colClass = value.class || 'col-xs-12'
-
-      _addInputFieldRow(formId, schema, colClass, inputGroup)
-    })
-
-    _addClickCallbacks(formId, inputGroupAddonParams)
-  }
-
-  function _addInputFieldRow (selector, schema, colClass, inputGroup) {
-    var modalBody = schema.modal ? ' .modal-body .ddc-row-main' : ''
-    if (schema.rows) {
-      $('#' + selector + modalBody)
-        .appendR('<div class="row ddc-input-row">')
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    } else {
-      $('#' + selector + modalBody)
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    }
-  }
-
-  function _addInputFieldType (type, formId, value) {
-    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-    switch (type) {
-      case 'bool':
-        // checkbox
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
-        break
-      case 'lookup':
-        // combobox
-        inputGroup += '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
-        var data = ''
-        if (value.url) {
-          $.ajax({
-            url: value.url,
-            async: false,
-            dataType: 'json',
-            success: function (response) {
-              data = response.data
-            }
-          })
-        } else {
-          data = value.data
-        }
-        $.each(data, function (key, value) {
-          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
-        })
-        inputGroup += '</select>'
-        break
-//        case 'toggle':
-//          // bootstraptoggle
-//          var dataOff = 'False'
-//          var dataOn = 'True'
-//          var dataWidth = 80
-//
-//          if (value.toggle) {
-//            dataOff = value.toggle.off
-//            dataOn = value.toggle.on
-//            dataWidth = value.toggle.width
-//          }
-//
-//          inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
-//          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
-//          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
-//          break
-      default:
-        // standard input
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
-        break
-    }
-    return inputGroup
-  }
-
-  /**
-   * Create a bootstrap panel to wrap into
-   *
-   * @param {string} rootId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} childId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} panel Define the title of a bootstrap panel to wrap into
-   *
-   * @returns {String}
-   */
-  function _appendPanel (rootId, childId, panel) {
-    if (panel) {
-      $('#' + rootId).appendR('<div class="panel panel-default">')
-        .appendR('<div class="panel-heading">')
-        .appendR('<h3 class="panel-title">' + panel + '</h3>')
-      $('#' + rootId).children().appendR('<div class="col-sm-12">')
-        .appendR('<div class="panel-body" id="root-panel-' + childId + '">')
-      return 'root-panel-' + childId
-    } else {
-      return rootId
-    }
-  }
-
-  // googling with "jquery append recursion"
-  // found solution on Stack Overflow
-  // jquery - How to add items recursively within one another
-  // https://stackoverflow.com/questions/29105469/jquery-how-to-add-items-recursively-within-one-another
-  $.fn.appendR = function (toAppend) {
-    var $toAppend = $(toAppend)
-    this.append($toAppend)
-    return $toAppend
-  }
-
-  /**
-   * Build datatable columns header and return an array to pass as parameter
-   *
-   * @param {string} datatableId A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {Array} arrayColumns An object array that defines the column names
-   * @param {Array} priorityColumns array of elements to set visibility priority to the columns
-   *
-   * @returns {Array} array to pass to datatable as parameter
-   */
-  function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
-    var columns = []
-    var dataPriority = null
-
-    $.each(arrayColumns, function (key, value) {
-      columns.push({data: key})
-      dataPriority = ''
-      $.each(priorityColumns, function (priorityKey, priorityValue) {
-        if (key === priorityKey) {
-          dataPriority = ' data-priority="' + priorityValue + '"'
-        }
-      })
-      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
-    })
-
-    return columns
-  }
-
-  /**
-   * Loop through all instances of input and return a key-value array
-   *
-   * @param {string} selector
-   *
-   * @returns {Array} parameters Key-Value array of input in selector
-   */
-  function _getFormValues (selector) {
-    var parameters = {}
-    $('#' + selector).find('input').each(function (index, element) {
-      var id = $(this).attr('id')
-      if (id) {
-//        // bootstraptoggle patch
-//        if ($(this).attr('class') == 'bootstraptoggle') {
-//          var toggleOn = $(this).parent().attr('class').indexOf("off")
-//          if (toggleOn > 0) {
-//            value = false
-//          } else {
-//            value = true
-//          }
-//        } else {
-//          var value = $(this).val()
-//        }
-        var value = $(this).val()
-        var fieldKey = id.substring(selector.length + 1)
-
-        // combobox patch
-        if (fieldKey.indexOf('undefined') >= 0) {
-          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
-        }
-        parameters[fieldKey] = value
-      }
-    })
-    return parameters
-  }
-
-  function _getSchema (parameters) {
-    var myParameters = $.extend(true, {}, parameters)
-    var parametersUnresponse = myParameters
-    var response = myParameters.response
-    var schema = null
-
-    delete parametersUnresponse.response
-
-    if (response && response.hasOwnProperty('schema')) {
-      schema = $.extend(true, response.schema, parametersUnresponse)
-    } else {
-      schema = parametersUnresponse
-    }
-
-    return schema
-  }
-
-  function _isReadonly (schema, value) {
-    var readonly = ''
-    if (schema.readonly) {
-      readonly = ' readonly'
-    } else {
-      if (value.readonly) {
-        readonly = ' readonly'
-      }
-    }
-    return readonly
-  }
-
-  /**
-   * Show a simple bootstrap modal message box.
-   *
-   * @param {string} title The modal title
-   * @param {string} message The modal body
-   *
-   * @returns {void}
-   */
-  function _messageBox (title, message) {
-    $('#root').ddcModal('responseModal', title, message)
-    $('#responseModal').modal('show')
-  }
-
-  /**
-   * Empty root element if is present to avoid side effects on refresh making the idempotent function
-   *
-   * @param {string} selector A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} element A valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
-   * @param {string} classes A valid html5 class attribute (https://www.w3.org/TR/html5/dom.html#classes)
-   *
-   * @returns {void}
-   */
-  function _purgeNode (selector, element, classes) {
-    if (classes.indexOf('datatable') > 0) {
-      $('#' + element).dataTable().fnClearTable()
-    }
-    if ($('#root-' + element).length) {
-      $('#root-' + element).empty()
-    } else {
-      $('#' + selector).append('<div class="' + classes + '" id="root-' + element + '">')
-    }
   }
 }(window.jQuery))
