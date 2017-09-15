@@ -365,8 +365,7 @@
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
    * @returns {void}
-   *
-   *
+   * * *
    * ## Example 1: Datatable with manual data
    *
    *     $('#root').ddcDatatable({
@@ -402,7 +401,7 @@
    *     function datatable1Click(this) {
    *      var id = $(this).attr('id')
    *     }
-   *
+   * * *
    * ## Example 2: Datatable with ajax remote data
    *
    *     $('#root').ddcDatatable({
@@ -511,8 +510,7 @@
    * - modal: optional string render the form in modal with the specified title
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
    * @returns {void}
-   *
-   *
+   * * *
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -553,7 +551,7 @@
    *         var id = $(this).attr('id')
    *         console.log(id)
    *     }
-   *
+   * * *
    * ## Example 2: Form with ajax remote data
    *
    *     $('#root').ddcForm({
