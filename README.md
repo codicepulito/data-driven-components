@@ -12,4 +12,4 @@ Work in progress...
 - [Datatables](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcDatatable): Append a datatable - http://www.datatables.net/
 - [Form](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcForm): Append a bootstrap form with inputs and input-group-addon
 - [Modal](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcModal): Append a bootstrap modal with title and message.
-- [Navbar](docs/Navbar.md): Append a bootstrap navbar menu with items and dropdown sub-items.
+- [Navbar](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcNavbar): Append a bootstrap navbar menu with items and dropdown sub-items.

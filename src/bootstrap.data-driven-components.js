@@ -670,8 +670,35 @@
    * - item0.name: null as separator or string representing the html value of item visible to the user
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
    * - onClick: function callback called on item/subitem click - callback(item0.id)
-   *
    * @returns {void}
+   *
+   * ## Example
+   *
+   *     // callback function
+   *     function navbarClick(id) {
+   *       if (Number.isInteger(parseInt(id))) {
+   *         alert('click on item ' + id);
+   *       }
+   *     }
+   *
+   *     $(document).ready(function() {
+   *       $('#root').ddcNavbar({
+   *         navbarId: 'navbar1',                // id attribute
+   *         onClick: navbarClick,               // callback
+   *         items: [
+   *           {
+   *             id: null,                       // id attribute
+   *             name: "Item 1",                 // html value visible to the user
+   *             submenu: [
+   *               { id: 1, name: "Subitem 1" },
+   *               { id: null, name: null },     // separator
+   *               { id: 2, name: "Subitem 2" }
+   *             ]
+   *           },
+   *           { id: 3, name: "Item 3" },
+   *         ]
+   *       })
+   *     })
    */
   $.fn.ddcNavbar = function (parameters) {
     var selector = $(this).attr('id')
