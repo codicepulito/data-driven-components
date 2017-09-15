@@ -664,7 +664,7 @@
    * Append a bootstrap navbar menu with items and dropdown sub-items
    *
    * @param {object} parameters Object with elements required to generate the html snippet:
-   * - navbarId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - navbarId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - items: array of objects [item0, item1, ..., itemN]
    * - item0.id: null if it has submenu or valid html5 id attribute
    * - item0.name: null as separator or string representing the html value of item visible to the user
