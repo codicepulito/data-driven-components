@@ -36,7 +36,7 @@
           } else if (options.jsend && response.status === 'success') {
             myParameters.response = response
           } else {
-            myParameters.response['data'] = response[options.responseData]
+            myParameters.response['data'] = response[options.responseDataKey]
           }
           callback(myParameters)
         },
@@ -84,6 +84,10 @@
    * -----------------------------------------
    * @param {object} parameters Object with elements required to generate the html snippet:
    * - datatableId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
+   * - ajax: asyncronous function call flag activation
+   * - ajax.jsend: set the {@link https://labs.omniti.com/labs/jsend|jsend} compatibility
+   * - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
+   * - ajax.url: a valid url address
    * - buttons: array that defines the buttons that will appear in the document to the end user
    *   as documented at {@link https://datatables.net/reference/option/buttons.buttons}
    * - dom: String that define the table control elements to appear on the page and in what order
@@ -138,7 +142,7 @@
    *        datatableId: 'datatable1',
    *        ajax: {
    *          url: 'https://randomuser.me/api/?results=20',
-   *          responseData: 'results',
+   *          responseDataKey: 'results',
    *          jsend: false
    *        },
    *        response: null,
