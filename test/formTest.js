@@ -125,7 +125,7 @@ var formParametersAjaxError = {
   modal: 'Modal 1',
   ajax: {
     url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendError.json',
-    responseData: 'results',
+    responseDataKey: 'results',
     jsend: true
   },
   response: null,

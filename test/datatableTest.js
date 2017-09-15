@@ -31,7 +31,7 @@ var datatableParametersAjax = {
   datatableId: 'datatable1',
   ajax: {
     url: 'https://randomuser.me/api/?results=20',
-    responseData: 'results',
+    responseDataKey: 'results',
     jsend: false
   },
   response: null,
@@ -44,7 +44,7 @@ var datatableParametersAjaxError = {
   datatableId: 'datatable1',
   ajax: {
     url: 'https://example.com',
-    responseData: 'results',
+    responseDataKey: 'results',
     jsend: false
   },
   response: null,
@@ -57,7 +57,7 @@ var datatableParametersAjaxJsendError = {
   datatableId: 'datatable1',
   ajax: {
     url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendError.json',
-    responseData: 'results',
+    responseDataKey: 'results',
     jsend: true
   },
   response: null,
@@ -70,7 +70,7 @@ var datatableParametersAjaxJsendSuccess = {
   datatableId: 'datatable1',
   ajax: {
     url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendSuccess.json',
-    responseData: 'results',
+    responseDataKey: 'results',
     jsend: true
   },
   response: null,
