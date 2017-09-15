@@ -1,0 +1,13 @@
+{
+    "status": "success",
+    "data": [
+        {
+            "value": "value1",
+            "text": "lookup1"
+        },
+        {
+            "value": "value2",
+            "text": "lookup2"
+        }
+    ]
+}

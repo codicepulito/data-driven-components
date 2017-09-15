@@ -19,6 +19,7 @@ module.exports = function(config) {
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/datatables.net/js/*.js',
       'node_modules/datatables.net-responsive/js/*.js',
+      'node_modules/@danielfarrell/bootstrap-combobox/js/bootstrap-combobox.js',
       'src/**/!(*Test).js',
       'test/**/*Test.js'
     ],

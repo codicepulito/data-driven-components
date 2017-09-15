@@ -13,6 +13,7 @@
   "author": "Gianluca Ciarcelluti <gianluca@ciarcelluti.it>",
   "contributors": [],
   "dependencies": {
+    "@danielfarrell/bootstrap-combobox": "^1.1.8",
     "bootstrap": "^3.3.7",
     "datatables.net": "^1.10.16",
     "datatables.net-responsive": "^2.1.1",

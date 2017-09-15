@@ -250,7 +250,7 @@
       $('#' + formId).modal('show')
     }
 
-  //  $('.combobox').combobox('refresh')
+    $('.combobox').combobox('refresh')
   //  $('.bootstraptoggle').bootstrapToggle()
   }
 
@@ -261,7 +261,7 @@
       $('#' + rootId + ' div').wrap('<div class="modal-content">')
       $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
       $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-      $('#' + rootId + ' .modal-content').append('<div class="modal-body">')
+      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
       $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
       $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
       $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
@@ -418,7 +418,7 @@
   }
 
   function _addInputFieldRow (selector, schema, colClass, inputGroup) {
-    var modalBody = schema.modal ? ' .modal-body' : ''
+    var modalBody = schema.modal ? ' .modal-body .ddc-row-main' : ''
     if (schema.rows) {
       $('#' + selector + modalBody)
         .appendR('<div class="row ddc-input-row">')
@@ -440,27 +440,27 @@
         // checkbox
         inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
         break
-//        case 'lookup':
-//          // combobox
-//          inputGroup += '<select id="addAgenziaModalSelectCompagnia" name="normal" class="combobox input-large form-control">\n'
-//          var data = ''
-//          if (value.url) {
-//            $.ajax({
-//              url: value.url,
-//              async: false,
-//              dataType: 'json',
-//              success: function (response) {
-//                data = response.data
-//              }
-//            })
-//          } else {
-//            data = value.data
-//          }
-//          $.each(data, function(key, value) {
-//            inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
-//          })
-//          inputGroup += '</select>'
-//          break
+      case 'lookup':
+        // combobox
+        inputGroup += '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
+        var data = ''
+        if (value.url) {
+          $.ajax({
+            url: value.url,
+            async: false,
+            dataType: 'json',
+            success: function (response) {
+              data = response.data
+            }
+          })
+        } else {
+          data = value.data
+        }
+        $.each(data, function(key, value) {
+          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
+        })
+        inputGroup += '</select>'
+        break
 //        case 'toggle':
 //          // bootstraptoggle
 //          var dataOff = 'False'
@@ -570,10 +570,10 @@
         var value = $(this).val()
         var fieldKey = id.substring(selector.length + 1)
 
-//        // bootstraptoggle patch
-//        if (fieldKey.indexOf('undefined') >= 0) {
-//          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
-//        }
+        // combobox patch
+        if (fieldKey.indexOf('undefined') >= 0) {
+          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
+        }
         parameters[fieldKey] = value
       }
     })
