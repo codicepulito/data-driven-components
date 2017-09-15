@@ -1,6 +1,6 @@
 // form callback function
-function addFormSend (id) {
-  // console.log(id)
+function addFormSend (values) {
+  console.log(values)
 }
 
 // datatable callback function
@@ -71,7 +71,14 @@ function navbarClick (id) {
           modal: 'Modal Form',
           response: formResponse,
           fields: [
-            {name: "field1", class: 'col-4'},
+            {
+              name: "field1",
+              type: "lookup",
+              data: [
+                { value: '001', text: 'lookup1' },
+                { value: '002', text: 'lookup2' }
+              ]
+            },
             {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
           ],
           buttons: [

@@ -238,7 +238,9 @@
     var parameters = {}
     $('#' + selector).find('input').each(function (index, element) {
       var id = $(this).attr('id')
+ 
       if (id) {
+        var value = $(this).val()
 //        // bootstraptoggle patch
 //        if ($(this).attr('class') == 'bootstraptoggle') {
 //          var toggleOn = $(this).parent().attr('class').indexOf("off")
@@ -247,16 +249,19 @@
 //          } else {
 //            value = true
 //          }
-//        } else {
-//          var value = $(this).val()
 //        }
-        var value = $(this).val()
-        var fieldKey = id.substring(selector.length + 1)
+        
+        if ($(this).attr('type') === 'checkbox') {
+          value = $('#' + id + ':checkbox:checked').length > 0 ? true : false
+        }
 
         // combobox patch
+        var fieldKey = id.substring(selector.length + 1)
         if (fieldKey.indexOf('undefined') >= 0) {
-          fieldKey = fieldKey.substring(1).toLowerCase().replace('undefined', '')
+          fieldKey = fieldKey.substring(0).toLowerCase().replace('undefined', '')
+          value = $(this).parent().parent().children().val()
         }
+        
         parameters[fieldKey] = value
       }
     })
@@ -619,8 +624,30 @@
       $('#' + formId).modal('show')
     }
 
-    $('.combobox').combobox('refresh')
+    if ($('.combobox').length) {
+      $('.combobox').combobox('refresh')
+    }
   //  $('.bootstraptoggle').bootstrapToggle()
+  }
+  
+  /**
+   * Get or set a language locale
+   * @param {string} locale Optional language locale setter
+   * @returns {string} Actual language locale
+   *
+   *
+   * ## Example
+   *     $('#root').ddcLocale('it')
+   *
+   */
+  $.fn.ddcLocale = function (locale) {
+    if (!this.data("locale")) {
+      this.data("locale", 'en')
+    }
+    if (locale) {
+      this.data("locale", locale)
+    }
+    return this.data("locale")
   }
 
   /**
@@ -639,7 +666,6 @@
    */
   $.fn.ddcModal = function (modalId, title, message) {
     var selector = $(this).attr('id')
-
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(selector, modalId, 'row')
 
