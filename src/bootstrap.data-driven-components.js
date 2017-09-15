@@ -79,10 +79,11 @@
 
   /**
    * Append a datatable - http://www.datatables.net/
+   * -----------------------------------------------
    * Copyright (c) 2008-2015 SpryMedia Limited
-   *
+   * -----------------------------------------
    * @param {object} parameters Object with elements required to generate the html snippet:
-   * - datatableId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+   * - datatableId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - buttons: The buttons array defines the buttons that will appear in the document to the end user
    *   as documented at https://datatables.net/reference/option/buttons.buttons
    * - dom: String that define the table control elements to appear on the page and in what order
@@ -92,9 +93,44 @@
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others as documented at https://datatables.net/extensions/responsive/priority
    * - response: dataset response object in jsend format with optional schema (columns info)
-   *
    * @returns {void}
-   *
+   * 
+   * ## Example
+   * 
+   *     $('#root').ddcDatatable({
+   *        datatableId: 'datatable1',
+   *        response: {
+   *          data: [
+   *            {
+   *                "id": 1,
+   *                "name": "Leanne Graham",
+   *                "username": "Bret",
+   *                "email": "Sincere@april.biz",
+   *                "phone": "1-770-736-8031 x56442",
+   *                "website": "hildegard.org",
+   *                "edit": "<center><button id=\"1\"></button></center>"
+   *            },
+   *            {
+   *                "id": 2,
+   *                "name": "Ervin Howell",
+   *                "username": "Antonette",
+   *                "email": "Shanna@melissa.tv",
+   *                "phone": "010-692-6593 x09125",
+   *                "website": "anastasia.net",
+   *                "edit": "<center><button id=\"2\"></button></center>"
+   *            }
+   *          ]
+   *        },
+   *        buttons: [],
+   *        priorityColumns: {name: 1, username: 2, email: 3},
+   *        onClick: datatable1Click
+   *     })
+   *     
+   *     // callback function
+   *     function datatable1Click(this) {
+   *      var id = $(this).attr('id')
+   *     }
+   *     
    * @todo Implement schema based columns configuration
    */
   $.fn.ddcDatatable = function (parameters) {

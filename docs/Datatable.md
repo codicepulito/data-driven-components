@@ -7,7 +7,7 @@ Copyright (c) 2008-2015 SpryMedia Limited
 ### Method: ddcDatatable(parameters)
 ### Parameters: {object}
 Object's element required to generate the html snippet:
-- datatableId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+- datatableId: valid html5 id attribute (https://www.w3.org/TR/html5/dom.html#the-id-attribute}
 - buttons: The buttons array defines the buttons that will appear in the document to the end user
   as documented at https://datatables.net/reference/option/buttons.buttons
 - dom: String that define the table control elements to appear on the page and in what order
@@ -22,7 +22,7 @@ Object's element required to generate the html snippet:
 
 Datatable code example with manual dataset:
 ```
-var datatableParameters = {
+$('#root').ddcDatatable({
     datatableId: 'datatable1',
     response: {
       data: [
@@ -49,8 +49,7 @@ var datatableParameters = {
     buttons: [],
     priorityColumns: {name: 1, username: 2, email: 3},
     onClick: datatable1Click
-}
-$('#root').ddcDatatable(datatableParameters)
+})
 
 // callback function
 function datatable1Click(this) {
