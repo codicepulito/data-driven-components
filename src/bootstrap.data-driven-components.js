@@ -456,7 +456,7 @@
         } else {
           data = value.data
         }
-        $.each(data, function(key, value) {
+        $.each(data, function (key, value) {
           inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
         })
         inputGroup += '</select>'

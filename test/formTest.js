@@ -87,11 +87,14 @@ var formParametersWithLookupWithoutResponse = {
   response: null,
   fields: [
     {name: "field1", type: "string"},
-    {name: "field2", type: "lookup",
-    data: [
-      { value: '001', text: 'lookup1' },
-      { value: '002', text: 'lookup2' }
-    ]}
+    {
+      name: "field2",
+      type: "lookup",
+      data: [
+        { value: '001', text: 'lookup1' },
+        { value: '002', text: 'lookup2' }
+      ]
+    }
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -105,8 +108,11 @@ var formParametersWithLookupAjaxWithoutResponse = {
   response: null,
   fields: [
     {name: "field1", type: "string"},
-    {name: "field2", type: "lookup",
-    url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'}
+    {
+      name: "field2",
+      type: "lookup",
+      url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
+    }
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -245,9 +251,16 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(false)
   })
-  
+
   it('create form and check lookup attributes', function () {
     $('#root').ddcForm(formParametersWithLookupWithoutResponse)
+    expect($('[id=form1]').length).toBe(1)
+    expect($('#form1').find('#form1-field1').length).toBe(1)
+    expect($('#form1').find('#form1-field2undefined').length).toBe(1)
+  })
+
+  it('create form and check ajax lookup attributes', function () {
+    $('#root').ddcForm(formParametersWithLookupAjaxWithoutResponse)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field1').length).toBe(1)
     expect($('#form1').find('#form1-field2undefined').length).toBe(1)
