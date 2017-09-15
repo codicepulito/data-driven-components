@@ -55,9 +55,9 @@
    * Empty all root nodes except those passed in parameter arrays
    *
    * ## Example
-   * 
+   * ```
    *    $('#root').ddcClearAll(['navbar1'])
-   *    
+   * ```
    * @param {Array} except Array of elements to not empty
    * @returns {void}
    */
