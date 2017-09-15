@@ -492,7 +492,7 @@
    * - ajax.jsend: set the {@link https://labs.omniti.com/labs/jsend|jsend} compatibility
    * - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
    * - ajax.url: a valid url address
-   * - buttons: array of objects [button0, button1, ..., buttonN]  - buttons: array of objects [button0, button1, ..., buttonN]
+   * - buttons: array of objects [button0, button1, ..., buttonN]
    * - button0.name: string representing the html button label
    * - button0.class: valid html class attribute; see {@link https://www.w3.org/TR/html5/dom.html#classes}
    * - button0.id: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
@@ -506,7 +506,7 @@
    * - field0.name: string representing the html input label
    *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - field0.readonly: boolean - if true make field readonly
-   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
+   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type\s\s
    *   (lookup require {@link https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox})
    * - modal: optional string render the form in modal with the specified title
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
