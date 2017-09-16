@@ -25,5 +25,9 @@ Installation
 ------------
 Just put the library with his dependancies in you [index.html](example/index.html) page as described in the example's folder.
 
+Demo
+----
+(https://codicepulito.github.io/data-driven-components/)
+
 Documentation
 -------------
