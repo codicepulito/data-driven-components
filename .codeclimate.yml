@@ -13,5 +13,7 @@ ratings:
   paths:
   - "src/*"
 exclude_paths:
+  - docs/**/*
   - example/**/*
+  - test/**/*
   
