@@ -105,7 +105,24 @@ function navbarClick (id) {
           ],
           buttons: [
               { name: "Cancel", class: "btn btn-default" },
-              { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+              { name: "Add", class: "btn btn-primary", id: 'addForm1Send', onClick: addFormSend }
+          ]
+        })
+        $('#root').ddcForm({
+          formId: 'form2',
+          panel: 'Form with ajax remote data',
+          response: null,
+          fields: [
+            {name: "field1", type: "string"},
+            {
+              name: "field2",
+              type: "lookup",
+              url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
+            }
+          ],
+          buttons: [
+            { name: "Cancel", class: "btn btn-default" },
+            { name: "Add", class: "btn btn-primary", id: 'addForm2Send', onClick: addFormSend }
           ]
         })
         break

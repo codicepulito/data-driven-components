@@ -386,8 +386,8 @@
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
-   * @returns {void}  
-   *
+   * @returns {void}
+   *   
    * ## Example 1: Datatable with manual data
    *
    *     $('#root').ddcDatatable({
@@ -533,8 +533,8 @@
    * - modal: optional string render the form in modal with the specified title
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
-   * @returns {void}  
-   *
+   * @returns {void}
+   *   
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -617,12 +617,6 @@
       return false
     }
 
-//    if (response && response.hasOwnProperty('schema')) {
-//      schema = $.extend(true, response.schema, parametersUnresponse)
-//    } else {
-//      schema = parametersUnresponse
-//    }
-
     var schema = _getSchema(parameters)
 
     if (!schema.buttons || !schema.fields) {
@@ -633,6 +627,7 @@
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(rootId, formId, 'row')
 
+    rootId = 'root-' + formId
     rootId = _appendPanel(rootId, formId, myParameters.panel)
 
     _addFormHeader(rootId, formId, modal)
