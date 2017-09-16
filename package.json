@@ -21,6 +21,7 @@
     "jasmine-core": "*",
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.2.1",
+    "jsdox": "^0.4.10",
     "karma": "*",
     "karma-coverage": "*",
     "karma-jasmine": "^1.1.0",

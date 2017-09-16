@@ -387,7 +387,8 @@
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
    * @returns {void}
-   *   
+   *
+   *
    * ## Example 1: Datatable with manual data
    *
    *     $('#root').ddcDatatable({
@@ -534,7 +535,8 @@
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
    * @returns {void}
-   *   
+   *
+   *
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -672,6 +674,7 @@
    * @param {string} message The modal body contains the message
    * @returns {void}
    *
+   *
    * ## Example
    *
    *     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.');
@@ -709,6 +712,7 @@
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
    * - onClick: function callback called on item/subitem click - callback(item0.id)
    * @returns {void}
+   *
    *
    * ## Example
    *
