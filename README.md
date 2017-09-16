@@ -75,7 +75,9 @@ Copyright (c) 2008-2015 SpryMedia Limited
   it should remove before others; see [https://datatables.net/extensions/responsive/priority](https://datatables.net/extensions/responsive/priority)
 - response: dataset response object in [https://labs.omniti.com/labs/jsend|jsend](https://labs.omniti.com/labs/jsend|jsend) format with optional schema (columns info)
 
-**Returns**: `void`, ## Example 1: Datatable with manual data
+**Returns**: `void`, <br>
+
+## Example 1: Datatable with manual data
 
     $('#root').ddcDatatable({
        datatableId: 'datatable1',
@@ -164,7 +166,9 @@ Append a bootstrap form with inputs and input-group-addon
 - panel: string that define the title of a bootstrap panel to wrap into
 - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
 
-**Returns**: `void`, ## Example 1: Form with manual data
+**Returns**: `void`, <br>
+
+## Example 1: Form with manual data
 
     $('#root').ddcForm({
       formId: 'form1',
@@ -239,8 +243,7 @@ Get or set a language locale
 
 **locale**: `string`, Optional language locale setter
 
-**Returns**: `string`, Actual language locale
-
+**Returns**: `string`, Actual language locale<br>
 
 ## Example
     $('#root').ddcLocale('it')
@@ -258,7 +261,9 @@ Append a bootstrap modal with title and message
 
 **message**: `string`, The modal body contains the message
 
-**Returns**: `void`, ## Example
+**Returns**: `void`, <br>
+
+## Example
 
     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.');
     $('#modal1').modal('show');
@@ -278,7 +283,9 @@ Append a bootstrap navbar menu with items and dropdown sub-items
 - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
 - onClick: function callback called on item/subitem click - callback(item0.id)
 
-**Returns**: `void`, ## Example
+**Returns**: `void`, <br>
+
+## Example
 
     // callback function
     function navbarClick(id) {

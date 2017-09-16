@@ -386,8 +386,8 @@
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
-   * @returns {void}
-   * * *
+   * @returns {void}<br>
+   *
    * ## Example 1: Datatable with manual data
    *
    *     $('#root').ddcDatatable({
@@ -533,8 +533,8 @@
    * - modal: optional string render the form in modal with the specified title
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
-   * @returns {void}
-   * * *
+   * @returns {void}<br>
+   *
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -647,8 +647,7 @@
   /**
    * Get or set a language locale
    * @param {string} locale Optional language locale setter
-   * @returns {string} Actual language locale
-   *
+   * @returns {string} Actual language locale<br>
    *
    * ## Example
    *     $('#root').ddcLocale('it')
@@ -670,8 +669,7 @@
    * @param {string} modalId A valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * @param {string} title The modal title
    * @param {string} message The modal body contains the message
-   * @returns {void}
-   *
+   * @returns {void}<br>
    *
    * ## Example
    *
@@ -709,8 +707,7 @@
    * - item0.name: null as separator or string representing the html value of item visible to the user
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
    * - onClick: function callback called on item/subitem click - callback(item0.id)
-   * @returns {void}
-   *
+   * @returns {void}<br>
    *
    * ## Example
    *
