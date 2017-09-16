@@ -27,7 +27,7 @@ Just put the library with his dependancies in you [index.html](example/index.htm
 
 Demo
 ----
-(https://codicepulito.github.io/data-driven-components/)
+https://codicepulito.github.io/data-driven-components
 
 Documentation
 -------------
