@@ -31,3 +31,6 @@ The following libraries are required for DDC to function properly:
 Installation
 ------------
 Just put the library with his dependancies in you [index.html](example/index.html) page as described in the example's folder.
+
+Documentation
+-------------
