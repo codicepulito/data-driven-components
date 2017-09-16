@@ -29,9 +29,9 @@
     "phantomjs-prebuilt": "*"
   },
   "scripts": {
-    "pretest": "jsdox --output docs src",
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "posttest": "cat docs/introduction.md docs/bootstrap.data-driven-components.md > README.md"
+    "prebuild-docs": "jsdox --output docs src",
+    "build-docs": "cat docs/introduction.md docs/bootstrap.data-driven-components.md > README.md"
   },
   "standard": {
     "globals": [
