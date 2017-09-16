@@ -1,10 +1,19 @@
 describe('language locale setter and getter', function () {
   it('check default language is en', function () {
-    expect($('#root').ddcLocale()).toBe('en')
+    var locale = $('#root').ddcLocale()
+    expect(locale.code).toBe('en')
+    expect(locale.language).toBe('English')
   })
 
   it('change language to it', function () {
-    $('#root').ddcLocale('it')
-    expect($('#root').ddcLocale()).toBe('it')
+    var locale = $('#root').ddcLocale('it')
+    expect(locale.code).toBe('it')
+    expect(locale.language).toBe('Italian')
+  })
+  
+  it('change language to non existent', function () {
+    var locale = $('#root').ddcLocale('zz')
+    expect(locale.code).toBe('en')
+    expect(locale.language).toBe('English')
   })
 })

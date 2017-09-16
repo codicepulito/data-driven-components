@@ -236,20 +236,9 @@
   }
 
   function _getDatatableLanguage (selector) {
-    var language = ''
-    var locale = $('#' + selector).ddcLocale() || 'en'
+    var locale = $('#' + selector).ddcLocale()
 
-    switch (locale) {
-      case 'en':
-        language = '//cdn.datatables.net/plug-ins/1.10.16/i18n/English.json'
-        break
-      case 'it':
-        language = '//cdn.datatables.net/plug-ins/1.10.16/i18n/Italian.json'
-        break
-      default:
-    }
-
-    return language
+    return '//cdn.datatables.net/plug-ins/1.10.16/i18n/' + locale.language + '.json'
   }
 
   function _getFormValues (selector) {
@@ -588,7 +577,7 @@
    *         console.log(id)
    *     }
    *
-   * ## Example 2: Form with ajax remote data
+   * ## Example 2: Form with lookup ajax remote data
    *
    *     $('#root').ddcForm({
    *       formId: 'form1',
@@ -660,20 +649,80 @@
   /**
    * Get or set a language locale
    * @param {string} locale Optional language locale setter
-   * @returns {string} Actual language locale<br>
+   * @returns {Array} Actual country code and language locale<br>
    *
    * ## Example
    *     $('#root').ddcLocale('it')
    *
    */
   $.fn.ddcLocale = function (locale) {
+    const codes = {
+      'sq': 'Albanian',
+      'ar': 'Arabic',
+      'hy': 'Armenian',
+      'az': 'Azerbaijan',
+      'eu': 'Basque',
+      'bg': 'Bulgarian',
+      'ca': 'Catalan',
+      'zh-TW': 'Chinese-traditional',
+      'zh-CN': 'Chinese',
+      'hr': 'Croatian',
+      'cs': 'Czech',
+      'da': 'Danish',
+      'nl': 'Dutch',
+      'en': 'English',
+      'et': 'Estonian',
+      'fi': 'Finnish',
+      'fr': 'French',
+      'gl': 'Galician',
+      'de': 'German',
+      'el': 'Greek',
+      'he': 'Hebrew',
+      'hi': 'Hindi',
+      'hu': 'Hungarian',
+      'is': 'Icelandic',
+      'id': 'Indonesian',
+      'it': 'Italian',
+      'ja': 'Japanese',
+      'kk': 'Kazakh',
+      'ko': 'Korean',
+      'lt': 'Lithuanian',
+      'mk': 'Macedonian',
+      'ms': 'Malay',
+      'mn': 'Mongolian',
+      'nb': 'Norwegian-Bokmal',
+      'fa': 'Persian',
+      'pl': 'Polish',
+      'pt': 'Portuguese',
+      'ro': 'Romanian',
+      'ru': 'Russian',
+      'si': 'Sinhala',
+      'sk': 'Slovak',
+      'sl': 'Slovenian',
+      'en': 'Spanish',
+      'sw': 'Swahili',
+      'sv': 'Swedish',
+      'ta': 'Tamil',
+      'th': 'Thai',
+      'tr': 'Turkish',
+      'uk': 'Ukrainian',
+      'uz-cyril': 'Uzbek',
+      'vi': 'Vietnamese',
+      'cy': 'Welsh',
+    }
+    
+    var code = codes[locale] ? locale : 'en'
+    var language = codes[locale] || 'English'
+
     if (!this.data('locale')) {
       this.data('locale', 'en')
     }
+    
     if (locale) {
       this.data('locale', locale)
     }
-    return this.data('locale')
+
+    return {code: code, language: language}
   }
 
   /**

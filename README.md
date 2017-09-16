@@ -226,7 +226,7 @@ Append a bootstrap form with inputs and input-group-addon
         console.log(id)
     }
 
-## Example 2: Form with ajax remote data
+## Example 2: Form with lookup ajax remote data
 
     $('#root').ddcForm({
       formId: 'form1',
@@ -261,7 +261,7 @@ Get or set a language locale
 
 **locale**: `string`, Optional language locale setter
 
-**Returns**: `string`, Actual language locale<br>
+**Returns**: `Array`, Actual country code and language locale<br>
 
 ## Example
     $('#root').ddcLocale('it')

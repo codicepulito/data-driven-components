@@ -30,6 +30,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
+    "posttest": "cp src/bootstrap.data-driven-components.js docs/bootstrap.data-driven-components.js",
     "prebuild-docs": "jsdox --output docs src",
     "build-docs": "cat docs/introduction.md docs/bootstrap.data-driven-components.md > README.md"
   },
