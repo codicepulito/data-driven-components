@@ -7,13 +7,6 @@ Bootstrap data driven components jquery plugin
 [![Issue Count](https://codeclimate.com/github/codicepulito/data-driven-components/badges/issue_count.svg)](https://codeclimate.com/github/codicepulito/data-driven-components)
 [![API Doc](https://doclets.io/codicepulito/data-driven-components/master.svg)](https://doclets.io/codicepulito/data-driven-components/master)
 
-Work in progress...
--------------------
-- [Datatables](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcDatatable): Append a datatable - http://www.datatables.net/
-- [Form](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcForm): Append a bootstrap form with inputs and input-group-addon
-- [Modal](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcModal): Append a bootstrap modal with title and message.
-- [Navbar](https://doclets.io/codicepulito/data-driven-components/master#dl---fn-ddcNavbar): Append a bootstrap navbar menu with items and dropdown sub-items.
-
 Introduction
 ------------
 Data Driven Components (briefly DDC) is a javascript jquery plugin that simplify data handling component building through easy and flexible options definitions.
