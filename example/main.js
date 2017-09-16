@@ -39,25 +39,73 @@ function navbarClick (id) {
       case 1: // Datatable
         $('#root').ddcDatatable({
           datatableId: 'datatable1',
+          panel: 'Datatable with manual data',
+          response: {
+            data: [
+              {
+                  "id": 1,
+                  "name": "Leanne Graham",
+                  "username": "Bret",
+                  "email": "Sincere@april.biz",
+                  "phone": "1-770-736-8031 x56442",
+                  "website": "hildegard.org",
+                  "edit": "<center><button id=\"1\"></button></center>"
+              },
+              {
+                  "id": 2,
+                  "name": "Ervin Howell",
+                  "username": "Antonette",
+                  "email": "Shanna@melissa.tv",
+                  "phone": "010-692-6593 x09125",
+                  "website": "anastasia.net",
+                  "edit": "<center><button id=\"2\"></button></center>"
+              }
+            ]
+          },
+          buttons: [],
+          priorityColumns: {name: 1, username: 2, email: 3},
+          onClick: datatable1Click
+        })
+        $('#root').ddcDatatable({
+          datatableId: 'datatable2',
+          panel: 'Datatable with ajax remote data',
           ajax: {
             url: 'https://randomuser.me/api/?results=20',
-            responseDataKey: 'results'
+            responseDataKey: 'results',
+            jsend: false
           },
           response: null,
           buttons: [],
-          priorityColumns: {email: 1, gender: 2, phone: 3, cell: 4, nat: 5, registered: 6, dob: 7},
+          priorityColumns: {name: 1, username: 2, email: 3},
           onClick: datatable1Click
         })
         break
       case 2: // Form
         $('#root').ddcForm({
           formId: 'form1',
-          response: formResponse,
+          title: 'Form',
+          panel: 'Form with manual data',
+          response: {
+              data: [
+                  {
+                    field1: 'value1',
+                    field2: 'value2'
+                  }
+              ],
+              schema: {
+                  fields: [
+                    {name: "field1", native_type: "varchar"},
+                    {name: "field2", native_type: "bool"}
+                  ]
+              }
+          },
           fields: [
-            {name: "field1", type: "string", readonly: "true"}
+              {name: "field1", class: 'col-4'},
+              {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
           ],
           buttons: [
-            { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+              { name: "Cancel", class: "btn btn-default" },
+              { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
           ]
         })
         break

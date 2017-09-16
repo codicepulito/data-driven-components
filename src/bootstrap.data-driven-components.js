@@ -233,6 +233,23 @@
 
     return columns
   }
+  
+  function _getDatatableLanguage (selector) {
+    var language = ''
+    var locale = $('#' + selector).ddcLocale() || 'en'
+    
+    switch (locale) {
+      case 'en':
+        language = '//cdn.datatables.net/plug-ins/1.10.16/i18n/English.json'
+        break
+      case 'it':
+        language = '//cdn.datatables.net/plug-ins/1.10.16/i18n/Italian.json'
+        break
+      default:
+    }
+
+    return language
+  }
 
   function _getFormValues (selector) {
     var parameters = {}
@@ -369,8 +386,8 @@
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
-   * @returns {void}
-   * * *
+   * @returns {void}  
+   *
    * ## Example 1: Datatable with manual data
    *
    *     $('#root').ddcDatatable({
@@ -406,7 +423,7 @@
    *     function datatable1Click(this) {
    *      var id = $(this).attr('id')
    *     }
-   * * *
+   *
    * ## Example 2: Datatable with ajax remote data
    *
    *     $('#root').ddcDatatable({
@@ -472,13 +489,14 @@
     }
 
     var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
+    var languageUrl = _getDatatableLanguage(myParameters.rootId)
 
     $('#' + datatableId).DataTable({
       dom: dom,
       buttons: buttons,
       responsive: true,
       language: {
-        url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Italian.json'
+        url: languageUrl
       },
       data: dataset,
       columns: columns
@@ -513,9 +531,10 @@
    * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
    *   (lookup require {@link https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox})
    * - modal: optional string render the form in modal with the specified title
+   * - panel: string that define the title of a bootstrap panel to wrap into
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
-   * @returns {void}
-   * * *
+   * @returns {void}  
+   *
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
@@ -556,7 +575,7 @@
    *         var id = $(this).attr('id')
    *         console.log(id)
    *     }
-   * * *
+   *
    * ## Example 2: Form with ajax remote data
    *
    *     $('#root').ddcForm({
@@ -614,7 +633,7 @@
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(rootId, formId, 'row')
 
-    rootId = 'root-' + formId
+    rootId = _appendPanel(rootId, formId, myParameters.panel)
 
     _addFormHeader(rootId, formId, modal)
     _addInputFields(formId, response, schema)
@@ -641,13 +660,13 @@
    *
    */
   $.fn.ddcLocale = function (locale) {
-    if (!this.data("locale")) {
-      this.data("locale", 'en')
+    if (!this.data('locale')) {
+      this.data('locale', 'en')
     }
     if (locale) {
-      this.data("locale", locale)
+      this.data('locale', locale)
     }
-    return this.data("locale")
+    return this.data('locale')
   }
 
   /**

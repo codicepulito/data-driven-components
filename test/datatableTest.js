@@ -303,4 +303,10 @@ describe('create datatable component', function () {
     $('#root').ddcDatatable(datatableParametersWithoutPriorityColumns)
     expect($('[id=responseModal]').length).toBe(1)
   })
+  
+  it('check locale setting', function () {
+    $('#root').ddcLocale('it')
+    $('#root').ddcDatatable(datatableParameters)
+    expect($('[id=responseModal]').length).toBe(1)
+  })
 })

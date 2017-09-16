@@ -46,8 +46,7 @@ Copyright (c) 2008-2015 SpryMedia Limited
   it should remove before others; see [https://datatables.net/extensions/responsive/priority](https://datatables.net/extensions/responsive/priority)
 - response: dataset response object in [https://labs.omniti.com/labs/jsend|jsend](https://labs.omniti.com/labs/jsend|jsend) format with optional schema (columns info)
 
-**Returns**: `void`, * *
-## Example 1: Datatable with manual data
+**Returns**: `void`, ## Example 1: Datatable with manual data
 
     $('#root').ddcDatatable({
        datatableId: 'datatable1',
@@ -82,7 +81,7 @@ Copyright (c) 2008-2015 SpryMedia Limited
     function datatable1Click(this) {
      var id = $(this).attr('id')
     }
-* *
+
 ## Example 2: Datatable with ajax remote data
 
     $('#root').ddcDatatable({
@@ -133,10 +132,10 @@ Append a bootstrap form with inputs and input-group-addon
 - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
   (lookup require [https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox](https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox))
 - modal: optional string render the form in modal with the specified title
+- panel: string that define the title of a bootstrap panel to wrap into
 - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
 
-**Returns**: `void`, * *
-## Example 1: Form with manual data
+**Returns**: `void`, ## Example 1: Form with manual data
 
     $('#root').ddcForm({
       formId: 'form1',
@@ -176,7 +175,7 @@ Append a bootstrap form with inputs and input-group-addon
         var id = $(this).attr('id')
         console.log(id)
     }
-* *
+
 ## Example 2: Form with ajax remote data
 
     $('#root').ddcForm({
@@ -201,6 +200,21 @@ Append a bootstrap form with inputs and input-group-addon
     function addFormSend(parameters) {
         console.log(parameters)
     }
+
+
+### ddcLocale(locale) 
+
+Get or set a language locale
+
+**Parameters**
+
+**locale**: `string`, Optional language locale setter
+
+**Returns**: `string`, Actual language locale
+
+
+## Example
+    $('#root').ddcLocale('it')
 
 
 ### ddcModal(modalId, title, message) 
