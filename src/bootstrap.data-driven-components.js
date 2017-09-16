@@ -236,7 +236,7 @@
   }
 
   function _getDatatableLanguage (selector) {
-    var locale = $('#' + selector).ddcLocale()
+    var locale = $('#' + selector).ddcLocale($('#' + selector).data('locale'))
 
     return '//cdn.datatables.net/plug-ins/1.10.16/i18n/' + locale.language + '.json'
   }
@@ -708,7 +708,7 @@
       'uk': 'Ukrainian',
       'uz-cyril': 'Uzbek',
       'vi': 'Vietnamese',
-      'cy': 'Welsh',
+      'cy': 'Welsh'
     }
     
     var code = codes[locale] ? locale : 'en'
