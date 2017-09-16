@@ -1,5 +1,17 @@
+---
+engines:
+  rubocop:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - "javascript"
+  shellcheck:
+    enabled: true
 ratings:
   paths:
-  - src/**
+  - "src/*"
 exclude_paths:
-- example/*
+  - example/**/*
+  
