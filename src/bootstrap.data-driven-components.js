@@ -63,7 +63,7 @@
       $('#' + rootId + ' div').wrap('<div class="modal-content">')
       $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
       $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
+      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main container">')
       $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
       $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
       $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
@@ -93,7 +93,8 @@
     switch (type) {
       case 'bool':
         // checkbox
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + '>\n'
+        var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
         break
       case 'lookup':
         // combobox
@@ -233,11 +234,11 @@
 
     return columns
   }
-  
+
   function _getDatatableLanguage (selector) {
     var language = ''
     var locale = $('#' + selector).ddcLocale() || 'en'
-    
+
     switch (locale) {
       case 'en':
         language = '//cdn.datatables.net/plug-ins/1.10.16/i18n/English.json'
@@ -255,7 +256,7 @@
     var parameters = {}
     $('#' + selector).find('input').each(function (index, element) {
       var id = $(this).attr('id')
- 
+
       if (id) {
         var value = $(this).val()
 //        // bootstraptoggle patch
@@ -267,9 +268,9 @@
 //            value = true
 //          }
 //        }
-        
+
         if ($(this).attr('type') === 'checkbox') {
-          value = $('#' + id + ':checkbox:checked').length > 0 ? true : false
+          value = $('#' + id + ':checkbox:checked').length > 0
         }
 
         // combobox patch
@@ -278,7 +279,7 @@
           fieldKey = fieldKey.substring(0).toLowerCase().replace('undefined', '')
           value = $(this).parent().parent().children().val()
         }
-        
+
         parameters[fieldKey] = value
       }
     })
@@ -538,30 +539,41 @@
    * ## Example 1: Form with manual data
    *
    *     $('#root').ddcForm({
-   *       formId: 'form1',
+   *       formId: 'form2',
    *       title: 'Form',
-   *       modal: 'Modal Form',
+   *       panel: 'Form with manual data',
    *       response: {
    *           data: [
    *               {
    *                 field1: 'value1',
-   *                 field2: 'value2'
+   *                 field2: 'value2',
+   *                 field3: true
    *               }
    *           ],
    *           schema: {
    *               fields: [
    *                 {name: "field1", native_type: "varchar"},
-   *                 {name: "field2", native_type: "bool"}
+   *                 {name: "field2", native_type: "varchar"},
+   *                 {name: "field3", native_type: "bool"}
    *               ]
    *           }
    *       },
    *       fields: [
-   *           {name: "field1", class: 'col-4'},
-   *           {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+   *           {
+   *             name: "field1",
+   *             class: 'col-4',
+   *             type: "lookup",
+   *             data: [
+   *               { value: '001', text: 'lookupform1' },
+   *               { value: '002', text: 'lookupform2' }
+   *             ]
+   *           },
+   *           {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
+   *           {name: "field3", class: 'col-4'}
    *       ],
    *       buttons: [
    *           { name: "Cancel", class: "btn btn-default" },
-   *           { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+   *           { name: "Add", class: "btn btn-primary", id: 'addForm2Send', onClick: addFormSend }
    *       ]
    *     })
    *
@@ -580,19 +592,20 @@
    *
    *     $('#root').ddcForm({
    *       formId: 'form1',
-   *       modal: 'Modal 1',
+   *       panel: 'Form with ajax remote data',
    *       response: null,
    *       fields: [
-   *         {name: "field1", type: "string"},
    *         {
-   *           name: "field2",
+   *           name: "field1",
    *           type: "lookup",
    *           url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
-   *         }
+   *         },
+   *         {name: "field2", type: "string"},
+   *         {name: "field3", type: "bool"}
    *       ],
    *       buttons: [
    *         { name: "Cancel", class: "btn btn-default" },
-   *         { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+   *         { name: "Add", class: "btn btn-primary", id: 'addForm1Send', onClick: addFormSend }
    *       ]
    *     })
    *
@@ -638,12 +651,12 @@
       $('#' + formId).modal('show')
     }
 
-    if ($('.combobox').length) {
-      $('.combobox').combobox('refresh')
-    }
-  //  $('.bootstraptoggle').bootstrapToggle()
+    // refresh combobox input in order to correctly display
+    $('#' + formId).find('select.combobox').combobox('refresh')
+
+    //  $('.bootstraptoggle').bootstrapToggle()
   }
-  
+
   /**
    * Get or set a language locale
    * @param {string} locale Optional language locale setter

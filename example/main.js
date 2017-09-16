@@ -83,46 +83,58 @@ function navbarClick (id) {
       case 2: // Form
         $('#root').ddcForm({
           formId: 'form1',
+          panel: 'Form with ajax remote data',
+          response: null,
+          fields: [
+            {
+              name: "field1",
+              type: "lookup",
+              url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
+            },
+            {name: "field2", type: "string"},
+            {name: "field3", type: "bool"}
+          ],
+          buttons: [
+            { name: "Cancel", class: "btn btn-default" },
+            { name: "Add", class: "btn btn-primary", id: 'addForm1Send', onClick: addFormSend }
+          ]
+        })
+        $('#root').ddcForm({
+          formId: 'form2',
           title: 'Form',
           panel: 'Form with manual data',
           response: {
               data: [
                   {
                     field1: 'value1',
-                    field2: 'value2'
+                    field2: 'value2',
+                    field3: true
                   }
               ],
               schema: {
                   fields: [
                     {name: "field1", native_type: "varchar"},
-                    {name: "field2", native_type: "bool"}
+                    {name: "field2", native_type: "varchar"},
+                    {name: "field3", native_type: "bool"}
                   ]
               }
           },
           fields: [
-              {name: "field1", class: 'col-4'},
-              {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+              {
+                name: "field1",
+                class: 'col-4',
+                type: "lookup",
+                data: [
+                  { value: '001', text: 'lookupform1' },
+                  { value: '002', text: 'lookupform2' }
+                ]
+              },
+              {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
+              {name: "field3", class: 'col-4'}
           ],
           buttons: [
               { name: "Cancel", class: "btn btn-default" },
-              { name: "Add", class: "btn btn-primary", id: 'addForm1Send', onClick: addFormSend }
-          ]
-        })
-        $('#root').ddcForm({
-          formId: 'form2',
-          panel: 'Form with ajax remote data',
-          response: null,
-          fields: [
-            {name: "field1", type: "string"},
-            {
-              name: "field2",
-              type: "lookup",
-              url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
-            }
-          ],
-          buttons: [
-            { name: "Cancel", class: "btn btn-default" },
-            { name: "Add", class: "btn btn-primary", id: 'addForm2Send', onClick: addFormSend }
+              { name: "Add", class: "btn btn-primary", id: 'addForm2Send', onClick: addFormSend }
           ]
         })
         break
@@ -135,6 +147,7 @@ function navbarClick (id) {
           formId: 'form1',
           modal: 'Modal Form',
           response: formResponse,
+          rows: true,
           fields: [
             {
               name: "field1",
@@ -144,7 +157,8 @@ function navbarClick (id) {
                 { value: '002', text: 'lookup2' }
               ]
             },
-            {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+            {name: "field2", class: 'col-xs-12', type: 'string', addon: { icon: 'reply', onClick: form1Click }},
+            {name: "field3", class: 'col-xs-6', type: 'bool'}
           ],
           buttons: [
             { name: "Cancel", class: "btn btn-default" },

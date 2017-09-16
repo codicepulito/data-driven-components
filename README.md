@@ -171,30 +171,41 @@ Append a bootstrap form with inputs and input-group-addon
 ## Example 1: Form with manual data
 
     $('#root').ddcForm({
-      formId: 'form1',
+      formId: 'form2',
       title: 'Form',
-      modal: 'Modal Form',
+      panel: 'Form with manual data',
       response: {
           data: [
               {
                 field1: 'value1',
-                field2: 'value2'
+                field2: 'value2',
+                field3: true
               }
           ],
           schema: {
               fields: [
                 {name: "field1", native_type: "varchar"},
-                {name: "field2", native_type: "bool"}
+                {name: "field2", native_type: "varchar"},
+                {name: "field3", native_type: "bool"}
               ]
           }
       },
       fields: [
-          {name: "field1", class: 'col-4'},
-          {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }}
+          {
+            name: "field1",
+            class: 'col-4',
+            type: "lookup",
+            data: [
+              { value: '001', text: 'lookupform1' },
+              { value: '002', text: 'lookupform2' }
+            ]
+          },
+          {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
+          {name: "field3", class: 'col-4'}
       ],
       buttons: [
           { name: "Cancel", class: "btn btn-default" },
-          { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+          { name: "Add", class: "btn btn-primary", id: 'addForm2Send', onClick: addFormSend }
       ]
     })
 
@@ -213,19 +224,20 @@ Append a bootstrap form with inputs and input-group-addon
 
     $('#root').ddcForm({
       formId: 'form1',
-      modal: 'Modal 1',
+      panel: 'Form with ajax remote data',
       response: null,
       fields: [
-        {name: "field1", type: "string"},
         {
-          name: "field2",
+          name: "field1",
           type: "lookup",
           url: 'https://raw.githubusercontent.com/codicepulito/data-driven-components/master/test/json/jsendLookup.json'
-        }
+        },
+        {name: "field2", type: "string"},
+        {name: "field3", type: "bool"}
       ],
       buttons: [
         { name: "Cancel", class: "btn btn-default" },
-        { name: "Add", class: "btn btn-primary", id: 'addFormSend', onClick: addFormSend }
+        { name: "Add", class: "btn btn-primary", id: 'addForm1Send', onClick: addFormSend }
       ]
     })
 
