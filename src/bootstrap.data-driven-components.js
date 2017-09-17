@@ -329,14 +329,6 @@
     this.append($toAppend)
     return $toAppend
   }
-  
-  /**
-   * Return semver compatible version number 
-   * @returns {String} Actual version
-   */
-  $.fn.ddcVersion = function () {
-    return '0.6.0'
-  }
 
   /**
    * Empty all root nodes except those passed in parameter arrays
@@ -865,5 +857,13 @@
       var id = $(this).attr('id')
       onClick(id.substring(navbarId.length))
     })
+  }
+  
+  /**
+   * Return {@link http://semver.org/|semver} compatible version number 
+   * @returns {String} Actual version
+   */
+  $.fn.ddcVersion = function () {
+    return '0.6.0'
   }
 }(window.jQuery))

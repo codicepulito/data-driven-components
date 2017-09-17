@@ -6,13 +6,6 @@
 
 * * *
 
-### ddcVersion() 
-
-Return semver compatible version number
-
-**Returns**: `String`, Actual version
-
-
 ### ddcClearAll(except) 
 
 Empty all root nodes except those passed in parameter arrays
@@ -302,6 +295,13 @@ Append a bootstrap navbar menu with items and dropdown sub-items
         ]
       })
     })
+
+
+### ddcVersion() 
+
+Return [http://semver.org/|semver](http://semver.org/|semver) compatible version number
+
+**Returns**: `String`, Actual version
 
 
 
