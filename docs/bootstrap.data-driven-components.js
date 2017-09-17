@@ -699,7 +699,7 @@
       'si': 'Sinhala',
       'sk': 'Slovak',
       'sl': 'Slovenian',
-      'en': 'Spanish',
+      'es': 'Spanish',
       'sw': 'Swahili',
       'sv': 'Swedish',
       'ta': 'Tamil',
@@ -711,16 +711,10 @@
       'cy': 'Welsh'
     }
     
-    var code = codes[locale] ? locale : 'en'
-    var language = codes[locale] || 'English'
-
-    if (!this.data('locale')) {
-      this.data('locale', 'en')
-    }
-    
-    if (locale) {
-      this.data('locale', locale)
-    }
+    locale = codes[locale] ? locale : 'en'
+    var code = locale
+    var language = codes[locale]
+    this.data('locale', locale)
 
     return {code: code, language: language}
   }
