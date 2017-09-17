@@ -4,18 +4,25 @@ var formParameters = {
     data: [
       {
         field1: 'value1',
-        field2: 'value2'
+        field2: 'value2',
+        field3: '2017-01-01',
+        field4: '2017-12-31'
       }
     ],
     schema: {
       fields: [
         {name: "field1", native_type: "varchar", addon: { icon: 'refresh', onClick: addonForm1Field1 }},
-        {name: "field2", native_type: "bool"}
+        {name: "field2", native_type: "bool"},
+        {name: "field3", native_type: "date"},
+        {name: "field4", native_type: "date"}
       ]
     }
   },
   fields: [
-    {name: "field1", class: "col-4", type: "string", readonly: true}
+    {name: "field1", class: "col-4", type: "string", readonly: true},
+    {name: "field2"},
+    {name: "field3"},
+    {name: "field4", type: 'datepicker'}
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -257,6 +264,18 @@ describe('create form component', function () {
     expect($('#form1').find('#form1-field1').parent().parent().attr('class')).toBe('col-4')
     expect($('#form1').find('#form1-field1').is('[readonly]')).toBe(true)
     expect($('#form1').find('#form1-field2').is('[readonly]')).toBe(false)
+  })
+  
+  it('create form and check field3 date attributes', function () {
+    $('#root').ddcForm(formParameters)
+    expect($('[id=form1]').length).toBe(1)
+    expect($('#form1').find('#form1-field3').attr('type')).toBe('date')
+  })
+  
+  it('create form and check field4 datepicker attributes', function () {
+    $('#root').ddcForm(formParameters)
+    expect($('[id=form1]').length).toBe(1)
+    expect($('#form1').find('#form1-field4').attr('class')).toBe('form-control ddc-input-datepicker')
   })
 
   it('create form and check lookup attributes', function () {

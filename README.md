@@ -20,6 +20,7 @@ The following libraries are required for DDC to function properly:
 - [Font Awesome](http://fontawesome.io/)
 - [Datatables](https://datatables.net/)
 - [Bootstrap-combobox](https://github.com/danielfarrell/bootstrap-combobox)
+- [Bootstrap-datepicker](https://github.com/uxsolutions/bootstrap-datepicker)
 
 Installation
 ------------
@@ -185,14 +186,16 @@ Append a bootstrap form with inputs and input-group-addon
               {
                 field1: 'value1',
                 field2: 'value2',
-                field3: true
+                field3: true,
+                field4: '01/01/2017'
               }
           ],
           schema: {
               fields: [
                 {name: "field1", native_type: "varchar"},
                 {name: "field2", native_type: "varchar"},
-                {name: "field3", native_type: "bool"}
+                {name: "field3", native_type: "bool"},
+                {name: "field4", native_type: "date"}
               ]
           }
       },
@@ -207,7 +210,8 @@ Append a bootstrap form with inputs and input-group-addon
             ]
           },
           {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
-          {name: "field3", class: 'col-4'}
+          {name: "field3", class: 'col-4'},
+          {name: "field4", class: 'col-4', type: 'datepicker'}
       ],
       buttons: [
           { name: "Cancel", class: "btn btn-default" },

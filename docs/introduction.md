@@ -20,6 +20,7 @@ The following libraries are required for DDC to function properly:
 - [Font Awesome](http://fontawesome.io/)
 - [Datatables](https://datatables.net/)
 - [Bootstrap-combobox](https://github.com/danielfarrell/bootstrap-combobox)
+- [Bootstrap-datepicker](https://github.com/uxsolutions/bootstrap-datepicker)
 
 Installation
 ------------

@@ -108,14 +108,16 @@ function navbarClick (id) {
                   {
                     field1: 'value1',
                     field2: 'value2',
-                    field3: true
+                    field3: true,
+                    field4: '01/01/2017'
                   }
               ],
               schema: {
                   fields: [
                     {name: "field1", native_type: "varchar"},
                     {name: "field2", native_type: "varchar"},
-                    {name: "field3", native_type: "bool"}
+                    {name: "field3", native_type: "bool"},
+                    {name: "field4", native_type: "date"}
                   ]
               }
           },
@@ -130,7 +132,8 @@ function navbarClick (id) {
                 ]
               },
               {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
-              {name: "field3", class: 'col-4'}
+              {name: "field3", class: 'col-4'},
+              {name: "field4", class: 'col-4', type: 'datepicker'}
           ],
           buttons: [
               { name: "Cancel", class: "btn btn-default" },

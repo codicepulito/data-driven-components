@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 (function ($) {
   function _addButtons (rootId, formId, buttons, modal) {
     $.each(buttons, function (key, value) {
@@ -96,8 +95,14 @@
         var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
         inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
         break
+      case 'date':
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="date" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        break
+      case 'datepicker':
+        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
+        break
       case 'lookup':
-        // combobox
+        // bootstrap-combobox
         inputGroup += '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
         var data = ''
         if (value.url) {
@@ -536,14 +541,16 @@
    *               {
    *                 field1: 'value1',
    *                 field2: 'value2',
-   *                 field3: true
+   *                 field3: true,
+   *                 field4: '01/01/2017'
    *               }
    *           ],
    *           schema: {
    *               fields: [
    *                 {name: "field1", native_type: "varchar"},
    *                 {name: "field2", native_type: "varchar"},
-   *                 {name: "field3", native_type: "bool"}
+   *                 {name: "field3", native_type: "bool"},
+   *                 {name: "field4", native_type: "date"}
    *               ]
    *           }
    *       },
@@ -558,7 +565,8 @@
    *             ]
    *           },
    *           {name: "field2", class: 'col-4', addon: { icon: 'reply', onClick: form1Click }},
-   *           {name: "field3", class: 'col-4'}
+   *           {name: "field3", class: 'col-4'},
+   *           {name: "field4", class: 'col-4', type: 'datepicker'}
    *       ],
    *       buttons: [
    *           { name: "Cancel", class: "btn btn-default" },
@@ -643,6 +651,10 @@
     // refresh combobox input in order to correctly display
     $('#' + formId).find('select.combobox').combobox('refresh')
 
+    var locale = $(this).ddcLocale()
+    var datepickerOptions = schema.fields.datepicker || {autoclose: 'true', language: locale.code}
+    $('#' + formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
+
     //  $('.bootstraptoggle').bootstrapToggle()
   }
 
@@ -710,7 +722,7 @@
       'vi': 'Vietnamese',
       'cy': 'Welsh'
     }
-    
+
     locale = codes[locale] ? locale : 'en'
     var code = locale
     var language = codes[locale]
@@ -857,5 +869,13 @@
       var id = $(this).attr('id')
       onClick(id.substring(navbarId.length))
     })
+  }
+
+  /**
+   * Return {@link http://semver.org/|semver} compatible version number
+   * @returns {String} Actual version
+   */
+  $.fn.ddcVersion = function () {
+    return '0.7.0'
   }
 }(window.jQuery))
