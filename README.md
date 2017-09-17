@@ -41,6 +41,13 @@ Documentation
 
 * * *
 
+### ddcVersion() 
+
+Return semver compatible version number
+
+**Returns**: `String`, Actual version
+
+
 ### ddcClearAll(except) 
 
 Empty all root nodes except those passed in parameter arrays

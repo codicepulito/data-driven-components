@@ -17,3 +17,10 @@ describe('language locale setter and getter', function () {
     expect(locale.language).toBe('English')
   })
 })
+
+describe('version', function () {
+  it('check', function () {
+    var version = $('#root').ddcVersion()
+    expect(version).toBe('0.6.0')
+  })
+})
