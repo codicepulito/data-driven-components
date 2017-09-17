@@ -62,7 +62,7 @@
       $('#' + rootId + ' div').wrap('<div class="modal-content">')
       $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
       $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main container">')
+      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
       $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
       $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
       $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
@@ -369,7 +369,7 @@
    * @param {object} parameters Object with elements required to generate the html snippet:
    * - datatableId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - ajax: asyncronous function call options
-   * - ajax.jsend: set the {@link https://labs.omniti.com/labs/jsend|jsend} compatibility
+   * - ajax.jsend: set the [jsend]{@link https://labs.omniti.com/labs/jsend} compatibility
    * - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
    * - ajax.url: a valid url address
    * - buttons: array that defines the buttons that will appear in the document to the end user
@@ -380,7 +380,7 @@
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
-   * - response: dataset response object in {@link https://labs.omniti.com/labs/jsend|jsend} format with optional schema (columns info)
+   * - response: dataset response object in [jsend]{@link https://labs.omniti.com/labs/jsend} format with optional schema (columns info)
    * @returns {void}<br>
    *
    * ## Example 1: Datatable with manual data
@@ -506,7 +506,7 @@
    * @param {object} parameters Object with elements required to generate the html snippet:
    * - formId: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - ajax: asyncronous function call options
-   * - ajax.jsend: set the {@link https://labs.omniti.com/labs/jsend|jsend} compatibility
+   * - ajax.jsend: set the [jsend]{@link https://labs.omniti.com/labs/jsend} compatibility
    * - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
    * - ajax.url: a valid url address
    * - buttons: array of objects [button0, button1, ..., buttonN]
@@ -516,15 +516,16 @@
    * - button0.onClick: function callback called on button clicked
    * - fields: array of objects [field0, field1, ..., fieldN]
    * - field0.addon: optional array of elements
-   * - field0.addon.icon: string without "fa" representing the span class (require {@link http://fontawesome.io/|Font Awesome})
+   * - field0.addon.icon: string without "fa" representing the span class (require [Font Awesome]{@link http://fontawesome.io/})
    * - field0.addon.onClick: function callback called on addon span clicked
    * - field0.class: optional string representing one or more html class attribute
    *   see {@link https://www.w3.org/TR/html5/dom.html#classes}
    * - field0.name: string representing the html input label
    *   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
    * - field0.readonly: boolean - if true make field readonly
-   * - field0.type: data type [string|bool|lookup] - override schema.fields.native_type
-   *   (lookup require {@link https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox})
+   * - field0.type: data type [string|bool|lookup|datepicker] - override schema.fields.native_type
+   *   (lookup require [bootstrap-combobox]{@link https://github.com/danielfarrell/bootstrap-combobox})
+   *   (datepicker require [bootstrap-datepicker]{@link https://github.com/uxsolutions/bootstrap-datepicker})
    * - modal: optional string render the form in modal with the specified title
    * - panel: string that define the title of a bootstrap panel to wrap into
    * - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
@@ -872,7 +873,7 @@
   }
 
   /**
-   * Return {@link http://semver.org/|semver} compatible version number
+   * Return [semver]{@link http://semver.org/} compatible version number
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {

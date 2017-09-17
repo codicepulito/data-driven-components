@@ -33,7 +33,7 @@ Copyright (c) 2008-2015 SpryMedia Limited
 **parameters**: `object`, Object with elements required to generate the html snippet:
 - datatableId: valid html5 id attribute; see [https://www.w3.org/TR/html5/dom.html#the-id-attribute](https://www.w3.org/TR/html5/dom.html#the-id-attribute)
 - ajax: asyncronous function call options
-- ajax.jsend: set the [https://labs.omniti.com/labs/jsend|jsend](https://labs.omniti.com/labs/jsend|jsend) compatibility
+- ajax.jsend: set the [jsend][https://labs.omniti.com/labs/jsend](https://labs.omniti.com/labs/jsend) compatibility
 - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
 - ajax.url: a valid url address
 - buttons: array that defines the buttons that will appear in the document to the end user
@@ -44,7 +44,7 @@ Copyright (c) 2008-2015 SpryMedia Limited
 - panel: string that define the title of a bootstrap panel to wrap into
 - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
   it should remove before others; see [https://datatables.net/extensions/responsive/priority](https://datatables.net/extensions/responsive/priority)
-- response: dataset response object in [https://labs.omniti.com/labs/jsend|jsend](https://labs.omniti.com/labs/jsend|jsend) format with optional schema (columns info)
+- response: dataset response object in [jsend][https://labs.omniti.com/labs/jsend](https://labs.omniti.com/labs/jsend) format with optional schema (columns info)
 
 **Returns**: `void`, <br>
 
@@ -114,7 +114,7 @@ Append a bootstrap form with inputs and input-group-addon
 **parameters**: `object`, Object with elements required to generate the html snippet:
 - formId: valid html5 id attribute; see [https://www.w3.org/TR/html5/dom.html#the-id-attribute](https://www.w3.org/TR/html5/dom.html#the-id-attribute)
 - ajax: asyncronous function call options
-- ajax.jsend: set the [https://labs.omniti.com/labs/jsend|jsend](https://labs.omniti.com/labs/jsend|jsend) compatibility
+- ajax.jsend: set the [jsend][https://labs.omniti.com/labs/jsend](https://labs.omniti.com/labs/jsend) compatibility
 - ajax.responseDataKey: if ajax.jsend is false, set the object key contains data
 - ajax.url: a valid url address
 - buttons: array of objects [button0, button1, ..., buttonN]
@@ -124,15 +124,16 @@ Append a bootstrap form with inputs and input-group-addon
 - button0.onClick: function callback called on button clicked
 - fields: array of objects [field0, field1, ..., fieldN]
 - field0.addon: optional array of elements
-- field0.addon.icon: string without "fa" representing the span class (require [http://fontawesome.io/|Font Awesome](http://fontawesome.io/|Font Awesome))
+- field0.addon.icon: string without "fa" representing the span class (require [Font Awesome][http://fontawesome.io/](http://fontawesome.io/))
 - field0.addon.onClick: function callback called on addon span clicked
 - field0.class: optional string representing one or more html class attribute
   see [https://www.w3.org/TR/html5/dom.html#classes](https://www.w3.org/TR/html5/dom.html#classes)
 - field0.name: string representing the html input label
   also used as id after removing the spaces and concatenated with formId [formId-field0.name]
 - field0.readonly: boolean - if true make field readonly
-- field0.type: data type [string|bool|lookup] - override schema.fields.native_type
-  (lookup require [https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox](https://github.com/danielfarrell/bootstrap-combobox|bootstrap-combobox))
+- field0.type: data type [string|bool|lookup|datepicker] - override schema.fields.native_type
+  (lookup require [bootstrap-combobox][https://github.com/danielfarrell/bootstrap-combobox](https://github.com/danielfarrell/bootstrap-combobox))
+  (datepicker require [bootstrap-datepicker][https://github.com/uxsolutions/bootstrap-datepicker](https://github.com/uxsolutions/bootstrap-datepicker))
 - modal: optional string render the form in modal with the specified title
 - panel: string that define the title of a bootstrap panel to wrap into
 - response: dataset response object in jsend format with optional schema (ex. PHP PDO getColumnMeta)
@@ -302,7 +303,7 @@ Append a bootstrap navbar menu with items and dropdown sub-items
 
 ### ddcVersion() 
 
-Return [http://semver.org/|semver](http://semver.org/|semver) compatible version number
+Return [semver][http://semver.org/](http://semver.org/) compatible version number
 
 **Returns**: `String`, Actual version
 
