@@ -2,7 +2,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/codicepulito/data-driven-components",
   "name": "data-driven-components",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "keywords": [
     "util",
     "functional",
@@ -31,9 +31,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "posttest": "cp src/bootstrap.data-driven-components.js docs/bootstrap.data-driven-components.js",
-    "prebuild-docs": "jsdox --output docs src",
-    "build-docs": "cat docs/introduction.md docs/bootstrap.data-driven-components.md > README.md"
+    "posttest": "./posttest.sh"
   },
   "standard": {
     "globals": [

@@ -476,14 +476,9 @@
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
-
-    if (response.hasOwnProperty('data')) {
-      dataset = response.data
-      arrayColumns = dataset[0]
-    } else {
-      dataset = []
-      arrayColumns = priorityColumns
-    }
+    
+    dataset = response.data
+    arrayColumns = dataset ? dataset[0] : priorityColumns
 
     var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
     var languageUrl = _getDatatableLanguage(myParameters.rootId)
@@ -885,6 +880,6 @@
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {
-    return '0.7.1'
+    return '0.7.2'
   }
 }(window.jQuery))

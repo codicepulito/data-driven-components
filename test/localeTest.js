@@ -21,6 +21,6 @@ describe('language locale setter and getter', function () {
 describe('version', function () {
   it('check', function () {
     var version = $('#root').ddcVersion()
-    expect(version).toBe('0.7.1')
+    expect(version).toBe('0.7.2')
   })
 })
