@@ -177,8 +177,8 @@
 
     _addClickCallbacks(formId, inputGroupAddonParams)
   }
-  
-  function _addNavbarClickCallback(selector, callback) {
+
+  function _addNavbarClickCallback (selector, callback) {
     $('#' + selector).click(function () {
       callback()
     })
@@ -482,7 +482,7 @@
     $('#' + rootId + ' tr').wrap('<Thead>')
     $('#' + rootId + ' thead').wrap(table)
     $('#' + datatableId + ' thead tr').empty()
-    
+
     dataset = response.data
     arrayColumns = dataset ? dataset[0] : priorityColumns
 
@@ -794,12 +794,12 @@
    *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 1 clicked.');
    *       $('#modal1').modal('show');
    *     }
-   *     
+   *
    *     function navbar2Click(id) {
    *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 2 clicked.');
    *       $('#modal1').modal('show');
    *     }
-   *     
+   *
    *     function navbar3Click(id) {
    *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar item 3 clicked.');
    *       $('#modal1').modal('show');
@@ -855,7 +855,7 @@
         menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">' +
           value.name + '</a></li>\n'
         $('#' + rootId + ' .navbar-nav').append(menuItem)
-        
+
         value.id && _addNavbarClickCallback(navbarId + value.id, value.onClick)
       } else {
         // add submenu item
@@ -872,7 +872,7 @@
               submenuValue.name + '</a></li>\n'
           }
           $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
-          
+
           submenuValue.id && _addNavbarClickCallback(navbarId + submenuValue.id, submenuValue.onClick)
         })
       }
@@ -884,7 +884,6 @@
         }
       })
     })
-
   }
 
   /**

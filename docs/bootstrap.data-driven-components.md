@@ -285,12 +285,12 @@ Append a bootstrap navbar menu with items and dropdown sub-items
       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 1 clicked.');
       $('#modal1').modal('show');
     }
-    
+
     function navbar2Click(id) {
       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 2 clicked.');
       $('#modal1').modal('show');
     }
-    
+
     function navbar3Click(id) {
       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar item 3 clicked.');
       $('#modal1').modal('show');
