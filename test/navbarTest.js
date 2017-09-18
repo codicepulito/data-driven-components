@@ -1,24 +1,33 @@
 var navbarParameters = {
   navbarId: 'navbar1',
-  onClick: navbarClick,
   items: [
     {
       id: null,
       name: 'Item 1',
       submenu: [
-        { id: 1, name: 'Subitem 1' },
+        { id: 1, name: 'Subitem 1', onClick: navbarSubmenu1Click},
         { id: null, name: null },
-        { id: 2, name: 'Subitem 2' }
+        { id: 2, name: 'Subitem 2', onClick: navbarSubmenu2Click}
       ]
     },
-    { id: 3, name: 'Item 3' }
+    { id: 3, name: 'Item 3', onClick: navbarMenu3Click}
   ]
 }
 
-var navbarItemClicked = null
+var navbar1Clicked = false
+var navbar2Clicked = false
+var navbar3Clicked = false
 
-function navbarClick (id) {
-  navbarItemClicked = parseInt(id)
+function navbarSubmenu1Click () {
+  navbar1Clicked = true
+}
+
+function navbarSubmenu2Click () {
+  navbar2Clicked = true
+}
+
+function navbarMenu3Click () {
+  navbar3Clicked = true
 }
 
 describe('create navbar component', function () {
@@ -33,10 +42,21 @@ describe('create navbar component', function () {
     expect($('[id=navbar1]').length).toBe(1)
   })
 
-  it('check returned id on dropdown-item click', function () {
+  it('check click event on item 1', function () {
+    expect(navbar1Clicked).toBe(false)
     $('#navbar11').trigger('click')
-    expect(navbarItemClicked).toBe(1)
+    expect(navbar1Clicked).toBe(true)
+  })
+  
+  it('check click event on item 2', function () {
+    expect(navbar2Clicked).toBe(false)
+    $('#navbar12').trigger('click')
+    expect(navbar2Clicked).toBe(true)
+  })
+  
+  it('check click event on item 3', function () {
+    expect(navbar3Clicked).toBe(false)
     $('#navbar13').trigger('click')
-    expect(navbarItemClicked).toBe(3)
+    expect(navbar3Clicked).toBe(true)
   })
 })

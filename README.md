@@ -24,7 +24,7 @@ The following libraries are required for DDC to function properly:
 
 Installation
 ------------
-Just put the library with his dependancies in you [index.html](docs/index.html) page as described in the docs folder.
+Just put the library with his dependancies in your [index.html](docs/index.html) page as described in the docs folder.
 
     <script src="bootstrap.data-driven-components.js"></script>
 
@@ -310,34 +310,42 @@ Append a bootstrap navbar menu with items and dropdown sub-items
 - item0.id: null if it has submenu or valid html5 id attribute
 - item0.name: null as separator or string representing the html value of item visible to the user
 - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
-- onClick: function callback called on item/subitem click - callback(item0.id)
+- item0.onClick: function callback called on item/subitem click
 
 **Returns**: `void`, <br>
 
 ## Example
 
-    // callback function
-    function navbarClick(id) {
-      if (Number.isInteger(parseInt(id))) {
-        alert('click on item ' + id);
-      }
+    // callback functions
+    function navbar1Click(id) {
+      $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 1 clicked.');
+      $('#modal1').modal('show');
+    }
+    
+    function navbar2Click(id) {
+      $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 2 clicked.');
+      $('#modal1').modal('show');
+    }
+    
+    function navbar3Click(id) {
+      $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar item 3 clicked.');
+      $('#modal1').modal('show');
     }
 
     $(document).ready(function() {
       $('#root').ddcNavbar({
         navbarId: 'navbar1',                // id attribute
-        onClick: navbarClick,               // callback
         items: [
           {
             id: null,                       // id attribute
             name: "Item 1",                 // html value visible to the user
             submenu: [
-              { id: 1, name: "Subitem 1" },
+              { id: 1, name: "Subitem 1", onClick: navbar1Click},
               { id: null, name: null },     // separator
-              { id: 2, name: "Subitem 2" }
+              { id: 2, name: "Subitem 2", onClick: navbar2Click}
             ]
           },
-          { id: 3, name: "Item 3" },
+          { id: 3, name: "Item 3", onClick: navbar3Click},
         ]
       })
     })

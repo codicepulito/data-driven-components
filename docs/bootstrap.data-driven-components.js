@@ -177,6 +177,12 @@
 
     _addClickCallbacks(formId, inputGroupAddonParams)
   }
+  
+  function _addNavbarClickCallback(selector, callback) {
+    $('#' + selector).click(function () {
+      callback()
+    })
+  }
 
   function _ajax (callback, parameters) {
     if (parameters.ajax) {
@@ -778,33 +784,41 @@
    * - item0.id: null if it has submenu or valid html5 id attribute
    * - item0.name: null as separator or string representing the html value of item visible to the user
    * - item0.submenu: optional array of items object [subitem0, subitem1, ..., subitemN]
-   * - onClick: function callback called on item/subitem click - callback(item0.id)
+   * - item0.onClick: function callback called on item/subitem click
    * @returns {void}<br>
    *
    * ## Example
    *
-   *     // callback function
-   *     function navbarClick(id) {
-   *       if (Number.isInteger(parseInt(id))) {
-   *         alert('click on item ' + id);
-   *       }
+   *     // callback functions
+   *     function navbar1Click(id) {
+   *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 1 clicked.');
+   *       $('#modal1').modal('show');
+   *     }
+   *     
+   *     function navbar2Click(id) {
+   *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar subitem 2 clicked.');
+   *       $('#modal1').modal('show');
+   *     }
+   *     
+   *     function navbar3Click(id) {
+   *       $('#root').ddcModal('modal1', 'Navbar Click', 'Navbar item 3 clicked.');
+   *       $('#modal1').modal('show');
    *     }
    *
    *     $(document).ready(function() {
    *       $('#root').ddcNavbar({
    *         navbarId: 'navbar1',                // id attribute
-   *         onClick: navbarClick,               // callback
    *         items: [
    *           {
    *             id: null,                       // id attribute
    *             name: "Item 1",                 // html value visible to the user
    *             submenu: [
-   *               { id: 1, name: "Subitem 1" },
+   *               { id: 1, name: "Subitem 1", onClick: navbar1Click},
    *               { id: null, name: null },     // separator
-   *               { id: 2, name: "Subitem 2" }
+   *               { id: 2, name: "Subitem 2", onClick: navbar2Click}
    *             ]
    *           },
-   *           { id: 3, name: "Item 3" },
+   *           { id: 3, name: "Item 3", onClick: navbar3Click},
    *         ]
    *       })
    *     })
@@ -813,7 +827,6 @@
     var selector = $(this).attr('id')
     var navbarId = parameters.navbarId
     var items = parameters.items
-    var onClick = parameters.onClick
     var menuItem = ''
     var subMenuItem = ''
 
@@ -842,6 +855,8 @@
         menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">' +
           value.name + '</a></li>\n'
         $('#' + rootId + ' .navbar-nav').append(menuItem)
+        
+        value.id && _addNavbarClickCallback(navbarId + value.id, value.onClick)
       } else {
         // add submenu item
         menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId +
@@ -857,6 +872,8 @@
               submenuValue.name + '</a></li>\n'
           }
           $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
+          
+          submenuValue.id && _addNavbarClickCallback(navbarId + submenuValue.id, submenuValue.onClick)
         })
       }
 
@@ -868,11 +885,6 @@
       })
     })
 
-    // callback execution on item/subitem click passing element id as parameter
-    $('#' + navbarId + ' .nav li a').click(function () {
-      var id = $(this).attr('id')
-      onClick(id.substring(navbarId.length))
-    })
   }
 
   /**
@@ -880,6 +892,6 @@
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {
-    return '0.7.2'
+    return '0.8.0'
   }
 }(window.jQuery))
