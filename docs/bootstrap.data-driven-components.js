@@ -117,8 +117,9 @@
         } else {
           data = value.data
         }
-        $.each(data, function (key, value) {
-          inputGroup += '<option value="' + value.value + '">' + value.text + '</option>'
+        $.each(data, function (lookupKey, lookupValue) {
+          var selected = value.tag === lookupValue.value ? ' selected' : ''
+          inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
         })
         inputGroup += '</select>'
         break
@@ -346,6 +347,7 @@
    * @returns {void}
    */
   $.fn.ddcClearAll = function (except) {
+    $('.modal-backdrop').remove()
     $('.dataTables_wrapper').each(function (index, element) {
       var datatableId = $(this).attr('id').replace('_wrapper', '')
       $('#' + datatableId).dataTable().fnClearTable()
