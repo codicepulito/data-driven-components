@@ -122,6 +122,7 @@ Append a bootstrap form with inputs and input-group-addon
 - button0.class: valid html class attribute; see [https://www.w3.org/TR/html5/dom.html#classes](https://www.w3.org/TR/html5/dom.html#classes)
 - button0.id: valid html5 id attribute; see [https://www.w3.org/TR/html5/dom.html#the-id-attribute](https://www.w3.org/TR/html5/dom.html#the-id-attribute)
 - button0.onClick: function callback called on button clicked
+- datepicker: Datepicker options; see [https://bootstrap-datepicker.readthedocs.io/en/stable/options.html](https://bootstrap-datepicker.readthedocs.io/en/stable/options.html))
 - fields: array of objects [field0, field1, ..., fieldN]
 - field0.addon: optional array of elements
 - field0.addon.icon: string without "fa" representing the span class (require [Font Awesome][http://fontawesome.io/](http://fontawesome.io/))
@@ -146,13 +147,18 @@ Append a bootstrap form with inputs and input-group-addon
       formId: 'form2',
       title: 'Form',
       panel: 'Form with manual data',
+      datepicker: {
+        autoclose: 'true',
+        language: 'it',
+        format: 'yyyy-mm-dd'
+      },
       response: {
           data: [
               {
                 field1: 'value1',
                 field2: 'value2',
                 field3: true,
-                field4: '01/01/2017'
+                field4: '2017-01-01'
               }
           ],
           schema: {

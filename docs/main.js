@@ -103,13 +103,18 @@ function navbarClick (id) {
           formId: 'form2',
           title: 'Form',
           panel: 'Form with manual data',
+          datepicker: {
+            autoclose: 'true',
+            language: 'it',
+            format: 'yyyy-mm-dd'
+          },
           response: {
               data: [
                   {
                     field1: 'value1',
                     field2: 'value2',
                     field3: true,
-                    field4: '01/01/2017'
+                    field4: '2017-01-01'
                   }
               ],
               schema: {

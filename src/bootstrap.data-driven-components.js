@@ -347,7 +347,6 @@
    * @returns {void}
    */
   $.fn.ddcClearAll = function (except) {
-    $('.modal-backdrop').remove()
     $('.dataTables_wrapper').each(function (index, element) {
       var datatableId = $(this).attr('id').replace('_wrapper', '')
       $('#' + datatableId).dataTable().fnClearTable()
@@ -361,6 +360,7 @@
         }
       })
     })
+    $('.modal-backdrop').remove()
   }
 
   /**
@@ -516,6 +516,7 @@
    * - button0.class: valid html class attribute; see {@link https://www.w3.org/TR/html5/dom.html#classes}
    * - button0.id: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * - button0.onClick: function callback called on button clicked
+   * - datepicker: Datepicker options; see {@link https://bootstrap-datepicker.readthedocs.io/en/stable/options.html})
    * - fields: array of objects [field0, field1, ..., fieldN]
    * - field0.addon: optional array of elements
    * - field0.addon.icon: string without "fa" representing the span class (require [Font Awesome]{@link http://fontawesome.io/})
@@ -539,13 +540,18 @@
    *       formId: 'form2',
    *       title: 'Form',
    *       panel: 'Form with manual data',
+   *       datepicker: {
+   *         autoclose: 'true',
+   *         language: 'it',
+   *         format: 'yyyy-mm-dd'
+   *       },
    *       response: {
    *           data: [
    *               {
    *                 field1: 'value1',
    *                 field2: 'value2',
    *                 field3: true,
-   *                 field4: '01/01/2017'
+   *                 field4: '2017-01-01'
    *               }
    *           ],
    *           schema: {
@@ -655,7 +661,7 @@
     $('#' + formId).find('select.combobox').combobox('refresh')
 
     var locale = $(this).ddcLocale()
-    var datepickerOptions = schema.fields.datepicker || {autoclose: 'true', language: locale.code}
+    var datepickerOptions = schema.datepicker || {autoclose: 'true', language: locale.code}
     $('#' + formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
 
     //  $('.bootstraptoggle').bootstrapToggle()
