@@ -30,8 +30,7 @@
     "phantomjs-prebuilt": "*"
   },
   "scripts": {
-    "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "posttest": "./posttest.sh"
+    "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS"
   },
   "standard": {
     "globals": [
