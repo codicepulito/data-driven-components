@@ -242,7 +242,7 @@ Get or set a language locale
     $('#root').ddcLocale('it')
 
 
-### ddcModal(modalId, title, message) 
+### ddcModal(modalId, title, message, buttons) 
 
 Append a bootstrap modal with title and message
 
@@ -254,11 +254,31 @@ Append a bootstrap modal with title and message
 
 **message**: `string`, The modal body contains the message
 
+**buttons**: `Array`, array of objects [button0, button1, ..., buttonN]
+- button0.class: valid html class attribute; see [https://www.w3.org/TR/html5/dom.html#classes](https://www.w3.org/TR/html5/dom.html#classes)
+- button0.data: string value usable in callback
+- button0.id: valid html5 id attribute; see [https://www.w3.org/TR/html5/dom.html#the-id-attribute](https://www.w3.org/TR/html5/dom.html#the-id-attribute)
+- button0.name: string representing the html button label
+- button0.onClick: function callback called on button clicked
+
 **Returns**: `void`, <br>
 
 ## Example
 
     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.');
+    $('#modal1').modal('show');
+
+## Example with buttons
+
+    // callback functions
+    function addModalSend(value) {
+      console.log(value)
+    }
+
+    $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.', [
+     { name: "Cancel", class: "btn btn-default" },
+     { name: "Add", class: "btn btn-primary", data: 'myValue', id: 'addModalSend', onClick: addModalSend }
+    ]);
     $('#modal1').modal('show');
 
 

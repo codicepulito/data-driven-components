@@ -21,13 +21,14 @@
   function _addButtons (rootId, formId, buttons, modal) {
     $.each(buttons, function (key, value) {
       var id = ''
+      var ddcData = value.data || ''
       if (value.id) {
         id = ' id="' + value.id + '"'
       }
       var modalFooter = modal ? ' .modal-footer' : ''
       var dataDismiss = modal ? ' data-dismiss="modal"' : ''
       $('#' + rootId + modalFooter).append(
-        '<button type="button"' + id + ' class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
+        '<button type="button"' + id + ' ddc-data="' + ddcData + '" class="' + value.class + '"' + dataDismiss + '>' + value.name + '</button>'
       )
 
       _addClickCallbacks(formId, [value])
@@ -69,6 +70,37 @@
     } else {
       $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
     }
+  }
+
+  function _addInputFields (formId, response, schema) {
+    var inputGroupAddonParams = []
+    var inputGroup = ''
+
+    $.each(schema.fields, function (key, value) {
+      var type = ''
+
+      value['ro'] = _isReadonly(schema, value)
+      type = value.type || value.native_type || ''
+      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : (value.value || '')
+
+      inputGroup = _addInputFieldType(type, formId, value)
+
+      if (value.addon) {
+        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
+          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+        inputGroupAddonParams.push({
+          id: formId + '-' + value.name + '-' + value.addon.icon,
+          onClick: value.addon.onClick,
+          parameters: response.data
+        })
+      }
+
+      var colClass = value.class || 'col-xs-12'
+
+      _addInputFieldRow(formId, schema, colClass, inputGroup)
+    })
+
+    _addClickCallbacks(formId, inputGroupAddonParams)
   }
 
   function _addInputFieldRow (selector, schema, colClass, inputGroup) {
@@ -145,37 +177,6 @@
         break
     }
     return inputGroup
-  }
-
-  function _addInputFields (formId, response, schema) {
-    var inputGroupAddonParams = []
-    var inputGroup = ''
-
-    $.each(schema.fields, function (key, value) {
-      var type = ''
-
-      value['ro'] = _isReadonly(schema, value)
-      type = value.type || value.native_type || ''
-      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : ''
-
-      inputGroup = _addInputFieldType(type, formId, value)
-
-      if (value.addon) {
-        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
-        inputGroupAddonParams.push({
-          id: formId + '-' + value.name + '-' + value.addon.icon,
-          onClick: value.addon.onClick,
-          parameters: response.data
-        })
-      }
-
-      var colClass = value.class || 'col-xs-12'
-
-      _addInputFieldRow(formId, schema, colClass, inputGroup)
-    })
-
-    _addClickCallbacks(formId, inputGroupAddonParams)
   }
 
   function _addNavbarClickCallback (selector, callback) {
@@ -284,6 +285,13 @@
         parameters[fieldKey] = value
       }
     })
+    $('#' + selector).find('button').each(function (index, element) {
+      if ($(this).attr('ddc-data')) {
+        var id = $(this).attr('id')
+        var value = $(this).attr('ddc-data')
+        parameters[id] = value
+      }
+    })
     return parameters
   }
 
@@ -366,6 +374,9 @@
         }
       })
     })
+
+    // patch for pace.js side effect on modal dismiss
+    $(document.body).removeClass('modal-open')
     $('.modal-backdrop').remove()
   }
 
@@ -747,6 +758,12 @@
    * @param {string} modalId A valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
    * @param {string} title The modal title
    * @param {string} message The modal body contains the message
+   * @param {Array} buttons array of objects [button0, button1, ..., buttonN]
+   * - button0.class: valid html class attribute; see {@link https://www.w3.org/TR/html5/dom.html#classes}
+   * - button0.data: string value usable in callback
+   * - button0.id: valid html5 id attribute; see {@link https://www.w3.org/TR/html5/dom.html#the-id-attribute}
+   * - button0.name: string representing the html button label
+   * - button0.onClick: function callback called on button clicked
    * @returns {void}<br>
    *
    * ## Example
@@ -754,8 +771,21 @@
    *     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.');
    *     $('#modal1').modal('show');
    *
+   * ## Example with buttons
+   *
+   *     // callback functions
+   *     function addModalSend(value) {
+   *       console.log(value)
+   *     }
+   *
+   *     $('#root').ddcModal('modal1', 'Modal Title', 'This is a message.', [
+   *      { name: "Cancel", class: "btn btn-default" },
+   *      { name: "Add", class: "btn btn-primary", data: 'myValue', id: 'addModalSend', onClick: addModalSend }
+   *     ]);
+   *     $('#modal1').modal('show');
+   *
    */
-  $.fn.ddcModal = function (modalId, title, message) {
+  $.fn.ddcModal = function (modalId, title, message, buttons) {
     var selector = $(this).attr('id')
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(selector, modalId, 'row')
@@ -772,7 +802,12 @@
     $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
     $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + title + '</h4>')
     $('#' + rootId + ' .modal-body').append('<p id="' + modalId + '-body">' + message + '</p>')
-    $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
+
+    if (buttons) {
+      _addButtons(rootId, modalId, buttons, true)
+    } else {
+      $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
+    }
   }
 
   /**
@@ -839,7 +874,7 @@
     var navbarDiv = '<nav class="navbar navbar-inverse navbar-default">'
     $('#' + rootId).append('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#' + navbarId + '">')
     $('#' + rootId + ' .navbar-toggle').wrap('<div class="navbar-header">')
-    $('#' + rootId + ' .navbar-header').wrap('<div id="' + navbarId + '-container" class="container-fluid">')
+    $('#' + rootId + ' .navbar-header').wrap('<div id="' + navbarId + '-container">')
     $('#' + rootId + ' #' + navbarId + '-container').wrap(navbarDiv)
     $('#' + rootId + ' .navbar-toggle').append('<span class="sr-only">Toggle navigation</span>')
     $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
@@ -891,6 +926,6 @@
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {
-    return '0.8.0'
+    return '0.9.0'
   }
 }(window.jQuery))

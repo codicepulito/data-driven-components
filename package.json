@@ -2,7 +2,7 @@
   "license": "GPL-3.0",
   "repository": "https://github.com/codicepulito/data-driven-components",
   "name": "data-driven-components",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "keywords": [
     "util",
     "functional",
