@@ -397,6 +397,8 @@
    *   as documented at {@link https://datatables.net/reference/option/dom}
    * - onClick: function callback called on row's item clicked
    * - panel: string that define the title of a bootstrap panel to wrap into
+   * - pageLength: integer Number of rows to display on a single page when using pagination
+   *   as documented at {@link https://datatables.net/reference/option/pageLength}
    * - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
    *   it should remove before others; see {@link https://datatables.net/extensions/responsive/priority}
    * - response: dataset response object in [jsend]{@link https://labs.omniti.com/labs/jsend} format with optional schema (columns info)
@@ -466,6 +468,7 @@
     var dom = myParameters.dom || 'Bfrtip'
     var priorityColumns = myParameters.priorityColumns
     var response = myParameters.response
+    var pageLength = myParameters.pageLength || 10
     myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
 
     var arrayColumns = null
@@ -504,6 +507,7 @@
       dom: dom,
       buttons: buttons,
       responsive: true,
+      pageLength: pageLength,
       language: {
         url: languageUrl
       },
@@ -926,6 +930,6 @@
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {
-    return '0.9.0'
+    return '0.10.0'
   }
 }(window.jQuery))

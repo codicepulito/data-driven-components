@@ -78,6 +78,8 @@ Copyright (c) 2008-2015 SpryMedia Limited
   as documented at [https://datatables.net/reference/option/dom](https://datatables.net/reference/option/dom)
 - onClick: function callback called on row's item clicked
 - panel: string that define the title of a bootstrap panel to wrap into
+- pageLength: integer Number of rows to display on a single page when using pagination
+  as documented at [https://datatables.net/reference/option/pageLength](https://datatables.net/reference/option/pageLength)
 - priorityColumns: array of elements to set visibility priority to the columns, telling Responsive which columns
   it should remove before others; see [https://datatables.net/extensions/responsive/priority](https://datatables.net/extensions/responsive/priority)
 - response: dataset response object in [jsend][https://labs.omniti.com/labs/jsend](https://labs.omniti.com/labs/jsend) format with optional schema (columns info)
