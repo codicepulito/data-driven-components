@@ -123,41 +123,61 @@
     }
   }
 
+  function _addInputFieldTypeBool (formId, value) {
+    var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
+    return '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
+  }
+
+  function _addInputFieldTypeDate (formId, value) {
+    return '<input id="' + formId + '-' + value.name + '" type="date" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+  }
+
+  function _addInputFieldTypeDatepicker (formId, value) {
+    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
+  }
+
+  function _addInputFieldTypeDefault (formId, value) {
+    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+  }
+
+  function _addInputFieldTypeLookup (formId, value) {
+    var inputGroup = '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
+    var data = ''
+    if (value.url) {
+      $.ajax({
+        url: value.url,
+        async: false,
+        dataType: 'json',
+        success: function (response) {
+          data = response.data
+        }
+      })
+    } else {
+      data = value.data
+    }
+    $.each(data, function (lookupKey, lookupValue) {
+      var selected = value.tag === lookupValue.value ? ' selected' : ''
+      inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
+    })
+    inputGroup += '</select>'
+    return inputGroup
+  }
+
   function _addInputFieldType (type, formId, value) {
     var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
-      case 'bool':
-        // checkbox
-        var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
+      case 'bool' || 'checkbox':
+        inputGroup += _addInputFieldTypeBool(formId, value)
         break
       case 'date':
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="date" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        inputGroup += _addInputFieldTypeDate(formId, value)
         break
       case 'datepicker':
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
+        inputGroup += _addInputFieldTypeDatepicker(formId, value)
         break
       case 'lookup':
         // bootstrap-combobox
-        inputGroup += '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
-        var data = ''
-        if (value.url) {
-          $.ajax({
-            url: value.url,
-            async: false,
-            dataType: 'json',
-            success: function (response) {
-              data = response.data
-            }
-          })
-        } else {
-          data = value.data
-        }
-        $.each(data, function (lookupKey, lookupValue) {
-          var selected = value.tag === lookupValue.value ? ' selected' : ''
-          inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
-        })
-        inputGroup += '</select>'
+        inputGroup += _addInputFieldTypeLookup(formId, value)
         break
 //        case 'toggle':
 //          // bootstraptoggle
@@ -177,7 +197,7 @@
 //          break
       default:
         // standard input
-        inputGroup += '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+        inputGroup += _addInputFieldTypeDefault(formId, value)
         break
     }
     return inputGroup

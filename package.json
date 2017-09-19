@@ -31,7 +31,8 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "posttest": "./posttest.sh"
+    "localtest": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
+    "postlocaltest": "./post-local-test.sh"
   },
   "standard": {
     "globals": [
