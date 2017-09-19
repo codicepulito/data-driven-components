@@ -83,7 +83,11 @@
       type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : (value.value || '')
 
-      inputGroup = _addInputFieldType(type, formId, value)
+      if (type === 'datatable') {
+        $('#' + formId).ddcDatatable(value.datatable)
+      } else {
+        inputGroup = _addInputFieldType(type, formId, value)
+      }
 
       if (value.addon) {
         inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
