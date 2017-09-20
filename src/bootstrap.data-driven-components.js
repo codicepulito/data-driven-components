@@ -164,6 +164,7 @@
   }
 
   function _addInputFieldType (type, formId, value) {
+    value['tag'] = value.tag || ''
     var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
       case 'bool' || 'checkbox':

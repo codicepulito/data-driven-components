@@ -1,4 +1,3 @@
----
 engines:
   rubocop:
     enabled: true
@@ -18,6 +17,5 @@ ratings:
   - "src/"
 exclude_paths:
   - "docs/"
-  - "example/"
   - "test/"
   
