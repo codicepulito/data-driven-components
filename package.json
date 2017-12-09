@@ -27,7 +27,7 @@
     "karma-coverage": "*",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*",
+    "phantomjs-prebuilt": "2.1.14",
     "request": "2.81.0"
   },
   "scripts": {
