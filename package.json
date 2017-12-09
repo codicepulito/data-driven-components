@@ -27,7 +27,8 @@
     "karma-coverage": "*",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*"
+    "phantomjs-prebuilt": "*",
+    "request": "2.81.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
