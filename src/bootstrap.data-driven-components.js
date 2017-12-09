@@ -91,7 +91,7 @@
 
       if (value.addon) {
         inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+          value.addon.icon + '"><i class="fas fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
         inputGroupAddonParams.push({
           id: formId + '-' + value.name + '-' + value.addon.icon,
           onClick: value.addon.onClick,
