@@ -139,6 +139,10 @@
   function _addInputFieldTypeDefault (formId, value) {
     return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
   }
+  
+  function _addInputFieldTypeHidden (formId, value) {
+    return '<input id="' + formId + '-' + value.name + '" type="hidden" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+  }
 
   function _addInputFieldTypeLookup (formId, value) {
     var inputGroup = '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
@@ -175,6 +179,9 @@
         break
       case 'datepicker':
         inputGroup += _addInputFieldTypeDatepicker(formId, value)
+        break
+      case 'hidden':
+        inputGroup += _addInputFieldTypeHidden(formId, value)
         break
       case 'lookup':
         // bootstrap-combobox
