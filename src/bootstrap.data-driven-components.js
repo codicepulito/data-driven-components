@@ -91,7 +91,7 @@
 
       if (value.addon) {
         inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fas fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
+          value.addon.icon + '"><i class="fas fa-' + value.addon.icon + '"></i></a></span>\n'
         inputGroupAddonParams.push({
           id: formId + '-' + value.name + '-' + value.addon.icon,
           onClick: value.addon.onClick,
@@ -169,7 +169,7 @@
 
   function _addInputFieldType (type, formId, value) {
     value['tag'] = value.tag || ''
-    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
+    var inputGroup = (type === 'hidden') ? '' : '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
       case 'bool' || 'checkbox':
         inputGroup += _addInputFieldTypeBool(formId, value)
