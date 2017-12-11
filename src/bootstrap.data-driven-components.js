@@ -160,7 +160,7 @@
       data = value.data
     }
     $.each(data, function (lookupKey, lookupValue) {
-      var selected = value.tag === lookupValue.value ? ' selected' : ''
+      var selected = (value.tag).toString() === (lookupValue.value).toString() ? ' selected' : ''
       inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
     })
     inputGroup += '</select>'
