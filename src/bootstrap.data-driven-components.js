@@ -18,6 +18,61 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 (function ($) {
+  const locales = {
+    'sq': 'Albanian',
+    'ar': 'Arabic',
+    'hy': 'Armenian',
+    'az': 'Azerbaijan',
+    'eu': 'Basque',
+    'bg': 'Bulgarian',
+    'ca': 'Catalan',
+    'zh-TW': 'Chinese-traditional',
+    'zh-CN': 'Chinese',
+    'hr': 'Croatian',
+    'cs': 'Czech',
+    'da': 'Danish',
+    'nl': 'Dutch',
+    'en': 'English',
+    'et': 'Estonian',
+    'fi': 'Finnish',
+    'fr': 'French',
+    'gl': 'Galician',
+    'de': 'German',
+    'el': 'Greek',
+    'he': 'Hebrew',
+    'hi': 'Hindi',
+    'hu': 'Hungarian',
+    'is': 'Icelandic',
+    'id': 'Indonesian',
+    'it': 'Italian',
+    'ja': 'Japanese',
+    'kk': 'Kazakh',
+    'ko': 'Korean',
+    'lt': 'Lithuanian',
+    'mk': 'Macedonian',
+    'ms': 'Malay',
+    'mn': 'Mongolian',
+    'nb': 'Norwegian-Bokmal',
+    'fa': 'Persian',
+    'pl': 'Polish',
+    'pt': 'Portuguese',
+    'ro': 'Romanian',
+    'ru': 'Russian',
+    'si': 'Sinhala',
+    'sk': 'Slovak',
+    'sl': 'Slovenian',
+    'es': 'Spanish',
+    'sw': 'Swahili',
+    'sv': 'Swedish',
+    'ta': 'Tamil',
+    'th': 'Thai',
+    'tr': 'Turkish',
+    'uk': 'Ukrainian',
+    'uz-cyril': 'Uzbek',
+    'vi': 'Vietnamese',
+    'cy': 'Welsh'
+  }
+  
   function _addButtons (rootId, formId, buttons, modal) {
     $.each(buttons, function (key, value) {
       var id = ''
@@ -725,64 +780,9 @@
    *
    */
   $.fn.ddcLocale = function (locale) {
-    const codes = {
-      'sq': 'Albanian',
-      'ar': 'Arabic',
-      'hy': 'Armenian',
-      'az': 'Azerbaijan',
-      'eu': 'Basque',
-      'bg': 'Bulgarian',
-      'ca': 'Catalan',
-      'zh-TW': 'Chinese-traditional',
-      'zh-CN': 'Chinese',
-      'hr': 'Croatian',
-      'cs': 'Czech',
-      'da': 'Danish',
-      'nl': 'Dutch',
-      'en': 'English',
-      'et': 'Estonian',
-      'fi': 'Finnish',
-      'fr': 'French',
-      'gl': 'Galician',
-      'de': 'German',
-      'el': 'Greek',
-      'he': 'Hebrew',
-      'hi': 'Hindi',
-      'hu': 'Hungarian',
-      'is': 'Icelandic',
-      'id': 'Indonesian',
-      'it': 'Italian',
-      'ja': 'Japanese',
-      'kk': 'Kazakh',
-      'ko': 'Korean',
-      'lt': 'Lithuanian',
-      'mk': 'Macedonian',
-      'ms': 'Malay',
-      'mn': 'Mongolian',
-      'nb': 'Norwegian-Bokmal',
-      'fa': 'Persian',
-      'pl': 'Polish',
-      'pt': 'Portuguese',
-      'ro': 'Romanian',
-      'ru': 'Russian',
-      'si': 'Sinhala',
-      'sk': 'Slovak',
-      'sl': 'Slovenian',
-      'es': 'Spanish',
-      'sw': 'Swahili',
-      'sv': 'Swedish',
-      'ta': 'Tamil',
-      'th': 'Thai',
-      'tr': 'Turkish',
-      'uk': 'Ukrainian',
-      'uz-cyril': 'Uzbek',
-      'vi': 'Vietnamese',
-      'cy': 'Welsh'
-    }
-
-    locale = codes[locale] ? locale : 'en'
+    locale = locales[locale] ? locale : 'en'
     var code = locale
-    var language = codes[locale]
+    var language = locales[locale]
     this.data('locale', locale)
 
     return {code: code, language: language}
