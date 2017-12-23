@@ -4,6 +4,7 @@ env:
 language: node_js
 node_js:
   - "4"
+language: ruby
 rvm:
   - 2.2.0
 before_script:
