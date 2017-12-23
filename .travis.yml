@@ -4,9 +4,9 @@ env:
 language: node_js
 node_js:
   - "4"
-language: ruby
 rvm:
   - 2.2.0
+install: gem install rails
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
