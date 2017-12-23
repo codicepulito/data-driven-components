@@ -1,17 +1,9 @@
-env:
-  global:
-    - CC_TEST_REPORTER_ID=506b270f0115ea128fa9a173764c5214dda2171161e96a492435212d99846e1b
 language: node_js
 node_js:
   - "4"
-rvm:
-  - 2.2.0
-install: gem install rails
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-script:
-  - bundle exec rspec
+addons:
+  code_climate:
+    repo_token: 506b270f0115ea128fa9a173764c5214dda2171161e96a492435212d99846e1b
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - npm install -g codeclimate-test-reporter
+  - codeclimate-test-reporter < ./coverage/lcov.info
