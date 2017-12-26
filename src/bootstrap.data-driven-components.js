@@ -182,21 +182,14 @@
     var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
     return '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
   }
-
-  function _addInputFieldTypeDate (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="date" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+  
+  function _getInputFieldType (formId, value, type) {
+    var tag = '<input id="' + formId + '-' + value.name + '" type="' + type + '" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+    return tag
   }
 
   function _addInputFieldTypeDatepicker (formId, value) {
     return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
-  }
-
-  function _addInputFieldTypeDefault (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
-  }
-  
-  function _addInputFieldTypeHidden (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="hidden" class="form-control" value="' + value.tag + '"' + value.ro + '>'
   }
 
   function _addInputFieldTypeLookup (formId, value) {
@@ -230,13 +223,13 @@
         inputGroup += _addInputFieldTypeBool(formId, value)
         break
       case 'date':
-        inputGroup += _addInputFieldTypeDate(formId, value)
+        inputGroup += _getInputFieldType(formId, value, type)
         break
       case 'datepicker':
         inputGroup += _addInputFieldTypeDatepicker(formId, value)
         break
       case 'hidden':
-        inputGroup += _addInputFieldTypeHidden(formId, value)
+        inputGroup += _getInputFieldType(formId, value, type)
         break
       case 'lookup':
         // bootstrap-combobox
@@ -260,7 +253,7 @@
 //          break
       default:
         // standard input
-        inputGroup += _addInputFieldTypeDefault(formId, value)
+        inputGroup += _getInputFieldType(formId, value, 'text')
         break
     }
     return inputGroup

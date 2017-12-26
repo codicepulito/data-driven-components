@@ -6,7 +6,8 @@ var formParameters = {
         field1: 'value1',
         field2: 'value2',
         field3: '2017-01-01',
-        field4: '2017-12-31'
+        field4: '2017-12-31',
+        field5: 'secret'
       }
     ],
     schema: {
@@ -14,7 +15,8 @@ var formParameters = {
         {name: "field1", native_type: "varchar", addon: { icon: 'refresh', onClick: addonForm1Field1 }},
         {name: "field2", native_type: "bool"},
         {name: "field3", native_type: "date"},
-        {name: "field4", native_type: "date"}
+        {name: "field4", native_type: "date"},
+        {name: "field5", native_type: "hidden"},
       ]
     }
   },
@@ -22,7 +24,8 @@ var formParameters = {
     {name: "field1", class: "col-4", type: "string", readonly: true},
     {name: "field2"},
     {name: "field3"},
-    {name: "field4", type: 'datepicker'}
+    {name: "field4", type: 'datepicker'},
+    {name: "field5"}
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -270,6 +273,12 @@ describe('create form component', function () {
     $('#root').ddcForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field3').attr('type')).toBe('date')
+  })
+  
+  it('create form and check field5 hidden attributes', function () {
+    $('#root').ddcForm(formParameters)
+    expect($('[id=form1]').length).toBe(1)
+    expect($('#form1').find('#form1-field5').attr('type')).toBe('hidden')
   })
   
   it('create form and check field4 datepicker attributes', function () {
