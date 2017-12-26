@@ -724,8 +724,6 @@
    */
   $.fn.ddcForm = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
-    var formId = myParameters.formId
-    var modal = myParameters.modal
     var response = myParameters.response
     var parametersUnresponse = myParameters
     myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
@@ -741,30 +739,30 @@
     var schema = _getSchema(parameters)
 
     if (!schema.buttons || !schema.fields) {
-      _messageBox('ddcForm error', formId + ': buttons and fields parameters are mandatory.')
+      _messageBox('ddcForm error', myParameters.formId + ': buttons and fields parameters are mandatory.')
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    _purgeNode(rootId, formId, 'row')
+    _purgeNode(rootId, myParameters.formId, 'row')
 
-    rootId = 'root-' + formId
-    rootId = _appendPanel(rootId, formId, myParameters.panel)
+    rootId = 'root-' + myParameters.formId
+    rootId = _appendPanel(rootId, myParameters.formId, myParameters.panel)
 
-    _addFormHeader(rootId, formId, modal)
-    _addInputFields(formId, response, schema)
-    _addButtons(rootId, formId, schema.buttons, modal)
+    _addFormHeader(rootId, myParameters.formId, myParameters.modal)
+    _addInputFields(myParameters.formId, response, schema)
+    _addButtons(rootId, myParameters.formId, schema.buttons, myParameters.modal)
 
-    if (modal) {
-      $('#' + formId).modal('show')
+    if (myParameters.modal) {
+      $('#' + myParameters.formId).modal('show')
     }
 
     // refresh combobox input in order to correctly display
-    $('#' + formId).find('select.combobox').combobox('refresh')
+    $('#' + myParameters.formId).find('select.combobox').combobox('refresh')
 
     var locale = $(this).ddcLocale()
     var datepickerOptions = schema.datepicker || {autoclose: 'true', language: locale.code}
-    $('#' + formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
+    $('#' + myParameters.formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
 
     //  $('.bootstraptoggle').bootstrapToggle()
   }
