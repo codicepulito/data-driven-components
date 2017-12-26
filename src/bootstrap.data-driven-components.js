@@ -277,14 +277,7 @@
         method: 'GET',
         dataType: 'json',
         success: function (response) {
-          if (options.jsend && response.status !== 'success') {
-            _messageBox('Ajax response', response.message)
-          } else if (options.jsend && response.status === 'success') {
-            myParameters.response = response
-          } else {
-            myParameters.response['data'] = response[options.responseDataKey]
-          }
-          callback(myParameters)
+          _doAjaxCallback (response, options, callback, myParameters)
         },
         error: function (request, status, error) {
           _messageBox('Ajax error', error)
@@ -294,6 +287,19 @@
       return true
     } else {
       return false
+    }
+  }
+  
+  function _doAjaxCallback (response, options, callback, parameters) {
+    if (options.jsend && response.status !== 'success') {
+      _messageBox('Ajax response', response.message)
+    } else if (options.jsend && response.status === 'success') {
+      parameters.response = response
+    } else {
+      parameters.response['data'] = response[options.responseDataKey]
+    }
+    if (typeof callback == 'function') { 
+      callback(parameters)
     }
   }
 
