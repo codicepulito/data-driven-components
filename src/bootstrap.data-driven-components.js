@@ -760,11 +760,15 @@
     // refresh combobox input in order to correctly display
     $('#' + myParameters.formId).find('select.combobox').combobox('refresh')
 
-    var locale = $(this).ddcLocale()
-    var datepickerOptions = schema.datepicker || {autoclose: 'true', language: locale.code}
-    $('#' + myParameters.formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
+    _setDatepickerOptions(myParameters.formId, schema.datepicker)
 
     //  $('.bootstraptoggle').bootstrapToggle()
+  }
+  
+  function _setDatepickerOptions (selector, datepicker) {
+    var locale = $(this).ddcLocale()
+    var datepickerOptions = datepicker || {autoclose: 'true', language: locale.code}
+    $('#' + selector).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
   }
 
   /**
