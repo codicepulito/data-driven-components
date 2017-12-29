@@ -12,12 +12,15 @@
   ],
   "author": "Gianluca Ciarcelluti <gianluca@ciarcelluti.it>",
   "contributors": [],
-  "dependencies": {
+  "devDependencies": {
     "@danielfarrell/bootstrap-combobox": "^1.1.8",
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.7.1",
     "datatables.net": "^1.10.16",
     "datatables.net-responsive": "^2.1.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jquery-closure": "^1.1.1",
     "jasmine": "^2.8.0",
     "jasmine-core": "*",
     "jasmine-jquery": "^2.1.1",
@@ -31,9 +34,9 @@
     "request": "2.81.0"
   },
   "scripts": {
+    "pretest": "./node_modules/.bin/gulp",
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "localtest": "./node_modules/.bin/karma start karma.conf.js --single-run --browsers PhantomJS",
-    "postlocaltest": "./post-local-test.sh"
+    "posttest": "./post-test.sh"
   },
   "standard": {
     "globals": [

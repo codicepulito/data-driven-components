@@ -21,8 +21,8 @@ module.exports = function(config) {
       'node_modules/datatables.net-responsive/js/*.js',
       'node_modules/@danielfarrell/bootstrap-combobox/js/bootstrap-combobox.js',
       'node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js',
-      'src/**/!(*Test).js',
-      'test/**/*Test.js'
+      'dist/!(*Test).js',
+      'test/*Test.js'
     ],
 
 
@@ -34,7 +34,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js': ['coverage']
+      'dist/*.js': ['coverage']
     },
 
 

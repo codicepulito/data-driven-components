@@ -1,3 +1,4 @@
+;(function (window, document, undefined) {
 /* ============================================================================
  * Bootstrap data driven components
  * ============================================================================
@@ -17,7 +18,61 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-(function ($) {
+  const locales = {
+    'sq': 'Albanian',
+    'ar': 'Arabic',
+    'hy': 'Armenian',
+    'az': 'Azerbaijan',
+    'eu': 'Basque',
+    'bg': 'Bulgarian',
+    'ca': 'Catalan',
+    'zh-TW': 'Chinese-traditional',
+    'zh-CN': 'Chinese',
+    'hr': 'Croatian',
+    'cs': 'Czech',
+    'da': 'Danish',
+    'nl': 'Dutch',
+    'en': 'English',
+    'et': 'Estonian',
+    'fi': 'Finnish',
+    'fr': 'French',
+    'gl': 'Galician',
+    'de': 'German',
+    'el': 'Greek',
+    'he': 'Hebrew',
+    'hi': 'Hindi',
+    'hu': 'Hungarian',
+    'is': 'Icelandic',
+    'id': 'Indonesian',
+    'it': 'Italian',
+    'ja': 'Japanese',
+    'kk': 'Kazakh',
+    'ko': 'Korean',
+    'lt': 'Lithuanian',
+    'mk': 'Macedonian',
+    'ms': 'Malay',
+    'mn': 'Mongolian',
+    'nb': 'Norwegian-Bokmal',
+    'fa': 'Persian',
+    'pl': 'Polish',
+    'pt': 'Portuguese',
+    'ro': 'Romanian',
+    'ru': 'Russian',
+    'si': 'Sinhala',
+    'sk': 'Slovak',
+    'sl': 'Slovenian',
+    'es': 'Spanish',
+    'sw': 'Swahili',
+    'sv': 'Swedish',
+    'ta': 'Tamil',
+    'th': 'Thai',
+    'tr': 'Turkish',
+    'uk': 'Ukrainian',
+    'uz-cyril': 'Uzbek',
+    'vi': 'Vietnamese',
+    'cy': 'Welsh'
+  }
+
   function _addButtons (rootId, formId, buttons, modal) {
     $.each(buttons, function (key, value) {
       var id = ''
@@ -44,172 +99,6 @@
     })
   }
 
-  function _addDatatableClickCallbacks (parameters) {
-    var datatableId = parameters.datatableId
-    $('#' + datatableId).on('click', 'button', function () {
-      if (typeof parameters.onClick === 'function') {
-        parameters.onClick($(this))
-      } else {
-        _messageBox('ddcDatatable error', datatableId + ': missing function for click event.')
-        return false
-      }
-    })
-  }
-
-  function _addFormHeader (rootId, formId, modal) {
-    if (modal) {
-      var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
-      $('#' + rootId).append('<div class="modal-header">')
-      $('#' + rootId + ' div').wrap('<div class="modal-content">')
-      $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
-      $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
-      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
-      $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
-      $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
-      $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
-    } else {
-      $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
-    }
-  }
-
-  function _addInputFields (formId, response, schema) {
-    var inputGroupAddonParams = []
-    var inputGroup = ''
-
-    $.each(schema.fields, function (key, value) {
-      var type = ''
-
-      value['ro'] = _isReadonly(schema, value)
-      type = value.type || value.native_type || ''
-      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : (value.value || '')
-
-      if (type === 'datatable') {
-        $('#' + formId).ddcDatatable(value.datatable)
-      } else {
-        inputGroup = _addInputFieldType(type, formId, value)
-      }
-
-      if (value.addon) {
-        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
-          value.addon.icon + '"><i class="fa fa-' + value.addon.icon + '" aria-hidden="true"></i></a></span>\n'
-        inputGroupAddonParams.push({
-          id: formId + '-' + value.name + '-' + value.addon.icon,
-          onClick: value.addon.onClick,
-          parameters: response.data
-        })
-      }
-
-      var colClass = value.class || 'col-xs-12'
-
-      _addInputFieldRow(formId, schema, colClass, inputGroup)
-    })
-
-    _addClickCallbacks(formId, inputGroupAddonParams)
-  }
-
-  function _addInputFieldRow (selector, schema, colClass, inputGroup) {
-    var modalBody = schema.modal ? ' .modal-body .ddc-row-main' : ''
-    if (schema.rows) {
-      $('#' + selector + modalBody)
-        .appendR('<div class="row ddc-input-row">')
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    } else {
-      $('#' + selector + modalBody)
-        .appendR('<div class="' + colClass + '">')
-        .appendR('<div class="input-group">')
-        .appendR(inputGroup)
-    }
-  }
-
-  function _addInputFieldTypeBool (formId, value) {
-    var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
-    return '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
-  }
-
-  function _addInputFieldTypeDate (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="date" class="form-control" value="' + value.tag + '"' + value.ro + '>'
-  }
-
-  function _addInputFieldTypeDatepicker (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
-  }
-
-  function _addInputFieldTypeDefault (formId, value) {
-    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control" value="' + value.tag + '"' + value.ro + '>'
-  }
-
-  function _addInputFieldTypeLookup (formId, value) {
-    var inputGroup = '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
-    var data = ''
-    if (value.url) {
-      $.ajax({
-        url: value.url,
-        async: false,
-        dataType: 'json',
-        success: function (response) {
-          data = response.data
-        }
-      })
-    } else {
-      data = value.data
-    }
-    $.each(data, function (lookupKey, lookupValue) {
-      var selected = value.tag === lookupValue.value ? ' selected' : ''
-      inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
-    })
-    inputGroup += '</select>'
-    return inputGroup
-  }
-
-  function _addInputFieldType (type, formId, value) {
-    value['tag'] = value.tag || ''
-    var inputGroup = '<span class="input-group-addon">' + value.name + '</span>\n'
-    switch (type) {
-      case 'bool' || 'checkbox':
-        inputGroup += _addInputFieldTypeBool(formId, value)
-        break
-      case 'date':
-        inputGroup += _addInputFieldTypeDate(formId, value)
-        break
-      case 'datepicker':
-        inputGroup += _addInputFieldTypeDatepicker(formId, value)
-        break
-      case 'lookup':
-        // bootstrap-combobox
-        inputGroup += _addInputFieldTypeLookup(formId, value)
-        break
-//        case 'toggle':
-//          // bootstraptoggle
-//          var dataOff = 'False'
-//          var dataOn = 'True'
-//          var dataWidth = 80
-//
-//          if (value.toggle) {
-//            dataOff = value.toggle.off
-//            dataOn = value.toggle.on
-//            dataWidth = value.toggle.width
-//          }
-//
-//          inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
-//          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
-//          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
-//          break
-      default:
-        // standard input
-        inputGroup += _addInputFieldTypeDefault(formId, value)
-        break
-    }
-    return inputGroup
-  }
-
-  function _addNavbarClickCallback (selector, callback) {
-    $('#' + selector).click(function () {
-      callback()
-    })
-  }
-
   function _ajax (callback, parameters) {
     if (parameters.ajax) {
       var myParameters = $.extend(true, {}, parameters)
@@ -222,14 +111,7 @@
         method: 'GET',
         dataType: 'json',
         success: function (response) {
-          if (options.jsend && response.status !== 'success') {
-            _messageBox('Ajax response', response.message)
-          } else if (options.jsend && response.status === 'success') {
-            myParameters.response = response
-          } else {
-            myParameters.response['data'] = response[options.responseDataKey]
-          }
-          callback(myParameters)
+          _doAjaxCallback(response, options, callback, myParameters)
         },
         error: function (request, status, error) {
           _messageBox('Ajax error', error)
@@ -239,6 +121,19 @@
       return true
     } else {
       return false
+    }
+  }
+
+  function _doAjaxCallback (response, options, callback, parameters) {
+    if (options.jsend && response.status !== 'success') {
+      _messageBox('Ajax response', response.message)
+    } else if (options.jsend && response.status === 'success') {
+      parameters.response = response
+    } else {
+      parameters.response['data'] = response[options.responseDataKey]
+    }
+    if (typeof callback === 'function') {
+      callback(parameters)
     }
   }
 
@@ -253,71 +148,6 @@
     } else {
       return rootId
     }
-  }
-
-  function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
-    var columns = []
-    var dataPriority = null
-
-    $.each(arrayColumns, function (key, value) {
-      columns.push({data: key})
-      dataPriority = ''
-      $.each(priorityColumns, function (priorityKey, priorityValue) {
-        if (key === priorityKey) {
-          dataPriority = ' data-priority="' + priorityValue + '"'
-        }
-      })
-      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
-    })
-
-    return columns
-  }
-
-  function _getDatatableLanguage (selector) {
-    var locale = $('#' + selector).ddcLocale($('#' + selector).data('locale'))
-
-    return '//cdn.datatables.net/plug-ins/1.10.16/i18n/' + locale.language + '.json'
-  }
-
-  function _getFormValues (selector) {
-    var parameters = {}
-    $('#' + selector).find('input').each(function (index, element) {
-      var id = $(this).attr('id')
-
-      if (id) {
-        var value = $(this).val()
-//        // bootstraptoggle patch
-//        if ($(this).attr('class') == 'bootstraptoggle') {
-//          var toggleOn = $(this).parent().attr('class').indexOf("off")
-//          if (toggleOn > 0) {
-//            value = false
-//          } else {
-//            value = true
-//          }
-//        }
-
-        if ($(this).attr('type') === 'checkbox') {
-          value = $('#' + id + ':checkbox:checked').length > 0
-        }
-
-        // combobox patch
-        var fieldKey = id.substring(selector.length + 1)
-        if (fieldKey.indexOf('undefined') >= 0) {
-          fieldKey = fieldKey.substring(0).toLowerCase().replace('undefined', '')
-          value = $(this).parent().parent().children().val()
-        }
-
-        parameters[fieldKey] = value
-      }
-    })
-    $('#' + selector).find('button').each(function (index, element) {
-      if ($(this).attr('ddc-data')) {
-        var id = $(this).attr('id')
-        var value = $(this).attr('ddc-data')
-        parameters[id] = value
-      }
-    })
-    return parameters
   }
 
   function _getSchema (parameters) {
@@ -376,15 +206,23 @@
   }
 
   /**
-   * Empty all root nodes except those passed in parameter arrays
-   *
-   * ## Example
-   *
-   *     $('#root').ddcClearAll(['navbar1'])
-   *
-   * @param {Array} except Array of elements to not empty
-   * @returns {void}
+   * Return [semver]{@link http://semver.org/} compatible version number
+   * @returns {String} Actual version
    */
+  $.fn.ddcVersion = function () {
+    return '0.10.0'
+  }
+
+/**
+ * Empty all root nodes except those passed in parameter arrays
+ *
+ * ## Example
+ *
+ *     $('#root').ddcClearAll(['navbar1'])
+ *
+ * @param {Array} except Array of elements to not empty
+ * @returns {void}
+ */
   $.fn.ddcClearAll = function (except) {
     $('.dataTables_wrapper').each(function (index, element) {
       var datatableId = $(this).attr('id').replace('_wrapper', '')
@@ -403,6 +241,42 @@
     // patch for pace.js side effect on modal dismiss
     $(document.body).removeClass('modal-open')
     $('.modal-backdrop').remove()
+  }
+
+  function _addDatatableClickCallbacks (parameters) {
+    var datatableId = parameters.datatableId
+    $('#' + datatableId).on('click', 'button', function () {
+      if (typeof parameters.onClick === 'function') {
+        parameters.onClick($(this))
+      } else {
+        _messageBox('ddcDatatable error', datatableId + ': missing function for click event.')
+        return false
+      }
+    })
+  }
+
+  function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
+    var columns = []
+    var dataPriority = null
+
+    $.each(arrayColumns, function (key, value) {
+      columns.push({data: key})
+      dataPriority = ''
+      $.each(priorityColumns, function (priorityKey, priorityValue) {
+        if (key === priorityKey) {
+          dataPriority = ' data-priority="' + priorityValue + '"'
+        }
+      })
+      $('#' + datatableId + ' thead tr').append('<th' + dataPriority + '>' + key + '</th>')
+    })
+
+    return columns
+  }
+
+  function _getDatatableLanguage (selector) {
+    var locale = $('#' + selector).ddcLocale($('#' + selector).data('locale'))
+
+    return '//cdn.datatables.net/plug-ins/1.10.16/i18n/' + locale.language + '.json'
   }
 
   /**
@@ -488,7 +362,6 @@
    */
   $.fn.ddcDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
-    var buttons = myParameters.buttons
     var datatableId = myParameters.datatableId
     var dom = myParameters.dom || 'Bfrtip'
     var priorityColumns = myParameters.priorityColumns
@@ -507,7 +380,7 @@
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(myParameters.rootId, datatableId, 'row ddc-datatable-row')
 
-    if (!buttons || !priorityColumns || !response) {
+    if (!myParameters.buttons || !priorityColumns || !response) {
       _messageBox('ddcDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
       return false
     }
@@ -530,7 +403,7 @@
 
     $('#' + datatableId).DataTable({
       dom: dom,
-      buttons: buttons,
+      buttons: myParameters.buttons,
       responsive: true,
       pageLength: pageLength,
       language: {
@@ -541,6 +414,53 @@
     })
 
     _addDatatableClickCallbacks(myParameters)
+  }
+
+  function _getFormValues (selector) {
+    var parameters = {}
+    $('#' + selector).find('input').each(function (index, element) {
+      var id = $(this).attr('id')
+
+      if (id) {
+        var value = $(this).val()
+  //        // bootstraptoggle patch
+  //        if ($(this).attr('class') == 'bootstraptoggle') {
+  //          var toggleOn = $(this).parent().attr('class').indexOf("off")
+  //          if (toggleOn > 0) {
+  //            value = false
+  //          } else {
+  //            value = true
+  //          }
+  //        }
+
+        if ($(this).attr('type') === 'checkbox') {
+          value = $('#' + id + ':checkbox:checked').length > 0
+        }
+
+        // combobox patch
+        var fieldKey = id.substring(selector.length + 1)
+        if (fieldKey.indexOf('undefined') >= 0) {
+          fieldKey = fieldKey.substring(0).toLowerCase().replace('undefined', '')
+          value = $(this).parent().parent().children().val()
+        }
+
+        parameters[fieldKey] = value
+      }
+    })
+    $('#' + selector).find('button').each(function (index, element) {
+      if ($(this).attr('ddc-data')) {
+        var id = $(this).attr('id')
+        var value = $(this).attr('ddc-data')
+        parameters[id] = value
+      }
+    })
+    return parameters
+  }
+
+  function _setDatepickerOptions (selector, datepicker) {
+    var locale = $(this).ddcLocale()
+    var datepickerOptions = datepicker || {autoclose: 'true', language: locale.code}
+    $('#' + selector).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
   }
 
   /**
@@ -663,8 +583,6 @@
    */
   $.fn.ddcForm = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
-    var formId = myParameters.formId
-    var modal = myParameters.modal
     var response = myParameters.response
     var parametersUnresponse = myParameters
     myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
@@ -680,32 +598,181 @@
     var schema = _getSchema(parameters)
 
     if (!schema.buttons || !schema.fields) {
-      _messageBox('ddcForm error', formId + ': buttons and fields parameters are mandatory.')
+      _messageBox('ddcForm error', myParameters.formId + ': buttons and fields parameters are mandatory.')
       return false
     }
 
     // empty root element if is present to avoid side effects on refresh
-    _purgeNode(rootId, formId, 'row')
+    _purgeNode(rootId, myParameters.formId, 'row')
 
-    rootId = 'root-' + formId
-    rootId = _appendPanel(rootId, formId, myParameters.panel)
+    rootId = 'root-' + myParameters.formId
+    rootId = _appendPanel(rootId, myParameters.formId, myParameters.panel)
 
-    _addFormHeader(rootId, formId, modal)
-    _addInputFields(formId, response, schema)
-    _addButtons(rootId, formId, schema.buttons, modal)
+    _addFormHeader(rootId, myParameters.formId, myParameters.modal)
+    _addInputFields(myParameters.formId, response, schema)
+    _addButtons(rootId, myParameters.formId, schema.buttons, myParameters.modal)
 
-    if (modal) {
-      $('#' + formId).modal('show')
+    if (myParameters.modal) {
+      $('#' + myParameters.formId).modal('show')
     }
 
     // refresh combobox input in order to correctly display
-    $('#' + formId).find('select.combobox').combobox('refresh')
+    $('#' + myParameters.formId).find('select.combobox').combobox('refresh')
 
-    var locale = $(this).ddcLocale()
-    var datepickerOptions = schema.datepicker || {autoclose: 'true', language: locale.code}
-    $('#' + formId).find('input.ddc-input-datepicker').datepicker(datepickerOptions)
+    _setDatepickerOptions(myParameters.formId, schema.datepicker)
 
     //  $('.bootstraptoggle').bootstrapToggle()
+  }
+
+  function _addFormHeader (rootId, formId, modal) {
+    if (modal) {
+      var modalDiv = '<div id="' + formId + '" class="modal fade" tabindex="-1" role="dialog">'
+      $('#' + rootId).append('<div class="modal-header">')
+      $('#' + rootId + ' div').wrap('<div class="modal-content">')
+      $('#' + rootId + ' .modal-content').wrap('<div class="modal-dialog" role="document">')
+      $('#' + rootId + ' .modal-dialog').wrap(modalDiv)
+      $('#' + rootId + ' .modal-content').appendR('<div class="modal-body">').appendR('<div class="row ddc-row-main">')
+      $('#' + rootId + ' .modal-content').append('<div class="modal-footer">')
+      $('#' + rootId + ' .modal-header').append('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>')
+      $('#' + rootId + ' .modal-header').append('<h4 class="modal-title">' + modal + '</h4>')
+    } else {
+      $('#' + rootId).append('<div id="' + formId + '" class="row ddc-form-row">')
+    }
+  }
+
+  function _addInputFields (formId, response, schema) {
+    var inputGroupAddonParams = []
+    var inputGroup = ''
+
+    $.each(schema.fields, function (key, value) {
+      var type = ''
+
+      value['ro'] = _isReadonly(schema, value)
+      type = value.type || value.native_type || ''
+      value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : (value.value || '')
+
+      if (type === 'datatable') {
+        $('#' + formId).ddcDatatable(value.datatable)
+      } else {
+        inputGroup = _addInputFieldType(type, formId, value)
+      }
+
+      if (value.addon) {
+        inputGroup += '<span class="input-group-addon"><a href="#" id="' + formId + '-' + value.name + '-' +
+          value.addon.icon + '"><i class="fas fa-' + value.addon.icon + '"></i></a></span>\n'
+        inputGroupAddonParams.push({
+          id: formId + '-' + value.name + '-' + value.addon.icon,
+          onClick: value.addon.onClick,
+          parameters: response.data
+        })
+      }
+
+      var colClass = value.class || 'col-xs-12'
+
+      _addInputFieldRow(formId, schema, colClass, inputGroup)
+    })
+
+    _addClickCallbacks(formId, inputGroupAddonParams)
+  }
+
+  function _addInputFieldRow (selector, schema, colClass, inputGroup) {
+    var modalBody = schema.modal ? ' .modal-body .ddc-row-main' : ''
+    if (schema.rows) {
+      $('#' + selector + modalBody)
+        .appendR('<div class="row ddc-input-row">')
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    } else {
+      $('#' + selector + modalBody)
+        .appendR('<div class="' + colClass + '">')
+        .appendR('<div class="input-group">')
+        .appendR(inputGroup)
+    }
+  }
+
+  function _addInputFieldTypeBool (formId, value) {
+    var checked = (value.tag === true || value.tag === 't') ? ' checked' : ''
+    return '<input id="' + formId + '-' + value.name + '" type="checkbox"' + value.ro + checked + '>\n'
+  }
+
+  function _getInputFieldType (formId, value, type) {
+    var tag = '<input id="' + formId + '-' + value.name + '" type="' + type + '" class="form-control" value="' + value.tag + '"' + value.ro + '>'
+    return tag
+  }
+
+  function _addInputFieldTypeDatepicker (formId, value) {
+    return '<input id="' + formId + '-' + value.name + '" type="text" class="form-control ddc-input-datepicker" value="' + value.tag + '"' + value.ro + '>'
+  }
+
+  function _addInputFieldTypeLookup (formId, value) {
+    var inputGroup = '<select id="' + formId + '-' + value.name + '" name="normal" class="combobox input-large form-control">\n'
+    var data = ''
+    if (value.url) {
+      $.ajax({
+        url: value.url,
+        async: false,
+        dataType: 'json',
+        success: function (response) {
+          data = response.data
+        }
+      })
+    } else {
+      data = value.data
+    }
+    $.each(data, function (lookupKey, lookupValue) {
+      var selected = (value.tag).toString() === (lookupValue.value).toString() ? ' selected' : ''
+      inputGroup += '<option value="' + lookupValue.value + '"' + selected + '>' + lookupValue.text + '</option>'
+    })
+    inputGroup += '</select>'
+    return inputGroup
+  }
+
+  function _addInputFieldType (type, formId, value) {
+    value['tag'] = value.tag || ''
+    var inputGroup = (type === 'hidden') ? '' : '<span class="input-group-addon">' + value.name + '</span>\n'
+    switch (type) {
+      case 'bool':
+        inputGroup += _addInputFieldTypeBool(formId, value)
+        break
+      case 'checkbox':
+        inputGroup += _addInputFieldTypeBool(formId, value)
+        break
+      case 'date':
+        inputGroup += _getInputFieldType(formId, value, type)
+        break
+      case 'datepicker':
+        inputGroup += _addInputFieldTypeDatepicker(formId, value)
+        break
+      case 'hidden':
+        inputGroup += _getInputFieldType(formId, value, type)
+        break
+      case 'lookup':
+        // bootstrap-combobox
+        inputGroup += _addInputFieldTypeLookup(formId, value)
+        break
+  //        case 'toggle':
+  //          // bootstraptoggle
+  //          var dataOff = 'False'
+  //          var dataOn = 'True'
+  //          var dataWidth = 80
+  //
+  //          if (value.toggle) {
+  //            dataOff = value.toggle.off
+  //            dataOn = value.toggle.on
+  //            dataWidth = value.toggle.width
+  //          }
+  //
+  //          inputGroup += '<span>&nbsp</span>\n<span>&nbsp</span>\n<input id="' + modalId + '-' + value.name
+  //          inputGroup += '" type="checkbox" class="bootstraptoggle" data-on="' + dataOn + '" data-onstyle="success" '
+  //          inputGroup += 'data-offstyle="danger" data-off="' + dataOff + '" data-width="' + dataWidth + '" data-toggle="toggle">\n'
+  //          break
+      default:
+        // standard input
+        inputGroup += _getInputFieldType(formId, value, 'text')
+        break
+    }
+    return inputGroup
   }
 
   /**
@@ -718,64 +785,9 @@
    *
    */
   $.fn.ddcLocale = function (locale) {
-    const codes = {
-      'sq': 'Albanian',
-      'ar': 'Arabic',
-      'hy': 'Armenian',
-      'az': 'Azerbaijan',
-      'eu': 'Basque',
-      'bg': 'Bulgarian',
-      'ca': 'Catalan',
-      'zh-TW': 'Chinese-traditional',
-      'zh-CN': 'Chinese',
-      'hr': 'Croatian',
-      'cs': 'Czech',
-      'da': 'Danish',
-      'nl': 'Dutch',
-      'en': 'English',
-      'et': 'Estonian',
-      'fi': 'Finnish',
-      'fr': 'French',
-      'gl': 'Galician',
-      'de': 'German',
-      'el': 'Greek',
-      'he': 'Hebrew',
-      'hi': 'Hindi',
-      'hu': 'Hungarian',
-      'is': 'Icelandic',
-      'id': 'Indonesian',
-      'it': 'Italian',
-      'ja': 'Japanese',
-      'kk': 'Kazakh',
-      'ko': 'Korean',
-      'lt': 'Lithuanian',
-      'mk': 'Macedonian',
-      'ms': 'Malay',
-      'mn': 'Mongolian',
-      'nb': 'Norwegian-Bokmal',
-      'fa': 'Persian',
-      'pl': 'Polish',
-      'pt': 'Portuguese',
-      'ro': 'Romanian',
-      'ru': 'Russian',
-      'si': 'Sinhala',
-      'sk': 'Slovak',
-      'sl': 'Slovenian',
-      'es': 'Spanish',
-      'sw': 'Swahili',
-      'sv': 'Swedish',
-      'ta': 'Tamil',
-      'th': 'Thai',
-      'tr': 'Turkish',
-      'uk': 'Ukrainian',
-      'uz-cyril': 'Uzbek',
-      'vi': 'Vietnamese',
-      'cy': 'Welsh'
-    }
-
-    locale = codes[locale] ? locale : 'en'
+    locale = locales[locale] ? locale : 'en'
     var code = locale
-    var language = codes[locale]
+    var language = locales[locale]
     this.data('locale', locale)
 
     return {code: code, language: language}
@@ -837,6 +849,12 @@
     } else {
       $('#' + rootId + ' .modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>')
     }
+  }
+
+  function _addNavbarClickCallback (selector, callback) {
+    $('#' + selector).click(function () {
+      callback()
+    })
   }
 
   /**
@@ -950,11 +968,4 @@
     })
   }
 
-  /**
-   * Return [semver]{@link http://semver.org/} compatible version number
-   * @returns {String} Actual version
-   */
-  $.fn.ddcVersion = function () {
-    return '0.10.0'
-  }
-}(window.jQuery))
+})(window, document);

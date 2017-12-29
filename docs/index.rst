@@ -48,6 +48,14 @@ Global
 
 --------------
 
+ddcVersion()
+------------
+
+Return [semver][http://semver.org/](http://semver.org/) compatible
+version number
+
+**Returns**: ``String``, Actual version
+
 ddcClearAll(except)
 -------------------
 
@@ -422,14 +430,6 @@ Example
         ]
       })
     })
-
-ddcVersion()
-~~~~~~~~~~~~
-
-Return [semver][http://semver.org/](http://semver.org/) compatible
-version number
-
-**Returns**: ``String``, Actual version
 
 --------------
 
