@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "4"
 addons:
+  apt_packages:
+    - pandoc
   code_climate:
     repo_token: 506b270f0115ea128fa9a173764c5214dda2171161e96a492435212d99846e1b
 after_script:
