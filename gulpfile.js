@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
-	concat = require('gulp-concat'),
-	jqc = require('gulp-jquery-closure');
+  concat = require('gulp-concat'),
+  jqc = require('gulp-jquery-closure');
  
 gulp.task('default', function() {
   gulp.src('./src/*.js')
