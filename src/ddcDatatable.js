@@ -9,6 +9,38 @@
       }
     })
   }
+  
+  function _addDatatableSnippet(parameters) {
+    var datatableId = parameters.datatableId
+    var priorityColumns = parameters.priorityColumns
+    var response = parameters.response
+    var rootId = 'root-' + datatableId
+    rootId = _appendPanel(rootId, datatableId, parameters.panel)
+
+    var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
+
+    $('#' + rootId).append('<tr>')
+    $('#' + rootId + ' tr').wrap('<Thead>')
+    $('#' + rootId + ' thead').wrap(table)
+    $('#' + datatableId + ' thead tr').empty()
+
+    var dataset = response.data
+    var arrayColumns = dataset ? dataset[0] : priorityColumns
+    var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
+    var languageUrl = _getDatatableLanguage(parameters.rootId)
+
+    $('#' + datatableId).DataTable({
+      dom: parameters.dom || 'Bfrtip',
+      buttons: parameters.buttons,
+      responsive: true,
+      pageLength: parameters.pageLength || 10,
+      language: {
+        url: languageUrl
+      },
+      data: dataset,
+      columns: columns
+    })
+  }
 
   function _getDatatableColumns (datatableId, arrayColumns, priorityColumns) {
     var columns = []
@@ -117,15 +149,8 @@
    */
   $.fn.ddcDatatable = function (parameters) {
     var myParameters = $.extend(true, {}, parameters)
-    var datatableId = myParameters.datatableId
-    var dom = myParameters.dom || 'Bfrtip'
-    var priorityColumns = myParameters.priorityColumns
     var response = myParameters.response
-    var pageLength = myParameters.pageLength || 10
     myParameters['rootId'] = myParameters.rootId || $(this).attr('id')
-
-    var arrayColumns = null
-    var dataset = null
 
     // if ajax exist in parameters callback this again on ajax success
     if (_ajax(function (p) { $(this).ddcDatatable(p) }, myParameters)) {
@@ -133,40 +158,13 @@
     }
 
     // empty root element if is present to avoid side effects on refresh
-    _purgeNode(myParameters.rootId, datatableId, 'row ddc-datatable-row')
+    _purgeNode(myParameters.rootId, myParameters.datatableId, 'row ddc-datatable-row')
 
-    if (!myParameters.buttons || !priorityColumns || !response) {
-      _messageBox('ddcDatatable error', datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
+    if (!myParameters.buttons || !myParameters.priorityColumns || !response) {
+      _messageBox('ddcDatatable error', myParameters.datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
       return false
     }
-
-    var rootId = 'root-' + datatableId
-    rootId = _appendPanel(rootId, datatableId, myParameters.panel)
-
-    var table = '<table id="' + datatableId + '" class="display responsive nowrap" cellspacing="0" width="100%">'
-
-    $('#' + rootId).append('<tr>')
-    $('#' + rootId + ' tr').wrap('<Thead>')
-    $('#' + rootId + ' thead').wrap(table)
-    $('#' + datatableId + ' thead tr').empty()
-
-    dataset = response.data
-    arrayColumns = dataset ? dataset[0] : priorityColumns
-
-    var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
-    var languageUrl = _getDatatableLanguage(myParameters.rootId)
-
-    $('#' + datatableId).DataTable({
-      dom: dom,
-      buttons: myParameters.buttons,
-      responsive: true,
-      pageLength: pageLength,
-      language: {
-        url: languageUrl
-      },
-      data: dataset,
-      columns: columns
-    })
-
+    
+    _addDatatableSnippet(myParameters)
     _addDatatableClickCallbacks(myParameters)
   }
