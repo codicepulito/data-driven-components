@@ -254,8 +254,8 @@
       }
     })
   }
-  
-  function _addDatatableSnippet(parameters) {
+
+  function _addDatatableSnippet (parameters) {
     var datatableId = parameters.datatableId
     var priorityColumns = parameters.priorityColumns
     var response = parameters.response
@@ -409,7 +409,7 @@
       _messageBox('ddcDatatable error', myParameters.datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
       return false
     }
-    
+
     _addDatatableSnippet(myParameters)
     _addDatatableClickCallbacks(myParameters)
   }
@@ -848,7 +848,7 @@
       callback()
     })
   }
-  
+
   function _addNavbarHeader (rootId, navbarId) {
     var navbarDiv = '<nav class="navbar navbar-inverse navbar-default">'
     $('#' + rootId).append('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#' + navbarId + '">')
@@ -863,7 +863,7 @@
       .appendR('<div class="collapse navbar-collapse" id="' + navbarId + '">')
       .appendR('<ul class="nav navbar-nav">')
   }
-  
+
   function _addNavbarMenuItem (rootId, navbarId, value) {
     var menuItem = ''
     var subMenuItem = ''
@@ -957,7 +957,7 @@
 
     $.each(items, function (key, value) {
       _addNavbarMenuItem(rootId, navbarId, value)
-      
+
       // toggle collapsible navbar on click event
       $('.dropdown-item').on('click', function () {
         if ($('.navbar-collapse').css('display') !== 'none') {

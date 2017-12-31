@@ -9,8 +9,8 @@
       }
     })
   }
-  
-  function _addDatatableSnippet(parameters) {
+
+  function _addDatatableSnippet (parameters) {
     var datatableId = parameters.datatableId
     var priorityColumns = parameters.priorityColumns
     var response = parameters.response
@@ -164,7 +164,7 @@
       _messageBox('ddcDatatable error', myParameters.datatableId + ': buttons, priorityColumns and response parameters are mandatory.')
       return false
     }
-    
+
     _addDatatableSnippet(myParameters)
     _addDatatableClickCallbacks(myParameters)
   }
