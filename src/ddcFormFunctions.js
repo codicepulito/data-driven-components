@@ -19,10 +19,8 @@
     var inputGroup = ''
 
     $.each(schema.fields, function (key, value) {
-      var type = ''
-
       value['ro'] = _isReadonly(schema, value)
-      type = value.type || value.native_type || ''
+      var type = value.type || value.native_type || ''
       value['tag'] = (response && response.hasOwnProperty('data')) ? response.data[0][value.name] : (value.value || '')
 
       if (type === 'datatable') {
