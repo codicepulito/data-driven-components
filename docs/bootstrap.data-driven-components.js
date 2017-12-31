@@ -856,6 +856,21 @@
       callback()
     })
   }
+  
+  function _addNavbarHeader (rootId, navbarId) {
+    var navbarDiv = '<nav class="navbar navbar-inverse navbar-default">'
+    $('#' + rootId).append('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#' + navbarId + '">')
+    $('#' + rootId + ' .navbar-toggle').wrap('<div class="navbar-header">')
+    $('#' + rootId + ' .navbar-header').wrap('<div id="' + navbarId + '-container">')
+    $('#' + rootId + ' #' + navbarId + '-container').wrap(navbarDiv)
+    $('#' + rootId + ' .navbar-toggle').append('<span class="sr-only">Toggle navigation</span>')
+    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
+    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
+    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
+    $('#' + rootId + ' #' + navbarId + '-container')
+      .appendR('<div class="collapse navbar-collapse" id="' + navbarId + '">')
+      .appendR('<ul class="nav navbar-nav">')
+  }
 
   /**
    * Append a bootstrap navbar menu with items and dropdown sub-items
@@ -917,19 +932,7 @@
 
     var rootId = 'root-' + navbarId
 
-    // add navbar headers
-    var navbarDiv = '<nav class="navbar navbar-inverse navbar-default">'
-    $('#' + rootId).append('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#' + navbarId + '">')
-    $('#' + rootId + ' .navbar-toggle').wrap('<div class="navbar-header">')
-    $('#' + rootId + ' .navbar-header').wrap('<div id="' + navbarId + '-container">')
-    $('#' + rootId + ' #' + navbarId + '-container').wrap(navbarDiv)
-    $('#' + rootId + ' .navbar-toggle').append('<span class="sr-only">Toggle navigation</span>')
-    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
-    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
-    $('#' + rootId + ' .navbar-toggle').append('<span class="icon-bar"></span>')
-    $('#' + rootId + ' #' + navbarId + '-container')
-      .appendR('<div class="collapse navbar-collapse" id="' + navbarId + '">')
-      .appendR('<ul class="nav navbar-nav">')
+    var navbarDiv = _addNavbarHeader(rootId, navbarId)
 
     $.each(items, function (key, value) {
       if (!value.submenu) {

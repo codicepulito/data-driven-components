@@ -1,8 +1,8 @@
 Bootstrap data driven components jquery plugin
 ==============================================
 
-|Build Status| |codecov| |Standard - JavaScript Style Guide| |Code
-Climate| |Issue Count| |API Doc|
+|Build Status| |Standard - JavaScript Style Guide| |Code Climate| |Test
+Coverage| |Issue Count| |API Doc|
 
 Introduction
 ------------
@@ -435,12 +435,12 @@ Example
 
 .. |Build Status| image:: https://travis-ci.org/codicepulito/data-driven-components.svg?branch=master
    :target: https://travis-ci.org/codicepulito/data-driven-components
-.. |codecov| image:: https://codecov.io/gh/codicepulito/data-driven-components/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/codicepulito/data-driven-components
 .. |Standard - JavaScript Style Guide| image:: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
    :target: http://standardjs.com/
 .. |Code Climate| image:: https://codeclimate.com/github/codicepulito/data-driven-components/badges/gpa.svg
    :target: https://codeclimate.com/github/codicepulito/data-driven-components
+.. |Test Coverage| image:: https://api.codeclimate.com/v1/badges/6fb6e202fce99565d4a3/test_coverage
+   :target: https://codeclimate.com/github/codicepulito/data-driven-components/test_coverage
 .. |Issue Count| image:: https://codeclimate.com/github/codicepulito/data-driven-components/badges/issue_count.svg
    :target: https://codeclimate.com/github/codicepulito/data-driven-components
 .. |API Doc| image:: https://doclets.io/codicepulito/data-driven-components/master.svg
