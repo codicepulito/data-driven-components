@@ -7,7 +7,8 @@ var formParameters = {
         field2: 'value2',
         field3: '2017-01-01',
         field4: '2017-12-31',
-        field5: 'secret'
+        field5: 'secret',
+        field6: null
       }
     ],
     schema: {
@@ -17,6 +18,7 @@ var formParameters = {
         {name: "field3", native_type: "date"},
         {name: "field4", native_type: "date"},
         {name: "field5", native_type: "hidden"},
+        {name: "field6"}
       ]
     }
   },
@@ -25,7 +27,38 @@ var formParameters = {
     {name: "field2"},
     {name: "field3"},
     {name: "field4", type: 'datepicker'},
-    {name: "field5"}
+    {name: "field5"},
+    {
+      name: "field6",
+      type: 'datatable',
+      datatable: {
+        datatableId: 'datatable1',
+        response: {
+          data: [
+            {
+                "id": 1,
+                "name": "Leanne Graham",
+                "username": "Bret",
+                "email": "Sincere@april.biz",
+                "phone": "1-770-736-8031 x56442",
+                "website": "hildegard.org",
+                "edit": "<center><button id=\"1\"></button></center>"
+            },
+            {
+                "id": 2,
+                "name": "Ervin Howell",
+                "username": "Antonette",
+                "email": "Shanna@melissa.tv",
+                "phone": "010-692-6593 x09125",
+                "website": "anastasia.net",
+                "edit": "<center><button id=\"2\"></button></center>"
+            }
+          ]
+        },
+        buttons: [],
+        priorityColumns: {name: 1, username: 2, email: 3}
+      }
+    }
   ],
   buttons: [
     { name: "Cancel", class: "btn btn-default" },
@@ -285,6 +318,11 @@ describe('create form component', function () {
     $('#root').ddcForm(formParameters)
     expect($('[id=form1]').length).toBe(1)
     expect($('#form1').find('#form1-field4').attr('class')).toBe('form-control ddc-input-datepicker')
+  })
+  
+  it('create form and check field6 datatable exist', function () {
+    $('#root').ddcForm(formParameters)
+    expect($('[id=datatable1]').length).toBe(1)
   })
 
   it('create form and check lookup attributes', function () {

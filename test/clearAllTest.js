@@ -93,7 +93,7 @@ describe('clearing the dom except some elements', function () {
   })
 
   it('clearing all divs in body', function () {
-    expect($('div').length).toBe(22)
+    expect($('div').length).toBe(24)
     $('#root').ddcClearAll(['navbar1'])
     expect($('div').length).toBe(5)
   })
