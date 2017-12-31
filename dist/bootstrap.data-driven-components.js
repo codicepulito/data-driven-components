@@ -729,19 +729,15 @@
     var inputGroup = (type === 'hidden') ? '' : '<span class="input-group-addon">' + value.name + '</span>\n'
     switch (type) {
       case 'bool':
-        inputGroup += _addInputFieldTypeBool(formId, value)
-        break
       case 'checkbox':
         inputGroup += _addInputFieldTypeBool(formId, value)
         break
       case 'date':
+      case 'hidden':
         inputGroup += _getInputFieldType(formId, value, type)
         break
       case 'datepicker':
         inputGroup += _addInputFieldTypeDatepicker(formId, value)
-        break
-      case 'hidden':
-        inputGroup += _getInputFieldType(formId, value, type)
         break
       case 'lookup':
         // bootstrap-combobox
