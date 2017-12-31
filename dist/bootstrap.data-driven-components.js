@@ -871,6 +871,37 @@
       .appendR('<div class="collapse navbar-collapse" id="' + navbarId + '">')
       .appendR('<ul class="nav navbar-nav">')
   }
+  
+  function _addNavbarMenuItem (rootId, navbarId, value) {
+    var menuItem = ''
+    var subMenuItem = ''
+    if (!value.submenu) {
+      // add normal item
+      menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">' +
+        value.name + '</a></li>\n'
+      $('#' + rootId + ' .navbar-nav').append(menuItem)
+
+      value.id && _addNavbarClickCallback(navbarId + value.id, value.onClick)
+    } else {
+      // add submenu item
+      menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId +
+        value.name.replace(' ', '') + '">' + value.name + ' <span class="caret"></span></a>\n'
+      $('#' + rootId + ' .navbar-nav').appendR('<li class="dropdown">').appendR(menuItem)
+      $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).after('<ul class="dropdown-menu">')
+
+      $.each(value.submenu, function (submenuKey, submenuValue) {
+        if (!submenuValue.id) {
+          subMenuItem = '<li class="divider"></li>'
+        } else {
+          subMenuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">' +
+            submenuValue.name + '</a></li>\n'
+        }
+        $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
+
+        submenuValue.id && _addNavbarClickCallback(navbarId + submenuValue.id, submenuValue.onClick)
+      })
+    }
+  }
 
   /**
    * Append a bootstrap navbar menu with items and dropdown sub-items
@@ -924,44 +955,17 @@
     var selector = $(this).attr('id')
     var navbarId = parameters.navbarId
     var items = parameters.items
-    var menuItem = ''
-    var subMenuItem = ''
 
     // empty root element if is present to avoid side effects on refresh
     _purgeNode(selector, navbarId, 'row')
 
     var rootId = 'root-' + navbarId
 
-    var navbarDiv = _addNavbarHeader(rootId, navbarId)
+    _addNavbarHeader(rootId, navbarId)
 
     $.each(items, function (key, value) {
-      if (!value.submenu) {
-        // add normal item
-        menuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + value.id + '">' +
-          value.name + '</a></li>\n'
-        $('#' + rootId + ' .navbar-nav').append(menuItem)
-
-        value.id && _addNavbarClickCallback(navbarId + value.id, value.onClick)
-      } else {
-        // add submenu item
-        menuItem = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' + navbarId +
-          value.name.replace(' ', '') + '">' + value.name + ' <span class="caret"></span></a>\n'
-        $('#' + rootId + ' .navbar-nav').appendR('<li class="dropdown">').appendR(menuItem)
-        $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).after('<ul class="dropdown-menu">')
-
-        $.each(value.submenu, function (submenuKey, submenuValue) {
-          if (!submenuValue.id) {
-            subMenuItem = '<li class="divider"></li>'
-          } else {
-            subMenuItem = '<li><a href="#" class="dropdown-item" id="' + navbarId + submenuValue.id + '">' +
-              submenuValue.name + '</a></li>\n'
-          }
-          $('#' + rootId + ' #' + navbarId + value.name.replace(' ', '')).next().append(subMenuItem)
-
-          submenuValue.id && _addNavbarClickCallback(navbarId + submenuValue.id, submenuValue.onClick)
-        })
-      }
-
+      _addNavbarMenuItem(rootId, navbarId, value)
+      
       // toggle collapsible navbar on click event
       $('.dropdown-item').on('click', function () {
         if ($('.navbar-collapse').css('display') !== 'none') {
