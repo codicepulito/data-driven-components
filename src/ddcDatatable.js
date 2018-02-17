@@ -40,7 +40,7 @@
     var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
     var languageUrl = _getDatatableLanguage(parameters.rootId)
     
-    _addDatatableFooter(datatableId, columns)
+    // _addDatatableFooter(datatableId, columns)
 
     $('#' + datatableId).DataTable({
       dom: parameters.dom || 'Bfrtip',
