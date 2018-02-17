@@ -38,7 +38,8 @@
         url: languageUrl
       },
       data: dataset,
-      columns: columns
+      columns: columns,
+      footerCallback: parameters.footerCallback
     })
   }
 
