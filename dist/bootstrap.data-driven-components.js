@@ -256,13 +256,13 @@
   }
   
   function _addDatatableFooter (datatableId, columns) {
-    var snippet = '<tfoot>'
+    var snippet = '<tfoot><tr>'
     
     $.each(columns, function (key, value) {
       snippet += '<th></th>'
     })
     
-    snippet += '</tfoot>'
+    snippet += '</tr></tfoot>'
     $('#' + datatableId).append(snippet)
   }
 
