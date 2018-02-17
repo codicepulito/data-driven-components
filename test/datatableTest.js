@@ -172,7 +172,7 @@ describe('datatable component ajax loading', function () {
   })
 
   it('check datatable is populated', function () {
-    expect($('#datatable1').find('tr').length).toBe(11)
+    expect($('#datatable1').find('tr').length).toBe(12)
   })
 })
 

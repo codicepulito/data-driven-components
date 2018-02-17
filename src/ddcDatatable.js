@@ -10,6 +10,17 @@
     })
   }
 
+  function _addDatatableFooter (datatableId, columns) {
+    var snippet = '<tfoot>'
+    
+    $.each(columns, function (key, value) {
+      snippet += '<th></th>'
+    })
+    
+    snippet += '</tfoot>'
+    $('#' + datatableId).append(snippet)
+  }
+
   function _addDatatableSnippet (parameters) {
     var datatableId = parameters.datatableId
     var priorityColumns = parameters.priorityColumns
@@ -28,6 +39,10 @@
     var arrayColumns = dataset ? dataset[0] : priorityColumns
     var columns = _getDatatableColumns(datatableId, arrayColumns, priorityColumns)
     var languageUrl = _getDatatableLanguage(parameters.rootId)
+    
+    _addDatatableFooter (datatableId, columns)
+    $('#' + datatableId).dataTable().fnClearTable()
+    $('#' + datatableId).dataTable().fnDestroy()
 
     $('#' + datatableId).DataTable({
       dom: parameters.dom || 'Bfrtip',

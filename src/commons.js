@@ -209,5 +209,5 @@
    * @returns {String} Actual version
    */
   $.fn.ddcVersion = function () {
-    return '0.10.2'
+    return '0.10.3'
   }
